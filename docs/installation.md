@@ -96,6 +96,19 @@ courant, `.venv` du projet, ou commande `esptool` du PATH). Tu peux donc lancer 
 PYTHONPATH=src python -m web.server
 ```
 
+## Variante Windows
+# 1. Créer l'environnement virtuel
+python -m venv .venv
+
+# 2. Installer les dépendances
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# 3. Définir le PYTHONPATH pour cette session PowerShell
+$env:PYTHONPATH = "src"
+
+# 4. Lancer ESP32-Lab
+.\.venv\Scripts\python.exe -m web.server
+
 Même si ce Python n'a pas esptool, le serveur utilisera automatiquement celui
 du `.venv` du projet s'il existe.
 
