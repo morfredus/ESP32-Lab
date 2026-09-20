@@ -1,8 +1,9 @@
 {
-    "timestamp": "2026-09-19T19:52:20.769977+00:00",
+    "timestamp": "2026-09-20T21:12:48.313232+00:00",
     "port": "/dev/ttyACM0",
     "identification": {
         "chip": "ESP32-S3 (QFN56)",
+        "chip_family": "esp32s3",
         "revision": "v0.2",
         "features": "Wi-Fi, BT 5 (LE), Dual Core + LP Core, 240MHz, Embedded PSRAM 8MB (AP_3v3)",
         "cpu_frequency_mhz": 240,
@@ -14,6 +15,8 @@
         "flash_device": "4018",
         "flash_size_mb": 16,
         "flash_type": "quad (4 data lines)",
-        "flash_voltage": "3.3V"
+        "flash_voltage": "3.3V",
+        "flash_manufacturer_name": "Boya (BoHong) (ID 68)",
+        "flash_device_name": "W25Q128 / BY25Q128 (16 Mo) (ID 4018)"
     }
 }
