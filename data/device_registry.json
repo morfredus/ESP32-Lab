@@ -9,9 +9,9 @@
     },
     "80:b5:4e:d9:63:4c": {
         "mac": "80:b5:4e:d9:63:4c",
-        "name": "Carte Test 2",
-        "note": "Pas plus de note",
-        "location": "Sous la table",
+        "name": "ESP32-S3 N16R8 - Test",
+        "note": "Carte de test global, ne sert pas a un projet en prod.",
+        "location": "Salon - Table basse",
         "chip": "ESP32-S3 (QFN56)",
         "last_seen": "2026-09-19T19:52:20.769977+00:00"
     }

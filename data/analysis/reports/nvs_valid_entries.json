@@ -1,0 +1,312 @@
+{
+  "file": "data/analysis/raw/nvs_s3.bin",
+  "valid_entry_starts": 34,
+  "entries": [
+    {
+      "page": 0,
+      "entry": 0,
+      "namespace": 0,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "misc"
+    },
+    {
+      "page": 0,
+      "entry": 1,
+      "namespace": 0,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "nvs.net80211"
+    },
+    {
+      "page": 0,
+      "entry": 4,
+      "namespace": 0,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "phy"
+    },
+    {
+      "page": 0,
+      "entry": 16,
+      "namespace": 4,
+      "type": 1,
+      "span": 6,
+      "chunk_index": 1,
+      "key": "\u0001\u0001\u0006\u0001"
+    },
+    {
+      "page": 0,
+      "entry": 23,
+      "namespace": 43,
+      "type": 1,
+      "span": 32,
+      "chunk_index": 1,
+      "key": ",\u0001\"\u0001,\u0001&\u0001+\u0001&\u0001)\u0001'\u0001"
+    },
+    {
+      "page": 0,
+      "entry": 70,
+      "namespace": 3,
+      "type": 4,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "cal_version"
+    },
+    {
+      "page": 0,
+      "entry": 81,
+      "namespace": 2,
+      "type": 2,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.lis_intval"
+    },
+    {
+      "page": 0,
+      "entry": 83,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.scan_method"
+    },
+    {
+      "page": 0,
+      "entry": 84,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.sort_method"
+    },
+    {
+      "page": 0,
+      "entry": 86,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.minauth"
+    },
+    {
+      "page": 0,
+      "entry": 90,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.pmf_e"
+    },
+    {
+      "page": 0,
+      "entry": 91,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.pmf_r"
+    },
+    {
+      "page": 0,
+      "entry": 92,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.rrm_e"
+    },
+    {
+      "page": 0,
+      "entry": 93,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.btm_e"
+    },
+    {
+      "page": 0,
+      "entry": 94,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.mbo_e"
+    },
+    {
+      "page": 0,
+      "entry": 95,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.bss_retry"
+    },
+    {
+      "page": 0,
+      "entry": 96,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.trans_d"
+    },
+    {
+      "page": 0,
+      "entry": 97,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.sae_h2e"
+    },
+    {
+      "page": 0,
+      "entry": 122,
+      "namespace": 0,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "dhcp_state"
+    },
+    {
+      "page": 1,
+      "entry": 0,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.phybw"
+    },
+    {
+      "page": 1,
+      "entry": 1,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.phybw"
+    },
+    {
+      "page": 1,
+      "entry": 2,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.authmode"
+    },
+    {
+      "page": 1,
+      "entry": 8,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.hidden"
+    },
+    {
+      "page": 1,
+      "entry": 9,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.max.conn"
+    },
+    {
+      "page": 1,
+      "entry": 10,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.p_cipher"
+    },
+    {
+      "page": 1,
+      "entry": 11,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.sndchan"
+    },
+    {
+      "page": 1,
+      "entry": 44,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "bssid.set"
+    },
+    {
+      "page": 2,
+      "entry": 0,
+      "namespace": 2,
+      "type": 2,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "bcn.interval"
+    },
+    {
+      "page": 2,
+      "entry": 1,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.ftm_r"
+    },
+    {
+      "page": 2,
+      "entry": 36,
+      "namespace": 0,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "app"
+    },
+    {
+      "page": 4,
+      "entry": 0,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "ap.chan"
+    },
+    {
+      "page": 4,
+      "entry": 12,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "opmode"
+    },
+    {
+      "page": 4,
+      "entry": 99,
+      "namespace": 2,
+      "type": 1,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "sta.chan"
+    },
+    {
+      "page": 4,
+      "entry": 105,
+      "namespace": 4,
+      "type": 4,
+      "span": 1,
+      "chunk_index": 255,
+      "key": "WIFI_STA_DEF"
+    }
+  ]
+}

@@ -1,0 +1,10 @@
+{
+  "wifi": {
+    "station_ssid": "fredmomo",
+    "access_point_ssid": "MH-NOW",
+    "station_password_present": true,
+    "access_point_password_present": true
+  },
+  "system": {},
+  "other_values": []
+}

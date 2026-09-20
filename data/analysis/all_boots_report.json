@@ -1,0 +1,468 @@
+{
+  "source": {
+    "summary_entries": 43,
+    "complete_entries": 3,
+    "total_entries": 46
+  },
+  "deduplication": {
+    "unique_boots": 46,
+    "duplicate_boot_numbers_removed": 0,
+    "complete_logs_preferred": true
+  },
+  "boot_range": {
+    "first_known_boot": 1,
+    "last_known_boot": 47,
+    "missing_boot_numbers": [
+      23
+    ]
+  },
+  "source_distribution": {
+    "summary": 43,
+    "complete": 3
+  },
+  "reset_reasons": {
+    "Inconnue": 4,
+    "Mise sous tension": 42
+  },
+  "temperature": {
+    "count": 46,
+    "minimum_c": 26.8,
+    "maximum_c": 42.8,
+    "average_c": 40.08
+  },
+  "boot_time": {
+    "count": 46,
+    "minimum_ms": 2407,
+    "maximum_ms": 7030,
+    "average_ms": 4055.35
+  },
+  "crash_count": {
+    "count": 46,
+    "maximum": 0,
+    "non_zero_entries": 0
+  },
+  "boots": [
+    {
+      "source_type": "summary",
+      "source_offset": 364545,
+      "boot_count": 1,
+      "reset_reason": "Inconnue",
+      "temperature_c": 37.8,
+      "boot_ms": 5057,
+      "crash_count": 0
+    },
+    {
+      "source_type": "complete",
+      "source_offset": 364665,
+      "boot_count": 2,
+      "reset_reason": "Inconnue",
+      "temperature_c": 40.8,
+      "boot_ms": 5358,
+      "crash_count": 0
+    },
+    {
+      "source_type": "complete",
+      "source_offset": 286721,
+      "boot_count": 3,
+      "reset_reason": "Inconnue",
+      "temperature_c": 41.8,
+      "boot_ms": 5086,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 288973,
+      "boot_count": 4,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 30.8,
+      "boot_ms": 2956,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 289102,
+      "boot_count": 5,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 36.8,
+      "boot_ms": 3005,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 289231,
+      "boot_count": 6,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 3099,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 289360,
+      "boot_count": 7,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 5590,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 289489,
+      "boot_count": 8,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5540,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 289618,
+      "boot_count": 9,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5575,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 289747,
+      "boot_count": 10,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5588,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 289877,
+      "boot_count": 11,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 3218,
+      "crash_count": 0
+    },
+    {
+      "source_type": "complete",
+      "source_offset": 664329,
+      "boot_count": 12,
+      "reset_reason": "Inconnue",
+      "temperature_c": 41.8,
+      "boot_ms": 5504,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 666592,
+      "boot_count": 13,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 39.8,
+      "boot_ms": 2914,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 666722,
+      "boot_count": 14,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 5947,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 666852,
+      "boot_count": 15,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5467,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 756318,
+      "boot_count": 16,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5479,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 756448,
+      "boot_count": 17,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 42.8,
+      "boot_ms": 5491,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 756578,
+      "boot_count": 18,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 3031,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 756708,
+      "boot_count": 19,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 42.8,
+      "boot_ms": 3125,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 756838,
+      "boot_count": 20,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 42.8,
+      "boot_ms": 3215,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 756968,
+      "boot_count": 21,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 39.8,
+      "boot_ms": 3145,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 3052691,
+      "boot_count": 22,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 3015,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 532481,
+      "boot_count": 24,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 2969,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 532611,
+      "boot_count": 25,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 42.8,
+      "boot_ms": 2956,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 532741,
+      "boot_count": 26,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 2998,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 532871,
+      "boot_count": 27,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 42.8,
+      "boot_ms": 3060,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 533001,
+      "boot_count": 28,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 39.8,
+      "boot_ms": 3095,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 1102475,
+      "boot_count": 29,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 3077,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 159745,
+      "boot_count": 30,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 42.8,
+      "boot_ms": 2545,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 159875,
+      "boot_count": 31,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 26.8,
+      "boot_ms": 2894,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160005,
+      "boot_count": 32,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 28.8,
+      "boot_ms": 2920,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160135,
+      "boot_count": 33,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 2981,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160265,
+      "boot_count": 34,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 2509,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160395,
+      "boot_count": 35,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 36.8,
+      "boot_ms": 2977,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160525,
+      "boot_count": 36,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 38.8,
+      "boot_ms": 3218,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160655,
+      "boot_count": 37,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 3098,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160785,
+      "boot_count": 38,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 37.8,
+      "boot_ms": 3252,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 160915,
+      "boot_count": 39,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 2859,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 1000205,
+      "boot_count": 40,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 2407,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 1000335,
+      "boot_count": 41,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 5384,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 1000465,
+      "boot_count": 42,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5408,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 1000595,
+      "boot_count": 43,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5444,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 1844241,
+      "boot_count": 44,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5473,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 1844371,
+      "boot_count": 45,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 35.8,
+      "boot_ms": 7030,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 2466963,
+      "boot_count": 46,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 40.8,
+      "boot_ms": 6029,
+      "crash_count": 0
+    },
+    {
+      "source_type": "summary",
+      "source_offset": 3134611,
+      "boot_count": 47,
+      "reset_reason": "Mise sous tension",
+      "temperature_c": 41.8,
+      "boot_ms": 5558,
+      "crash_count": 0
+    }
+  ],
+  "limitations": [
+    "Les journaux résumés ne contiennent pas nécessairement toutes les informations des journaux complets.",
+    "Les numéros de boot manquants ne sont pas reconstruits.",
+    "La présence d'un numéro de boot ne garantit pas la conservation de son journal complet.",
+    "L'ordre des entrées dans la Flash n'est pas considéré comme une chronologie fiable.",
+    "Les statistiques sont calculées uniquement sur les valeurs réellement présentes.",
+    "Les raisons de reset ne permettent pas à elles seules de déterminer la cause matérielle."
+  ]
+}

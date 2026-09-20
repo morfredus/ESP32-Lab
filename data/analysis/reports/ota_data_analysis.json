@@ -1,0 +1,67 @@
+{
+    "file": "data/analysis/raw/otadata_s3.bin",
+    "size_bytes": 8192,
+    "expected_size_bytes": 8192,
+    "entries": [
+        {
+            "sector": 0,
+            "sector_offset": "0x0000",
+            "entry": {
+                "offset": "0x0000",
+                "valid_length": true,
+                "erased": false,
+                "ota_seq": 1,
+                "sequence_label_hex": "ffffffffffffffffffffffffffffffffffffffff",
+                "ota_state_raw": "0xFFFFFFFF",
+                "ota_state_name": "UNDEFINED_OR_ERASED",
+                "stored_crc": "0x4743989A",
+                "crc_candidates": {
+                    "first_4_standard": "0x99F8B879",
+                    "first_4_esp32_init_ff": "0x4743989A",
+                    "first_28_standard": "0xFED95616",
+                    "first_28_esp32_init_ff": "0x8156DE00"
+                },
+                "crc_matches": {
+                    "first_4_standard": false,
+                    "first_4_esp32_init_ff": true,
+                    "first_28_standard": false,
+                    "first_28_esp32_init_ff": false
+                },
+                "raw_hex": "01000000ffffffffffffffffffffffffffffffffffffffffffffffff9a984347"
+            }
+        },
+        {
+            "sector": 1,
+            "sector_offset": "0x1000",
+            "entry": {
+                "offset": "0x1000",
+                "valid_length": true,
+                "erased": false,
+                "ota_seq": 0,
+                "sequence_label_hex": "ffffffffffffffffffffffffffffffffffffffff",
+                "ota_state_raw": "0xFFFFFFFF",
+                "ota_state_name": "UNDEFINED_OR_ERASED",
+                "stored_crc": "0xFFFFFFFF",
+                "crc_candidates": {
+                    "first_4_standard": "0x2144DF1C",
+                    "first_4_esp32_init_ff": "0xFFFFFFFF",
+                    "first_28_standard": "0xFF6CAB0B",
+                    "first_28_esp32_init_ff": "0x80E3231D"
+                },
+                "crc_matches": {
+                    "first_4_standard": false,
+                    "first_4_esp32_init_ff": true,
+                    "first_28_standard": false,
+                    "first_28_esp32_init_ff": false
+                },
+                "raw_hex": "00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff"
+            }
+        }
+    ],
+    "warnings": [],
+    "limitations": [
+        "Les variantes CRC sont affichées à titre de comparaison.",
+        "Le format exact du CRC doit être confirmé avec l'implémentation ESP-IDF correspondant à la version du firmware.",
+        "Une entrée OTA valide ne prouve pas seule le firmware actuellement exécuté."
+    ]
+}

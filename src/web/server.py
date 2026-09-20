@@ -15,6 +15,7 @@ from core.device_registry import (
     update_device_from_inventory,
 )
 from core.esp32_inventory import create_inventory, save_inventory
+from core.esp32_partitions import read_partition_table
 from core.inventory_history import get_history, save_history
 from core.inventory_store import load_last_inventory
 from transport.serial_detect import detect_serial_ports
@@ -23,6 +24,16 @@ from transport.serial_detect import detect_serial_ports
 HOST = "0.0.0.0"
 PORT = 8765
 STATIC_DIRECTORY = Path(__file__).resolve().parent / "static"
+
+CONTENT_TYPES = {
+    ".html": "text/html; charset=utf-8",
+    ".css": "text/css; charset=utf-8",
+    ".js": "application/javascript; charset=utf-8",
+    ".json": "application/json; charset=utf-8",
+    ".svg": "image/svg+xml",
+    ".ico": "image/x-icon",
+    ".png": "image/png",
+}
 
 
 class ESP32LabHandler(BaseHTTPRequestHandler):
@@ -62,7 +73,15 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
         query = parse_qs(parsed.query)
 
         if path == "/":
-            self.serve_index()
+            self.serve_static_file("index.html")
+            return
+
+        if path.startswith("/css/") or path.startswith("/js/"):
+            self.serve_static_file(path.lstrip("/"))
+            return
+
+        if path == "/favicon.ico":
+            self.serve_static_file("favicon.ico")
             return
 
         if path == "/api/health":
@@ -77,6 +96,38 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "status": "ok",
                 "ports": detect_serial_ports(),
             })
+            return
+
+        if path == "/api/nvs":
+            report_path = (
+                Path(__file__).resolve().parents[2]
+                / "data"
+                / "analysis"
+                / "reports"
+                / "nvs_structure_analysis.json"
+            )
+
+            if not report_path.exists():
+                self.send_json({
+                    "status": "error",
+                    "message": "Rapport NVS indisponible.",
+                }, status=404)
+                return
+
+            try:
+                report = json.loads(
+                    report_path.read_text(encoding="utf-8")
+                )
+                self.send_json({
+                    "status": "ok",
+                    "report": report,
+                })
+            except (OSError, json.JSONDecodeError) as error:
+                self.send_json({
+                    "status": "error",
+                    "message": f"Lecture du rapport NVS impossible : {error}",
+                }, status=500)
+
             return
 
         if path == "/api/inventory":
@@ -130,6 +181,10 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
 
         if path == "/api/inventory/refresh":
             self.refresh_inventory(query)
+            return
+
+        if path == "/api/partitions":
+            self.read_partitions(query)
             return
 
         if path == "/api/device/update":
@@ -224,22 +279,61 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "message": str(error),
             }, status=500)
 
-    def serve_index(self):
-        """Sert la page principale."""
+    def read_partitions(self, query):
+        """Lit la table de partitions réelle de la carte (lecture seule)."""
 
-        index_file = STATIC_DIRECTORY / "index.html"
+        selected_port = query.get("port", [None])[0]
 
-        if not index_file.exists():
+        if not selected_port:
             self.send_json({
                 "status": "error",
-                "message": "Page index.html introuvable.",
+                "message": "Le port série est obligatoire.",
+            }, status=400)
+            return
+
+        chip = query.get("chip", [None])[0]
+
+        try:
+            result = read_partition_table(selected_port, chip=chip)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
+            return
+
+        status = 200 if result.get("status") == "ok" else 502
+        self.send_json(result, status=status)
+
+    def serve_static_file(self, relative_path):
+        """Sert un fichier statique depuis le dossier ``static``."""
+
+        # Empêche toute remontée de répertoire (path traversal).
+        target = (STATIC_DIRECTORY / relative_path).resolve()
+
+        if STATIC_DIRECTORY.resolve() not in target.parents \
+                and target != STATIC_DIRECTORY.resolve():
+            self.send_json({
+                "status": "error",
+                "message": "Chemin non autorisé.",
+            }, status=403)
+            return
+
+        if not target.is_file():
+            self.send_json({
+                "status": "error",
+                "message": f"Fichier introuvable : {relative_path}",
             }, status=404)
             return
 
-        content = index_file.read_bytes()
+        content = target.read_bytes()
+        content_type = CONTENT_TYPES.get(
+            target.suffix.lower(),
+            "application/octet-stream",
+        )
 
         self.send_response(200)
-        self.send_header("Content-Type", "text/html; charset=utf-8")
+        self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(content)))
         self.end_headers()
         self.wfile.write(content)

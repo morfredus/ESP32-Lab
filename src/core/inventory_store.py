@@ -14,12 +14,15 @@ INVENTORY_FILE = (
 
 
 def load_last_inventory():
-    """Charge le dernier inventaire enregistré."""
+    """
+    Charge le dernier inventaire enregistré.
+
+    Retourne ``None`` si aucun inventaire n'existe encore (le serveur Web
+    s'appuie sur cette valeur pour renvoyer un 404 propre).
+    """
 
     if not INVENTORY_FILE.exists():
-        raise FileNotFoundError(
-            f"Inventaire introuvable : {INVENTORY_FILE}"
-        )
+        return None
 
     with INVENTORY_FILE.open("r", encoding="utf-8") as file:
         return json.load(file)

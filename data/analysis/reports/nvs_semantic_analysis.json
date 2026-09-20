@@ -1,0 +1,2496 @@
+{
+    "source": "data/analysis/reports/nvs_structure_analysis.json",
+    "summary": {
+        "valid_entries": 56,
+        "rejected_entries": 101,
+        "unique_keys": 46,
+        "duplicate_keys": 10
+    },
+    "keys": {
+        "WIFI_STA_DEF": 1,
+        "ap.authmode": 1,
+        "ap.chan": 1,
+        "ap.ftm_r": 1,
+        "ap.hidden": 1,
+        "ap.max.conn": 1,
+        "ap.p_cipher": 1,
+        "ap.passwd": 2,
+        "ap.phybw": 1,
+        "ap.pmk_info": 2,
+        "ap.sndchan": 1,
+        "ap.ssid": 2,
+        "app": 1,
+        "bcn.interval": 1,
+        "bl_boot_count": 1,
+        "bl_crash_count": 1,
+        "bssid.set": 1,
+        "cal_data": 2,
+        "cal_mac": 2,
+        "cal_version": 1,
+        "dhcp_state": 1,
+        "last_import_at": 1,
+        "misc": 1,
+        "nvs.net80211": 1,
+        "opmode": 1,
+        "phy": 1,
+        "sta.apinfo": 2,
+        "sta.apsw": 2,
+        "sta.bss_retry": 1,
+        "sta.bssid": 2,
+        "sta.btm_e": 1,
+        "sta.chan": 1,
+        "sta.lis_intval": 1,
+        "sta.mbo_e": 1,
+        "sta.minauth": 1,
+        "sta.minrssi": 1,
+        "sta.phybw": 1,
+        "sta.pmf_e": 1,
+        "sta.pmf_r": 1,
+        "sta.pswd": 2,
+        "sta.rrm_e": 1,
+        "sta.sae_h2e": 1,
+        "sta.scan_method": 1,
+        "sta.sort_method": 1,
+        "sta.ssid": 2,
+        "sta.trans_d": 1
+    },
+    "duplicate_keys": {
+        "cal_data": 2,
+        "cal_mac": 2,
+        "sta.ssid": 2,
+        "sta.pswd": 2,
+        "ap.passwd": 2,
+        "sta.apinfo": 2,
+        "ap.ssid": 2,
+        "ap.pmk_info": 2,
+        "sta.bssid": 2,
+        "sta.apsw": 2
+    },
+    "valid_entries": [
+        {
+            "page_index": 0,
+            "entry_index": 0,
+            "offset": "0x00040",
+            "key": "misc",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x70242B5F",
+            "crc_match": true,
+            "data_hex": "01ffffffffffffff",
+            "raw_hex": "000101ff5f2b24706d69736300000000000000000000000001ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 1,
+            "offset": "0x00060",
+            "key": "nvs.net80211",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x8A20D492",
+            "crc_match": true,
+            "data_hex": "02ffffffffffffff",
+            "raw_hex": "000101ff92d4208a6e76732e6e657438303231310000000002ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 4,
+            "offset": "0x000C0",
+            "key": "phy",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x63137B47",
+            "crc_match": true,
+            "data_hex": "03ffffffffffffff",
+            "raw_hex": "000101ff477b13637068790000000000000000000000000003ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 5,
+            "offset": "0x000E0",
+            "key": "cal_data",
+            "type_name": "unknown (0x42)",
+            "span": 61,
+            "chunk_index": 0,
+            "crc_stored": "0x54B4207E",
+            "crc_match": true,
+            "data_hex": "7007ffffec81a0fa",
+            "raw_hex": "03423d007e20b45463616c5f6461746100000000000000007007ffffec81a0fa"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 66,
+            "offset": "0x00880",
+            "key": "cal_data",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xAA7A0D3C",
+            "crc_match": true,
+            "data_hex": "700700000100ffff",
+            "raw_hex": "034801ff3c0d7aaa63616c5f646174610000000000000000700700000100ffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 67,
+            "offset": "0x008A0",
+            "key": "cal_mac",
+            "type_name": "unknown (0x42)",
+            "span": 2,
+            "chunk_index": 0,
+            "crc_stored": "0x3460C668",
+            "crc_match": true,
+            "data_hex": "0600ffff2d7841f1",
+            "raw_hex": "0342020068c6603463616c5f6d61630000000000000000000600ffff2d7841f1"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 69,
+            "offset": "0x008E0",
+            "key": "cal_mac",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xC6908C60",
+            "crc_match": true,
+            "data_hex": "060000000100ffff",
+            "raw_hex": "034801ff608c90c663616c5f6d6163000000000000000000060000000100ffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 70,
+            "offset": "0x00900",
+            "key": "cal_version",
+            "type_name": "u32",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x65D3CF88",
+            "crc_match": true,
+            "data_hex": "80020000ffffffff",
+            "raw_hex": "030401ff88cfd36563616c5f76657273696f6e000000000080020000ffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 71,
+            "offset": "0x00920",
+            "key": "sta.ssid",
+            "type_name": "unknown (0x42)",
+            "span": 3,
+            "chunk_index": 0,
+            "crc_stored": "0xDB41BF02",
+            "crc_match": true,
+            "data_hex": "2400ffff2efec0d4",
+            "raw_hex": "0242030002bf41db7374612e7373696400000000000000002400ffff2efec0d4"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 74,
+            "offset": "0x00980",
+            "key": "sta.ssid",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x503DE60C",
+            "crc_match": true,
+            "data_hex": "240000000100ffff",
+            "raw_hex": "024801ff0ce63d507374612e737369640000000000000000240000000100ffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 75,
+            "offset": "0x009A0",
+            "key": "sta.pswd",
+            "type_name": "unknown (0x42)",
+            "span": 4,
+            "chunk_index": 0,
+            "crc_stored": "0x076FCB1C",
+            "crc_match": true,
+            "data_hex": "4100ffff4cf2da6a",
+            "raw_hex": "024204001ccb6f077374612e7073776400000000000000004100ffff4cf2da6a"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 79,
+            "offset": "0x00A20",
+            "key": "sta.pswd",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x50114B88",
+            "crc_match": true,
+            "data_hex": "410000000100ffff",
+            "raw_hex": "024801ff884b11507374612e707377640000000000000000410000000100ffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 81,
+            "offset": "0x00A60",
+            "key": "sta.lis_intval",
+            "type_name": "u16",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xE1FA4747",
+            "crc_match": true,
+            "data_hex": "0300ffffffffffff",
+            "raw_hex": "020201ff4747fae17374612e6c69735f696e7476616c00000300ffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 83,
+            "offset": "0x00AA0",
+            "key": "sta.scan_method",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xCEEA66CD",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ffcd66eace7374612e7363616e5f6d6574686f640000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 84,
+            "offset": "0x00AC0",
+            "key": "sta.sort_method",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xCF7BB1F4",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101fff4b17bcf7374612e736f72745f6d6574686f640000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 85,
+            "offset": "0x00AE0",
+            "key": "sta.minrssi",
+            "type_name": "unknown (0x11)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x83D8921C",
+            "crc_match": true,
+            "data_hex": "81ffffffffffffff",
+            "raw_hex": "021101ff1c92d8837374612e6d696e72737369000000000081ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 86,
+            "offset": "0x00B00",
+            "key": "sta.minauth",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xDDE6FE9F",
+            "crc_match": true,
+            "data_hex": "03ffffffffffffff",
+            "raw_hex": "020101ff9ffee6dd7374612e6d696e61757468000000000003ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 90,
+            "offset": "0x00B80",
+            "key": "sta.pmf_e",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x9A38B4DB",
+            "crc_match": true,
+            "data_hex": "01ffffffffffffff",
+            "raw_hex": "020101ffdbb4389a7374612e706d665f650000000000000001ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 91,
+            "offset": "0x00BA0",
+            "key": "sta.pmf_r",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x4D4C72AE",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ffae724c4d7374612e706d665f720000000000000000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 92,
+            "offset": "0x00BC0",
+            "key": "sta.rrm_e",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x31561C63",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ff631c56317374612e72726d5f650000000000000000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 93,
+            "offset": "0x00BE0",
+            "key": "sta.btm_e",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x4C4CBC55",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ff55bc4c4c7374612e62746d5f650000000000000000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 94,
+            "offset": "0x00C00",
+            "key": "sta.mbo_e",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xBB9997EE",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ffee9799bb7374612e6d626f5f650000000000000000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 95,
+            "offset": "0x00C20",
+            "key": "sta.bss_retry",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xCB130AF8",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101fff80a13cb7374612e6273735f726574727900000000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 96,
+            "offset": "0x00C40",
+            "key": "sta.trans_d",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xED0EE89F",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ff9fe80eed7374612e7472616e735f64000000000000ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 97,
+            "offset": "0x00C60",
+            "key": "sta.sae_h2e",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xD44480AA",
+            "crc_match": true,
+            "data_hex": "02ffffffffffffff",
+            "raw_hex": "020101ffaa8044d47374612e7361655f683265000000000002ffffffffffffff"
+        },
+        {
+            "page_index": 0,
+            "entry_index": 122,
+            "offset": "0x00F80",
+            "key": "dhcp_state",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x57C6CB40",
+            "crc_match": true,
+            "data_hex": "04ffffffffffffff",
+            "raw_hex": "000101ff40cbc657646863705f737461746500000000000004ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 0,
+            "offset": "0x01040",
+            "key": "sta.phybw",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x36A5D279",
+            "crc_match": true,
+            "data_hex": "01ffffffffffffff",
+            "raw_hex": "020101ff79d2a5367374612e70687962770000000000000001ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 1,
+            "offset": "0x01060",
+            "key": "ap.phybw",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x411E7FDC",
+            "crc_match": true,
+            "data_hex": "01ffffffffffffff",
+            "raw_hex": "020101ffdc7f1e4161702e7068796277000000000000000001ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 2,
+            "offset": "0x01080",
+            "key": "ap.authmode",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xF6D67CB6",
+            "crc_match": true,
+            "data_hex": "03ffffffffffffff",
+            "raw_hex": "020101ffb67cd6f661702e617574686d6f6465000000000003ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 3,
+            "offset": "0x010A0",
+            "key": "ap.passwd",
+            "type_name": "unknown (0x42)",
+            "span": 4,
+            "chunk_index": 128,
+            "crc_stored": "0x9B7CC483",
+            "crc_match": true,
+            "data_hex": "4100ffffad49848c",
+            "raw_hex": "0242048083c47c9b61702e706173737764000000000000004100ffffad49848c"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 7,
+            "offset": "0x01120",
+            "key": "ap.passwd",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x4A846E1F",
+            "crc_match": true,
+            "data_hex": "410000000180ffff",
+            "raw_hex": "024801ff1f6e844a61702e70617373776400000000000000410000000180ffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 8,
+            "offset": "0x01140",
+            "key": "ap.hidden",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x767E3AB8",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ffb83a7e7661702e68696464656e0000000000000000ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 9,
+            "offset": "0x01160",
+            "key": "ap.max.conn",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x58185AF1",
+            "crc_match": true,
+            "data_hex": "04ffffffffffffff",
+            "raw_hex": "020101fff15a185861702e6d61782e636f6e6e000000000004ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 10,
+            "offset": "0x01180",
+            "key": "ap.p_cipher",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x91789D16",
+            "crc_match": true,
+            "data_hex": "04ffffffffffffff",
+            "raw_hex": "020101ff169d789161702e705f636970686572000000000004ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 11,
+            "offset": "0x011A0",
+            "key": "ap.sndchan",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x122091F5",
+            "crc_match": true,
+            "data_hex": "02ffffffffffffff",
+            "raw_hex": "020101fff591201261702e736e646368616e00000000000002ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 44,
+            "offset": "0x015C0",
+            "key": "bssid.set",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xC1D3B2D4",
+            "crc_match": true,
+            "data_hex": "01ffffffffffffff",
+            "raw_hex": "020101ffd4b2d3c162737369642e7365740000000000000001ffffffffffffff"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 100,
+            "offset": "0x01CC0",
+            "key": "sta.apinfo",
+            "type_name": "unknown (0x42)",
+            "span": 23,
+            "chunk_index": 0,
+            "crc_stored": "0x8F51C938",
+            "crc_match": true,
+            "data_hex": "bc02ffffc6f2a974",
+            "raw_hex": "0242170038c9518f7374612e6170696e666f000000000000bc02ffffc6f2a974"
+        },
+        {
+            "page_index": 1,
+            "entry_index": 123,
+            "offset": "0x01FA0",
+            "key": "sta.apinfo",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xFCD3BE25",
+            "crc_match": true,
+            "data_hex": "bc0200000100ffff",
+            "raw_hex": "024801ff25bed3fc7374612e6170696e666f000000000000bc0200000100ffff"
+        },
+        {
+            "page_index": 2,
+            "entry_index": 0,
+            "offset": "0x02040",
+            "key": "bcn.interval",
+            "type_name": "u16",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x57E8273D",
+            "crc_match": true,
+            "data_hex": "6400ffffffffffff",
+            "raw_hex": "020201ff3d27e85762636e2e696e74657276616c000000006400ffffffffffff"
+        },
+        {
+            "page_index": 2,
+            "entry_index": 1,
+            "offset": "0x02060",
+            "key": "ap.ftm_r",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x8D570F01",
+            "crc_match": true,
+            "data_hex": "00ffffffffffffff",
+            "raw_hex": "020101ff010f578d61702e66746d5f72000000000000000000ffffffffffffff"
+        },
+        {
+            "page_index": 2,
+            "entry_index": 36,
+            "offset": "0x024C0",
+            "key": "app",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xF492EF70",
+            "crc_match": true,
+            "data_hex": "05ffffffffffffff",
+            "raw_hex": "000101ff70ef92f46170700000000000000000000000000005ffffffffffffff"
+        },
+        {
+            "page_index": 2,
+            "entry_index": 38,
+            "offset": "0x02500",
+            "key": "bl_crash_count",
+            "type_name": "unknown (0x14)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xAB073445",
+            "crc_match": true,
+            "data_hex": "00000000ffffffff",
+            "raw_hex": "051401ff453407ab626c5f63726173685f636f756e74000000000000ffffffff"
+        },
+        {
+            "page_index": 2,
+            "entry_index": 43,
+            "offset": "0x025A0",
+            "key": "last_import_at",
+            "type_name": "unknown (0x21)",
+            "span": 2,
+            "chunk_index": 255,
+            "crc_stored": "0xC0A98E12",
+            "crc_match": true,
+            "data_hex": "1500fffffc357ca0",
+            "raw_hex": "052102ff128ea9c06c6173745f696d706f72745f617400001500fffffc357ca0"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 0,
+            "offset": "0x04040",
+            "key": "ap.chan",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xA2181EA6",
+            "crc_match": true,
+            "data_hex": "0bffffffffffffff",
+            "raw_hex": "020101ffa61e18a261702e6368616e0000000000000000000bffffffffffffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 1,
+            "offset": "0x04060",
+            "key": "ap.ssid",
+            "type_name": "unknown (0x42)",
+            "span": 3,
+            "chunk_index": 128,
+            "crc_stored": "0xA49AA5E6",
+            "crc_match": true,
+            "data_hex": "2400fffff49b7402",
+            "raw_hex": "02420380e6a59aa461702e737369640000000000000000002400fffff49b7402"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 4,
+            "offset": "0x040C0",
+            "key": "ap.ssid",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x8B159AB0",
+            "crc_match": true,
+            "data_hex": "240000000180ffff",
+            "raw_hex": "024801ffb09a158b61702e73736964000000000000000000240000000180ffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 5,
+            "offset": "0x040E0",
+            "key": "ap.pmk_info",
+            "type_name": "unknown (0x42)",
+            "span": 6,
+            "chunk_index": 128,
+            "crc_stored": "0x470257DE",
+            "crc_match": true,
+            "data_hex": "8400ffff777b3364",
+            "raw_hex": "02420680de57024761702e706d6b5f696e666f00000000008400ffff777b3364"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 11,
+            "offset": "0x041A0",
+            "key": "ap.pmk_info",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xE8E38C1B",
+            "crc_match": true,
+            "data_hex": "840000000180ffff",
+            "raw_hex": "024801ff1b8ce3e861702e706d6b5f696e666f0000000000840000000180ffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 12,
+            "offset": "0x041C0",
+            "key": "opmode",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x516D051A",
+            "crc_match": true,
+            "data_hex": "01ffffffffffffff",
+            "raw_hex": "020101ff1a056d516f706d6f64650000000000000000000001ffffffffffffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 96,
+            "offset": "0x04C40",
+            "key": "sta.bssid",
+            "type_name": "unknown (0x42)",
+            "span": 2,
+            "chunk_index": 128,
+            "crc_stored": "0x54896AC4",
+            "crc_match": true,
+            "data_hex": "0600ffffdb5880b2",
+            "raw_hex": "02420280c46a89547374612e6273736964000000000000000600ffffdb5880b2"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 98,
+            "offset": "0x04C80",
+            "key": "sta.bssid",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x4C12F341",
+            "crc_match": true,
+            "data_hex": "060000000180ffff",
+            "raw_hex": "024801ff41f3124c7374612e627373696400000000000000060000000180ffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 99,
+            "offset": "0x04CA0",
+            "key": "sta.chan",
+            "type_name": "i8",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xF7BFE5BF",
+            "crc_match": true,
+            "data_hex": "01ffffffffffffff",
+            "raw_hex": "020101ffbfe5bff77374612e6368616e000000000000000001ffffffffffffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 100,
+            "offset": "0x04CC0",
+            "key": "sta.apsw",
+            "type_name": "unknown (0x42)",
+            "span": 2,
+            "chunk_index": 0,
+            "crc_stored": "0x8ED3FEFE",
+            "crc_match": true,
+            "data_hex": "0200ffff005a811b",
+            "raw_hex": "02420200fefed38e7374612e6170737700000000000000000200ffff005a811b"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 102,
+            "offset": "0x04D00",
+            "key": "sta.apsw",
+            "type_name": "unknown (0x48)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0x9E978DB3",
+            "crc_match": true,
+            "data_hex": "020000000100ffff",
+            "raw_hex": "024801ffb38d979e7374612e617073770000000000000000020000000100ffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 105,
+            "offset": "0x04D60",
+            "key": "WIFI_STA_DEF",
+            "type_name": "u32",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xDAA013AC",
+            "crc_match": true,
+            "data_hex": "c0a80119ffffffff",
+            "raw_hex": "040401ffac13a0da574946495f5354415f44454600000000c0a80119ffffffff"
+        },
+        {
+            "page_index": 4,
+            "entry_index": 106,
+            "offset": "0x04D80",
+            "key": "bl_boot_count",
+            "type_name": "unknown (0x14)",
+            "span": 1,
+            "chunk_index": 255,
+            "crc_stored": "0xB4104CBD",
+            "crc_match": true,
+            "data_hex": "29000000ffffffff",
+            "raw_hex": "051401ffbd4c10b4626c5f626f6f745f636f756e7400000029000000ffffffff"
+        }
+    ],
+    "rejected_entries": [
+        {
+            "page_index": 0,
+            "entry_index": 6,
+            "offset": "0x00100",
+            "key": "cL",
+            "type_name": "u16",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0xD94EB580",
+            "crc_match": false,
+            "data_hex": "00007f7f7f7f7f6f",
+            "raw_hex": "8002000080b54ed9634c000000000000000000000000000000007f7f7f7f7f6f",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 7,
+            "offset": "0x00120",
+            "key": "\u0003\u0002\u0001",
+            "type_name": "unknown (0x4F)",
+            "span": 63,
+            "chunk_index": 47,
+            "crc_stored": "0x070B0F1F",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "5f4f3f2f1f0f0b0703020100a000200000018000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 8,
+            "offset": "0x00140",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "1a0015000f000800",
+            "raw_hex": "0000000000000000000000000000000038003000280022001a0015000f000800",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 9,
+            "offset": "0x00160",
+            "key": "����������s�o_O",
+            "type_name": "u8",
+            "span": 248,
+            "chunk_index": 255,
+            "crc_stored": "0xFFD2FFEA",
+            "crc_match": false,
+            "data_hex": "3f2f1f0f0b070302",
+            "raw_hex": "0000f8ffeaffd2ffc8ffb9ffa1ff98ff90ff73ff7f6f5f4f3f2f1f0f0b070302",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 10,
+            "offset": "0x00180",
+            "key": "\u001d",
+            "type_name": "u8",
+            "span": 43,
+            "chunk_index": 0,
+            "crc_stored": "0x00230028",
+            "crc_match": false,
+            "data_hex": "b0ffa4ff8cff0f00",
+            "raw_hex": "01002b00280023001d0016000d000000e9ffdeffd0ffb8ffb0ffa4ff8cff0f00",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 11,
+            "offset": "0x001A0",
+            "key": "\u0001\u0001",
+            "type_name": "u8",
+            "span": 15,
+            "chunk_index": 0,
+            "crc_stored": "0x00000064",
+            "crc_match": false,
+            "data_hex": "0000d8ff5f00d8ff",
+            "raw_hex": "0f000f0064000000010100000000000000000000000002000000d8ff5f00d8ff",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 12,
+            "offset": "0x001C0",
+            "key": "",
+            "type_name": "u8",
+            "span": 235,
+            "chunk_index": 235,
+            "crc_stored": "0x1D1D1DEB",
+            "crc_match": false,
+            "data_hex": "a8f3914426ae0100",
+            "raw_hex": "5500ebebeb1d1d1d001b5e08a40a085f0a74057f00f0023fa8f3914426ae0100",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 13,
+            "offset": "0x001E0",
+            "key": "�\u0007�\u0006",
+            "type_name": "unknown (0x31)",
+            "span": 49,
+            "chunk_index": 49,
+            "crc_stored": "0x047D002B",
+            "crc_match": false,
+            "data_hex": "0000000000fe0000",
+            "raw_hex": "313131312b007d048707b9060000000030000000000000000000000000fe0000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 14,
+            "offset": "0x00200",
+            "key": "HDJFFB",
+            "type_name": "unknown (0x50)",
+            "span": 80,
+            "chunk_index": 76,
+            "crc_stored": "0x484C484C",
+            "crc_match": false,
+            "data_hex": "ffff000000000000",
+            "raw_hex": "5050504c4c484c4848444a464642000000ffffffffffffffffff000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 15,
+            "offset": "0x00220",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0201060100010101",
+            "raw_hex": "00000000000000000000000020dedd0101010701000100010201060100010101",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 16,
+            "offset": "0x00240",
+            "key": "\u0001\u0001\u0006\u0001",
+            "type_name": "i8",
+            "span": 6,
+            "chunk_index": 1,
+            "crc_stored": "0x010000FD",
+            "crc_match": false,
+            "data_hex": "b90700003f00bf00",
+            "raw_hex": "04010601fd000001010106010001010102010601ff000001b90700003f00bf00",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 17,
+            "offset": "0x00260",
+            "key": "\u000f\u0005\u000b\u000e\u0005",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x0D060F0D",
+            "crc_match": false,
+            "data_hex": "132213121a23121a",
+            "raw_hex": "000000000d0f060d0f050b0e0500f80780fe2f24240c0c18132213121a23121a",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 18,
+            "offset": "0x00280",
+            "key": "8",
+            "type_name": "unknown (0x38)",
+            "span": 21,
+            "chunk_index": 29,
+            "crc_stored": "0x251D1525",
+            "crc_match": false,
+            "data_hex": "0001000100010001",
+            "raw_hex": "2338151d25151d2538000000b70701010201f800fc0000010001000100010001",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 19,
+            "offset": "0x002A0",
+            "key": "",
+            "type_name": "i8",
+            "span": 0,
+            "chunk_index": 1,
+            "crc_stored": "0x00000100",
+            "crc_match": false,
+            "data_hex": "d7e3efe3e3e7f3e7",
+            "raw_hex": "000100010001000000000001020303070b0f0f1f2f3fc0cbd7e3efe3e3e7f3e7",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 20,
+            "offset": "0x002C0",
+            "key": "������������",
+            "type_name": "unknown (0xE6)",
+            "span": 242,
+            "chunk_index": 231,
+            "crc_stored": "0xE0E0E9E6",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "e5e6f2e7e6e9e0e0e0e2e2dee2dedee1e0e3e3df000000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 21,
+            "offset": "0x002E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "5f4f5f4f4f4f0b00",
+            "raw_hex": "000000000000000000000000000000006f6f6f5f5f5f5f5f5f4f5f4f4f4f0b00",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 22,
+            "offset": "0x00300",
+            "key": "",
+            "type_name": "unknown (0x4F)",
+            "span": 82,
+            "chunk_index": 0,
+            "crc_stored": "0x0000FE80",
+            "crc_match": false,
+            "data_hex": "080000002b011e01",
+            "raw_hex": "004f520080fe0000000000000000a20d0000000000000f00080000002b011e01",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 23,
+            "offset": "0x00320",
+            "key": ",\u0001\"\u0001,\u0001&\u0001+\u0001&\u0001)\u0001'\u0001",
+            "type_name": "i8",
+            "span": 32,
+            "chunk_index": 1,
+            "crc_stored": "0x0120012B",
+            "crc_match": false,
+            "data_hex": "2801280127012901",
+            "raw_hex": "2b0120012b0120012c0122012c0126012b012601290127012801280127012901",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 24,
+            "offset": "0x00340",
+            "key": "#\u0001-\u0001!\u0001.\u0001\u001d\u0001/\u0001\u0013\u0001\u0010\u0001",
+            "type_name": "i8",
+            "span": 43,
+            "chunk_index": 1,
+            "crc_stored": "0x012D0124",
+            "crc_match": false,
+            "data_hex": "1301100116011301",
+            "raw_hex": "25012b0124012d0123012d0121012e011d012f01130110011301100116011301",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 25,
+            "offset": "0x00360",
+            "key": "\u0016\u0001\u0012\u0001\u0014\u0001\u0017\u0001\u001b\u0001\"\u0001\u001d\u00010\u0001",
+            "type_name": "i8",
+            "span": 19,
+            "chunk_index": 1,
+            "crc_stored": "0x01130116",
+            "crc_match": false,
+            "data_hex": "1501100115011001",
+            "raw_hex": "140113011601130116011201140117011b0122011d0130011501100115011001",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 26,
+            "offset": "0x00380",
+            "key": "\u0016\u0001\u0012\u0001\u0018\u0001\u0017\u0001\u0014\u0001\u0012\u0001!\u0001\u001a\u0001",
+            "type_name": "i8",
+            "span": 16,
+            "chunk_index": 1,
+            "crc_stored": "0x01110115",
+            "crc_match": false,
+            "data_hex": "1b01300100010601",
+            "raw_hex": "150110011501110116011201180117011401120121011a011b01300100010601",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 27,
+            "offset": "0x003A0",
+            "key": "\u0004\u0001\u0006\u0001",
+            "type_name": "i8",
+            "span": 6,
+            "chunk_index": 1,
+            "crc_stored": "0x01060104",
+            "crc_match": false,
+            "data_hex": "412fddca00000000",
+            "raw_hex": "000106010401060104010601008000000000010000000000412fddca00000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 28,
+            "offset": "0x003C0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 29,
+            "offset": "0x003E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 30,
+            "offset": "0x00400",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 31,
+            "offset": "0x00420",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 32,
+            "offset": "0x00440",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 33,
+            "offset": "0x00460",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 34,
+            "offset": "0x00480",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 35,
+            "offset": "0x004A0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 36,
+            "offset": "0x004C0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 37,
+            "offset": "0x004E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 38,
+            "offset": "0x00500",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 39,
+            "offset": "0x00520",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 40,
+            "offset": "0x00540",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 41,
+            "offset": "0x00560",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 42,
+            "offset": "0x00580",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 43,
+            "offset": "0x005A0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 44,
+            "offset": "0x005C0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 45,
+            "offset": "0x005E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 46,
+            "offset": "0x00600",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 47,
+            "offset": "0x00620",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 48,
+            "offset": "0x00640",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 49,
+            "offset": "0x00660",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 50,
+            "offset": "0x00680",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 51,
+            "offset": "0x006A0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 52,
+            "offset": "0x006C0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 53,
+            "offset": "0x006E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 54,
+            "offset": "0x00700",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 55,
+            "offset": "0x00720",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 56,
+            "offset": "0x00740",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 57,
+            "offset": "0x00760",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 58,
+            "offset": "0x00780",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 59,
+            "offset": "0x007A0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 60,
+            "offset": "0x007C0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 61,
+            "offset": "0x007E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 62,
+            "offset": "0x00800",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 63,
+            "offset": "0x00820",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 64,
+            "offset": "0x00840",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 65,
+            "offset": "0x00860",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "00000000000000000000000000000000ffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 68,
+            "offset": "0x008C0",
+            "key": "����������������",
+            "type_name": "unknown (0xB5)",
+            "span": 78,
+            "chunk_index": 217,
+            "crc_stored": "0xFFFF4C63",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "80b54ed9634cffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 72,
+            "offset": "0x00940",
+            "key": "momo",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x64657266",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "08000000667265646d6f6d6f0000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 73,
+            "offset": "0x00960",
+            "key": "����������������",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "00000000ffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 76,
+            "offset": "0x009C0",
+            "key": "rgrvhx4td",
+            "type_name": "unknown (0x30)",
+            "span": 115,
+            "chunk_index": 113,
+            "crc_stored": "0x66316E75",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "40307371756e3166726772766878347464000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 77,
+            "offset": "0x009E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 0,
+            "entry_index": 78,
+            "offset": "0x00A00",
+            "key": "����������������",
+            "type_name": "unknown (0xFF)",
+            "span": 255,
+            "chunk_index": 255,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 4,
+            "offset": "0x010C0",
+            "key": "",
+            "type_name": "unknown (0x73)",
+            "span": 112,
+            "chunk_index": 110,
+            "crc_stored": "0x7061776F",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "6573706e6f776170000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 5,
+            "offset": "0x010E0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 6,
+            "offset": "0x01100",
+            "key": "����������������",
+            "type_name": "unknown (0xFF)",
+            "span": 255,
+            "chunk_index": 255,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "00ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 101,
+            "offset": "0x01CE0",
+            "key": "momo",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x64657266",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "08000000667265646d6f6d6f0000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 102,
+            "offset": "0x01D00",
+            "key": "un1frgrvhx4td",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x71733040",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000040307371756e31667267727668783474640000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 103,
+            "offset": "0x01D20",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 104,
+            "offset": "0x01D40",
+            "key": "����\u0013��4\u0004�2S\t�S",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0xFFFFFF00",
+            "crc_match": false,
+            "data_hex": "c7d3c78317f5919c",
+            "raw_hex": "0000000000ffffffffffff8b1386d53404b1325309e29753c7d3c78317f5919c",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 105,
+            "offset": "0x01D60",
+            "key": "�|�\u000b\b",
+            "type_name": "unknown (0xDE)",
+            "span": 86,
+            "chunk_index": 101,
+            "crc_stored": "0x7D9DDD6F",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "dade56656fdd9d7dfc7cfc0b08000000667265646d6f6d6f0000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 106,
+            "offset": "0x01D80",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "7267727668783474",
+            "raw_hex": "0000000000000000000000000000000040307371756e31667267727668783474",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 107,
+            "offset": "0x01DA0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "6400000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 108,
+            "offset": "0x01DC0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "1386d53404b13253",
+            "raw_hex": "0000000000000000000000000000000001b0192189563e8b1386d53404b13253",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 109,
+            "offset": "0x01DE0",
+            "key": "\u0017�����Veoݝ}�|�\u000b",
+            "type_name": "unknown (0xE2)",
+            "span": 151,
+            "chunk_index": 83,
+            "crc_stored": "0x83C7D3C7",
+            "crc_match": false,
+            "data_hex": "0800000066726564",
+            "raw_hex": "09e29753c7d3c78317f5919cdade56656fdd9d7dfc7cfc0b0800000066726564",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 110,
+            "offset": "0x01E00",
+            "key": "",
+            "type_name": "unknown (0x6F)",
+            "span": 109,
+            "chunk_index": 111,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000040307371",
+            "raw_hex": "6d6f6d6f00000000000000000000000000000000000000000000000040307371",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 111,
+            "offset": "0x01E20",
+            "key": "hx4td",
+            "type_name": "unknown (0x6E)",
+            "span": 49,
+            "chunk_index": 102,
+            "crc_stored": "0x76726772",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "756e316672677276687834746400000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 112,
+            "offset": "0x01E40",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000ffffff",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000ffffff",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 113,
+            "offset": "0x01E60",
+            "key": "\u0004�2S\t�S��ǃ\u0017���",
+            "type_name": "unknown (0xFF)",
+            "span": 255,
+            "chunk_index": 139,
+            "crc_stored": "0x34D58613",
+            "crc_match": false,
+            "data_hex": "dade56656fdd9d7d",
+            "raw_hex": "ffffff8b1386d53404b1325309e29753c7d3c78317f5919cdade56656fdd9d7d",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 114,
+            "offset": "0x01E80",
+            "key": "fredmomo",
+            "type_name": "unknown (0x7C)",
+            "span": 252,
+            "chunk_index": 11,
+            "crc_stored": "0x00000008",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "fc7cfc0b08000000667265646d6f6d6f00000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 115,
+            "offset": "0x01EA0",
+            "key": "@0squn1frgrvhx4t",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "6400000000000000",
+            "raw_hex": "000000000000000040307371756e316672677276687834746400000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 116,
+            "offset": "0x01EC0",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 117,
+            "offset": "0x01EE0",
+            "key": "\u0001du�^|h�\u0013��4\u0004�2S",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "09e29753c7d3c783",
+            "raw_hex": "0000000000000000016475da5e7c688b1386d53404b1325309e29753c7d3c783",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 118,
+            "offset": "0x01F00",
+            "key": "oݝ}�|�\u0001��������",
+            "type_name": "unknown (0xF5)",
+            "span": 145,
+            "chunk_index": 156,
+            "crc_stored": "0x6556DEDA",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "17f5919cdade56656fdd9d7dfc7cfc01ffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 119,
+            "offset": "0x01F20",
+            "key": "����������������",
+            "type_name": "unknown (0xFF)",
+            "span": 255,
+            "chunk_index": 255,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 120,
+            "offset": "0x01F40",
+            "key": "����������������",
+            "type_name": "unknown (0xFF)",
+            "span": 255,
+            "chunk_index": 255,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 121,
+            "offset": "0x01F60",
+            "key": "����������������",
+            "type_name": "unknown (0xFF)",
+            "span": 255,
+            "chunk_index": 255,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 1,
+            "entry_index": 122,
+            "offset": "0x01F80",
+            "key": "����������������",
+            "type_name": "unknown (0xFF)",
+            "span": 255,
+            "chunk_index": 255,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 2,
+            "entry_index": 44,
+            "offset": "0x025C0",
+            "key": "16T18:07:43Z",
+            "type_name": "unknown (0x30)",
+            "span": 50,
+            "chunk_index": 54,
+            "crc_stored": "0x2D39302D",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "323032362d30392d31365431383a30373a34335a00ffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 2,
+            "offset": "0x04080",
+            "key": "OW",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x4E2D484D",
+            "crc_match": false,
+            "data_hex": "e47ccf3f62d33740",
+            "raw_hex": "060000004d482d4e4f570040abab0000fffffffff9963740e47ccf3f62d33740",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 3,
+            "offset": "0x040A0",
+            "key": "����������������",
+            "type_name": "unknown (0x1E)",
+            "span": 201,
+            "chunk_index": 63,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "6c1ec93fffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 6,
+            "offset": "0x04100",
+            "key": "OW",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x4E2D484D",
+            "crc_match": false,
+            "data_hex": "e47ccf3f62d33740",
+            "raw_hex": "060000004d482d4e4f570040abab0000fffffffff9963740e47ccf3f62d33740",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 7,
+            "offset": "0x04120",
+            "key": "owap",
+            "type_name": "unknown (0x1E)",
+            "span": 201,
+            "chunk_index": 63,
+            "crc_stored": "0x6E707365",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "6c1ec93f6573706e6f7761700000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 8,
+            "offset": "0x04140",
+            "key": "",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x00000000",
+            "crc_match": false,
+            "data_hex": "0000000000000000",
+            "raw_hex": "0000000000000000000000000000000000000000000000000000000000000000",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 9,
+            "offset": "0x04160",
+            "key": "y¨V�\u001d%o�q����\u0005>",
+            "type_name": "u8",
+            "span": 0,
+            "chunk_index": 0,
+            "crc_stored": "0x2C131032",
+            "crc_match": false,
+            "data_hex": "18ca591b4736c4fa",
+            "raw_hex": "000000003210132c79c2a856f71d256fdc71b7e0f4f5053e18ca591b4736c4fa",
+            "reasons": [
+                "crc_incoherent",
+                "key_non_printable"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 10,
+            "offset": "0x04180",
+            "key": "����������������",
+            "type_name": "unknown (0xEE)",
+            "span": 53,
+            "chunk_index": 139,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "bbee358bffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 97,
+            "offset": "0x04C60",
+            "key": "����������������",
+            "type_name": "unknown (0x75)",
+            "span": 218,
+            "chunk_index": 94,
+            "crc_stored": "0xFFFF687C",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "6475da5e7c68ffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        },
+        {
+            "page_index": 4,
+            "entry_index": 101,
+            "offset": "0x04CE0",
+            "key": "����������������",
+            "type_name": "i16",
+            "span": 255,
+            "chunk_index": 255,
+            "crc_stored": "0xFFFFFFFF",
+            "crc_match": false,
+            "data_hex": "ffffffffffffffff",
+            "raw_hex": "0503ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+            "reasons": [
+                "crc_incoherent"
+            ]
+        }
+    ],
+    "limitations": [
+        "Le regroupement des entrées multi-slots doit encore être corrigé dans l'analyseur structurel.",
+        "Les entrées rejetées sont conservées pour audit.",
+        "Une clé lisible ne garantit pas que sa valeur soit décodée."
+    ]
+}

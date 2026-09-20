@@ -1,0 +1,290 @@
+[
+  {
+    "page": 0,
+    "entry": 0,
+    "namespace": 0,
+    "type": 1,
+    "key": "misc",
+    "value_hex": "01 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551361
+  },
+  {
+    "page": 0,
+    "entry": 1,
+    "namespace": 0,
+    "type": 1,
+    "key": "nvs.net80211",
+    "value_hex": "02 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551362
+  },
+  {
+    "page": 0,
+    "entry": 4,
+    "namespace": 0,
+    "type": 1,
+    "key": "phy",
+    "value_hex": "03 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551363
+  },
+  {
+    "page": 0,
+    "entry": 70,
+    "namespace": 3,
+    "type": 4,
+    "key": "cal_version",
+    "value_hex": "80 02 00 00 ff ff ff ff",
+    "value_u64_le": 18446744069414584960
+  },
+  {
+    "page": 0,
+    "entry": 81,
+    "namespace": 2,
+    "type": 2,
+    "key": "sta.lis_intval",
+    "value_hex": "03 00 ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709486083
+  },
+  {
+    "page": 0,
+    "entry": 83,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.scan_method",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 84,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.sort_method",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 86,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.minauth",
+    "value_hex": "03 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551363
+  },
+  {
+    "page": 0,
+    "entry": 90,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.pmf_e",
+    "value_hex": "01 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551361
+  },
+  {
+    "page": 0,
+    "entry": 91,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.pmf_r",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 92,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.rrm_e",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 93,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.btm_e",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 94,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.mbo_e",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 95,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.bss_retry",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 96,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.trans_d",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 0,
+    "entry": 97,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.sae_h2e",
+    "value_hex": "02 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551362
+  },
+  {
+    "page": 0,
+    "entry": 122,
+    "namespace": 0,
+    "type": 1,
+    "key": "dhcp_state",
+    "value_hex": "04 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551364
+  },
+  {
+    "page": 1,
+    "entry": 0,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.phybw",
+    "value_hex": "01 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551361
+  },
+  {
+    "page": 1,
+    "entry": 1,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.phybw",
+    "value_hex": "01 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551361
+  },
+  {
+    "page": 1,
+    "entry": 2,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.authmode",
+    "value_hex": "03 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551363
+  },
+  {
+    "page": 1,
+    "entry": 8,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.hidden",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 1,
+    "entry": 9,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.max.conn",
+    "value_hex": "04 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551364
+  },
+  {
+    "page": 1,
+    "entry": 10,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.p_cipher",
+    "value_hex": "04 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551364
+  },
+  {
+    "page": 1,
+    "entry": 11,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.sndchan",
+    "value_hex": "02 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551362
+  },
+  {
+    "page": 1,
+    "entry": 44,
+    "namespace": 2,
+    "type": 1,
+    "key": "bssid.set",
+    "value_hex": "01 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551361
+  },
+  {
+    "page": 2,
+    "entry": 0,
+    "namespace": 2,
+    "type": 2,
+    "key": "bcn.interval",
+    "value_hex": "64 00 ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709486180
+  },
+  {
+    "page": 2,
+    "entry": 1,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.ftm_r",
+    "value_hex": "00 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551360
+  },
+  {
+    "page": 2,
+    "entry": 36,
+    "namespace": 0,
+    "type": 1,
+    "key": "app",
+    "value_hex": "05 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551365
+  },
+  {
+    "page": 4,
+    "entry": 0,
+    "namespace": 2,
+    "type": 1,
+    "key": "ap.chan",
+    "value_hex": "0b ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551371
+  },
+  {
+    "page": 4,
+    "entry": 12,
+    "namespace": 2,
+    "type": 1,
+    "key": "opmode",
+    "value_hex": "01 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551361
+  },
+  {
+    "page": 4,
+    "entry": 99,
+    "namespace": 2,
+    "type": 1,
+    "key": "sta.chan",
+    "value_hex": "01 ff ff ff ff ff ff ff",
+    "value_u64_le": 18446744073709551361
+  },
+  {
+    "page": 4,
+    "entry": 105,
+    "namespace": 4,
+    "type": 4,
+    "key": "WIFI_STA_DEF",
+    "value_hex": "c0 a8 01 19 ff ff ff ff",
+    "value_u64_le": 18446744069834123456
+  }
+]

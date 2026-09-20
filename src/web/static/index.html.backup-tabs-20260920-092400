@@ -1,0 +1,2959 @@
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ESP32-Lab</title>
+
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f2f4f7;
+            color: #20242a;
+            margin: 0;
+            padding: 30px;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: auto;
+        }
+
+        h1 {
+            margin-bottom: 5px;
+        }
+
+        .subtitle {
+            color: #667085;
+            margin-bottom: 25px;
+        }
+
+        .toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: flex-start;
+            margin-bottom: 20px;
+        }
+
+        select,
+        button {
+            border-radius: 8px;
+            padding: 12px 16px;
+            font-size: 15px;
+        }
+
+        select {
+            background: white;
+            border: 1px solid #d0d5dd;
+            min-width: 230px;
+        }
+
+        button {
+            background: #2563eb;
+            color: white;
+            border: none;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #1d4ed8;
+        }
+
+        button:disabled {
+            background: #9ca3af;
+            cursor: wait;
+        }
+
+        .status,
+        .error {
+            padding: 12px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+        }
+
+        .status {
+            background: #d1fadf;
+            color: #027a48;
+        }
+
+        .error {
+            background: #fee4e2;
+            color: #b42318;
+        }
+
+        .port-details {
+            color: #667085;
+            font-size: 13px;
+            margin-top: 6px;
+            line-height: 1.5;
+        }
+
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 16px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 2px 8px #00000012;
+        }
+
+        .card h2 {
+            font-size: 18px;
+            margin-top: 0;
+        }
+
+        .value {
+            font-size: 24px;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+
+        .detail {
+            color: #667085;
+            margin: 6px 0;
+            word-break: break-word;
+        }
+
+        .section-title {
+            margin-top: 30px;
+            margin-bottom: 15px;
+        }
+
+        .device-search {
+            margin: 15px 0;
+            max-width: 650px;
+        }
+
+        .device-search input {
+            width: 100%;
+            box-sizing: border-box;
+            padding: 11px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            font-family: inherit;
+            font-size: 15px;
+        }
+
+        .profile-form {
+            display: grid;
+            gap: 10px;
+            margin-top: 18px;
+            max-width: 650px;
+        }
+
+        .profile-form label {
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .profile-form input,
+        .profile-form textarea {
+            font-family: inherit;
+            font-size: 15px;
+            padding: 10px;
+            border: 1px solid #d0d5dd;
+            border-radius: 8px;
+            resize: vertical;
+        }
+
+
+
+        .history-container,
+        .comparison-container {
+            background: white;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-x: auto;
+            box-shadow: 0 2px 8px #00000012;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 700px;
+        }
+
+        th,
+        td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #eaecf0;
+        }
+
+        th {
+            background: #f9fafb;
+            font-size: 13px;
+        }
+
+        td {
+            font-size: 14px;
+        }
+
+        .empty {
+            color: #667085;
+            padding: 10px 0;
+        }
+
+        .comparison-toolbar {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+
+        .selection-info {
+            color: #667085;
+            font-size: 14px;
+        }
+
+        .same {
+            color: #027a48;
+            font-weight: bold;
+        }
+
+        .different {
+            color: #b42318;
+            font-weight: bold;
+        }
+
+        .comparison-table tr.row-different td {
+            background: #fff4f2;
+        }
+
+        .comparison-table tr.row-same td {
+            background: #f2fbf6;
+        }
+
+        .comparison-table tr.row-different td:first-child {
+            border-left: 4px solid #d92d20;
+        }
+
+        .comparison-table tr.row-same td:first-child {
+            border-left: 4px solid #12b76a;
+        }
+
+        .history-modal-checkbox {
+            transform: scale(1.15);
+        }
+
+        #compare-history-selections:disabled {
+            opacity: 0.55;
+            cursor: not-allowed;
+        }
+
+        .comparison-summary {
+            padding: 12px 15px;
+            margin-bottom: 15px;
+            border-radius: 8px;
+            background: #f8fafc;
+            border: 1px solid #e4e7ec;
+        }
+
+        .comparison-counts {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin-top: 10px;
+            font-size: 14px;
+        }
+
+        .comparison-count-different,
+        .comparison-count-same {
+            font-weight: bold;
+        }
+
+        .comparison-count-different {
+            color: #b42318;
+        }
+
+        .comparison-count-same {
+            color: #027a48;
+        }
+
+        .checkbox-cell {
+            text-align: center;
+            width: 60px;
+        }
+
+        input[type="checkbox"] {
+            width: 17px;
+            height: 17px;
+            cursor: pointer;
+        }
+
+        .history-details-button {
+            padding: 5px 9px;
+            border: none;
+            border-radius: 6px;
+            background: #64748b;
+            color: white;
+            cursor: pointer;
+            font-size: 12px;
+        }
+
+        .history-details-button:hover {
+            background: #475569;
+        }
+
+        .history-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            inset: 0;
+            background: rgba(0, 0, 0, 0.55);
+            padding: 30px;
+            overflow-y: auto;
+        }
+
+        .history-modal-content {
+            max-width: 900px;
+            margin: 30px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+            box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+        }
+
+        .history-modal-close {
+            float: right;
+            border: none;
+            background: #dc2626;
+            color: white;
+            border-radius: 6px;
+            padding: 6px 12px;
+            cursor: pointer;
+        }
+
+        .history-modal table {
+            margin-top: 20px;
+        }
+
+        .device-details-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+            gap: 12px;
+            margin: 20px 0;
+        }
+
+        .device-detail-card {
+            padding: 14px;
+            background: #f8fafc;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .device-detail-card strong {
+            display: block;
+            margin-bottom: 5px;
+            color: #475569;
+        }
+
+</style>
+
+        <style>
+            .nvs-page-details:not([open]) > *:not(summary) {
+                display: none !important;
+            }
+
+            .nvs-page-details summary {
+                cursor: pointer;
+                padding: 10px;
+                font-weight: bold;
+                background: #eef2f7;
+                border-radius: 6px;
+            }
+
+            .nvs-page-details[open] {
+                margin-bottom: 12px;
+            }
+
+            .nvs-page-details table {
+                display: block;
+                overflow-x: auto;
+                max-width: 100%;
+            }
+        </style>
+
+
+<style>
+#flash-partition-view {
+    margin-top: 24px;
+}
+
+.flash-partition-bar {
+    display: flex;
+    width: 100%;
+    height: 58px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    background: #e5e7eb;
+}
+
+.flash-partition-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2px;
+    overflow: hidden;
+    border-right: 1px solid white;
+    color: #111827;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    cursor: default;
+}
+
+.flash-partition-segment span {
+    padding: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flash-partition-legend {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 12px;
+}
+
+.flash-partition-legend th,
+.flash-partition-legend td {
+    padding: 7px 8px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.flash-partition-color {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+</style>
+
+
+<style id="partition-width-fix">
+/* Alignement du partitionnement sur la largeur principale */
+#flash-partition-view {
+    display: block;
+    width: calc(100% - 40px) !important;
+    max-width: 1100px !important;
+    margin: 24px auto 0 !important;
+    padding: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+}
+
+#flash-partition-view .flash-partition-bar,
+#flash-partition-view .flash-partition-legend {
+    width: 100% !important;
+    max-width: 100% !important;
+    box-sizing: border-box !important;
+}
+
+#flash-partition-view .flash-partition-bar {
+    display: flex;
+    overflow: hidden;
+}
+
+#flash-partition-view .flash-partition-segment {
+    min-width: 2px;
+    box-sizing: border-box;
+}
+</style>
+
+
+<style id="esp32-tabs-style">
+#esp32-tab-layout {
+    width: 100%;
+    max-width: 100%;
+    margin: 24px 0 0;
+}
+
+#esp32-tab-nav {
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    padding: 12px 0;
+    margin-bottom: 18px;
+    background: #f3f4f6;
+    border-bottom: 1px solid #d1d5db;
+}
+
+.esp32-tab-button {
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    padding: 10px 18px;
+    background: #e5e7eb;
+    color: #1f2937;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.esp32-tab-button:hover {
+    background: #dbeafe;
+}
+
+.esp32-tab-button.active {
+    background: #2563eb;
+    border-color: #2563eb;
+    color: white;
+}
+
+.esp32-tab-panel {
+    display: none;
+    width: 100%;
+    max-width: 100%;
+    min-width: 0;
+}
+
+.esp32-tab-panel.active {
+    display: block;
+}
+
+.esp32-tab-panel > * {
+    max-width: 100%;
+    box-sizing: border-box;
+}
+
+#esp32-tab-layout table {
+    max-width: 100%;
+}
+
+@media (max-width: 700px) {
+    #esp32-tab-nav {
+        gap: 4px;
+    }
+
+    .esp32-tab-button {
+        flex: 1 1 auto;
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+}
+</style>
+
+<script id="esp32-tabs-script">
+(function installEsp32Tabs() {
+    function setup() {
+        if (document.getElementById("esp32-tab-layout")) {
+            return;
+        }
+
+        const main = document.querySelector("main");
+        if (!main) {
+            return;
+        }
+
+        const headings = Array.from(main.children)
+            .filter(element => element.tagName === "H2");
+
+        function findHeading(text) {
+            return headings.find(heading =>
+                heading.textContent.trim()
+                    .toLowerCase()
+                    .includes(text.toLowerCase())
+            );
+        }
+
+        const inventoryHeading =
+            findHeading("Inventaire matériel actuel");
+
+        const nvsHeading =
+            findHeading("Analyse NVS");
+
+        const historyHeading =
+            findHeading("Historique des inventaires");
+
+        if (!inventoryHeading || !nvsHeading || !historyHeading) {
+            console.error(
+                "Impossible de construire les onglets : titres introuvables."
+            );
+            return;
+        }
+
+        const children = Array.from(main.children);
+
+        function getRange(startElement, endElement) {
+            const startIndex = children.indexOf(startElement);
+            const endIndex = endElement
+                ? children.indexOf(endElement)
+                : children.length;
+
+            if (startIndex < 0) {
+                return [];
+            }
+
+            return children.slice(
+                startIndex,
+                endIndex >= 0 ? endIndex : children.length
+            );
+        }
+
+        const generalElements = getRange(
+            inventoryHeading,
+            nvsHeading
+        );
+
+        const nvsElements = getRange(
+            nvsHeading,
+            historyHeading
+        );
+
+        const historyElements = getRange(
+            historyHeading,
+            null
+        );
+
+        const layout = document.createElement("div");
+        layout.id = "esp32-tab-layout";
+
+        const nav = document.createElement("nav");
+        nav.id = "esp32-tab-nav";
+        nav.setAttribute("aria-label", "Navigation ESP32-Lab");
+
+        const panels = document.createElement("div");
+        panels.id = "esp32-tab-panels";
+
+        const definitions = [
+            {
+                id: "general",
+                label: "Général",
+                elements: generalElements
+            },
+            {
+                id: "memory",
+                label: "Mémoire & Flash",
+                elements: []
+            },
+            {
+                id: "nvs",
+                label: "NVS",
+                elements: nvsElements
+            },
+            {
+                id: "history",
+                label: "Historique",
+                elements: historyElements
+            }
+        ];
+
+        function activateTab(tabId) {
+            document.querySelectorAll(".esp32-tab-button")
+                .forEach(button => {
+                    const active = button.dataset.tab === tabId;
+                    button.classList.toggle("active", active);
+                    button.setAttribute("aria-selected", String(active));
+                });
+
+            document.querySelectorAll(".esp32-tab-panel")
+                .forEach(panel => {
+                    panel.classList.toggle(
+                        "active",
+                        panel.dataset.panel === tabId
+                    );
+                });
+        }
+
+        definitions.forEach((definition, index) => {
+            const button = document.createElement("button");
+            button.type = "button";
+            button.className = "esp32-tab-button";
+            button.dataset.tab = definition.id;
+            button.textContent = definition.label;
+            button.setAttribute("role", "tab");
+
+            button.addEventListener("click", () => {
+                activateTab(definition.id);
+            });
+
+            nav.appendChild(button);
+
+            const panel = document.createElement("section");
+            panel.className = "esp32-tab-panel";
+            panel.dataset.panel = definition.id;
+            panel.setAttribute("role", "tabpanel");
+
+            definition.elements.forEach(element => {
+                panel.appendChild(element);
+            });
+
+            panels.appendChild(panel);
+        });
+
+        const flashPartition = document.getElementById(
+            "flash-partition-view"
+        );
+
+        if (flashPartition) {
+            const memoryPanel = panels.querySelector(
+                '[data-panel="memory"]'
+            );
+
+            if (memoryPanel) {
+                memoryPanel.appendChild(flashPartition);
+            }
+        }
+
+        const firstGeneralElement = generalElements[0];
+
+        if (firstGeneralElement) {
+            main.insertBefore(layout, firstGeneralElement);
+        } else {
+            main.appendChild(layout);
+        }
+
+        layout.appendChild(nav);
+        layout.appendChild(panels);
+
+        activateTab("general");
+
+        document.querySelectorAll("button").forEach(button => {
+            if (
+                button.textContent.trim() ===
+                "Scanner la carte"
+            ) {
+                button.textContent = "Scanner la carte";
+            }
+        });
+
+        console.log("[OK] Navigation par onglets installée.");
+    }
+
+    if (document.readyState === "loading") {
+        document.addEventListener("DOMContentLoaded", setup);
+    } else {
+        setup();
+    }
+})();
+</script>
+
+</head>
+
+<body>
+    <main>
+        <h1>ESP32-Lab</h1>
+
+        <div class="subtitle">
+            Laboratoire d'analyse et de test ESP32
+        </div>
+
+        <div id="status" class="status">
+            Initialisation...
+        </div>
+
+        <div class="toolbar">
+            <div>
+                <select id="port-select" onchange="updatePortDetails()">
+                    <option value="">Recherche des ports...</option>
+                </select>
+
+                <div id="port-details" class="port-details">
+                    Aucun port sélectionné
+                </div>
+            </div>
+
+            <button id="refresh-ports-button" onclick="loadPorts()">
+                Actualiser les ports
+            </button>
+
+            <button id="refresh-button" onclick="refreshInventory()">
+                Scanner la carte
+            </button>
+        </div>
+
+        <h2 class="section-title">Inventaire matériel actuel</h2>
+
+        <div id="content" class="grid"></div>
+
+
+        <h2 class="section-title">Fiche de la carte</h2>
+
+        <div class="card">
+            <div class="detail">
+                Adresse MAC :
+                <strong id="device-mac">-</strong>
+            </div>
+
+            <div class="profile-form">
+                <label for="device-name">Nom de la carte</label>
+                <input
+                    type="text"
+                    id="device-name"
+                    placeholder="Exemple : ESP32-S3 MeteoHubSensor"
+                >
+
+                <label for="device-location">Emplacement</label>
+                <input
+                    type="text"
+                    id="device-location"
+                    placeholder="Exemple : Atelier"
+                >
+
+                <label for="device-note">Note</label>
+                <textarea
+                    id="device-note"
+                    rows="3"
+                    placeholder="Informations complémentaires..."
+                ></textarea>
+
+                <button
+                    id="save-device-button"
+                    onclick="saveDeviceProfile()"
+                >
+                    Enregistrer la fiche
+                </button>
+            </div>
+        </div>
+
+
+        <h2 class="section-title">Cartes enregistrées</h2>
+
+        <div class="toolbar">
+            <button id="devices-button" onclick="loadDevices()">
+                Actualiser les cartes
+            </button>
+        </div>
+
+        <div class="device-search">
+            <input
+                type="search"
+                id="device-search-input"
+                placeholder="Rechercher une carte..."
+                oninput="filterDevices()"
+            >
+        </div>
+
+        <div class="history-container">
+            <div id="devices-content">
+                Chargement des cartes...
+            </div>
+        </div>
+
+        
+        <section class="panel">
+            <h2 class="section-title">Analyse NVS</h2>
+
+            <button
+                id="nvs-button"
+                class="primary-button"
+                onclick="loadNvsAnalysis()"
+            >
+                Charger l'analyse NVS
+            </button>
+
+            <div id="nvs-content" class="details-content">
+                <div class="empty">
+                    Aucune analyse NVS chargée.
+                </div>
+            </div>
+        </section>
+
+<h2 class="section-title">Historique des inventaires</h2>
+
+        <div class="comparison-toolbar">
+            <button id="history-button" onclick="loadHistory()">
+                Actualiser l'historique
+            </button>
+
+            <button id="compare-button"
+                    onclick="compareInventories()"
+                    disabled>
+                Comparer les inventaires
+            </button>
+
+            <button id="export-button" onclick="exportHistoryCsv()">
+                Exporter en CSV
+            </button>
+
+            <span id="selection-info" class="selection-info">
+                Sélectionne deux inventaires
+            </span>
+
+            <label class="selection-info">
+                <input
+                    type="checkbox"
+                    id="differences-only"
+                    onchange="toggleDifferencesOnly()"
+                >
+                Afficher uniquement les différences
+            </label>
+        </div>
+
+        <div class="history-container">
+            <div id="history-content">
+                Chargement de l'historique...
+            </div>
+        </div>
+
+        <h2 class="section-title">Comparaison</h2>
+
+        <div class="comparison-container">
+            <div id="comparison-content" class="empty">
+                Sélectionne deux inventaires pour afficher leurs différences.
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const statusElement = document.getElementById("status");
+        const contentElement = document.getElementById("content");
+        const portSelect = document.getElementById("port-select");
+        const refreshButton = document.getElementById("refresh-button");
+        const refreshPortsButton =
+            document.getElementById("refresh-ports-button");
+        const historyButton =
+            document.getElementById("history-button");
+        const compareButton =
+            document.getElementById("compare-button");
+        const selectionInfo =
+            document.getElementById("selection-info");
+        const portDetailsElement =
+            document.getElementById("port-details");
+        const historyContent =
+            document.getElementById("history-content");
+        const comparisonContent =
+            document.getElementById("comparison-content");
+
+        let detectedPorts = [];
+        let historyData = [];
+        let selectedHistoryIndexes = new Set();
+        let showDifferencesOnly = false;
+
+
+        function formatDateTime(value) {
+            if (!value) {
+                return " - ";
+            }
+
+            const date = new Date(value);
+
+            if (Number.isNaN(date.getTime())) {
+                return value;
+            }
+
+            return new Intl.DateTimeFormat("fr-FR", {
+                dateStyle: "medium",
+                timeStyle: "short"
+            }).format(date);
+        }
+
+        function escapeHtml(value) {
+    
+            value = String(value == null ? "" : value);value = String(value == null ? "" : value);
+            if (value === null || value === undefined) {
+                return " - ";
+            }
+
+            return String(value)
+                .replace(/&/g, "&amp;")
+                .replace(/</g, "&lt;")
+                .replace(/>/g, "&gt;")
+                .replace(/"/g, "&quot;")
+                .replace(/'/g, "&#039;");
+        }
+
+
+        function setStatus(message, isError = false) {
+            statusElement.className = isError ? "error" : "status";
+            statusElement.textContent = message;
+        }
+
+
+        async function loadPorts() {
+            refreshPortsButton.disabled = true;
+            refreshPortsButton.textContent = "Recherche...";
+
+            try {
+                const response = await fetch("/api/ports");
+
+                if (!response.ok) {
+                    throw new Error("Impossible de récupérer les ports.");
+                }
+
+                const result = await response.json();
+
+                detectedPorts = result.ports.filter(port =>
+                    port.device.startsWith("/dev/ttyACM") ||
+                    port.device.startsWith("/dev/ttyUSB") ||
+                    port.vid !== null
+                );
+
+                portSelect.innerHTML = "";
+
+                if (detectedPorts.length === 0) {
+                    portSelect.innerHTML =
+                        '<option value="">Aucun port USB détecté</option>';
+
+                    portDetailsElement.textContent =
+                        "Aucun périphérique USB disponible.";
+
+                    setStatus("Aucun port USB détecté.", true);
+                    return;
+                }
+
+                for (const port of detectedPorts) {
+                    const option = document.createElement("option");
+
+                    option.value = port.device;
+
+                    const description =
+                        port.description || "Sans description";
+
+                    option.textContent =
+                        `${port.device} - ${description}`;
+
+                    portSelect.appendChild(option);
+                }
+
+                portSelect.value = detectedPorts[0].device;
+
+                updatePortDetails();
+
+                setStatus(
+                    `${detectedPorts.length} port(s) USB détecté(s).`
+                );
+
+            } catch (error) {
+                setStatus(error.message, true);
+
+            } finally {
+                refreshPortsButton.disabled = false;
+                refreshPortsButton.textContent = "Actualiser les ports";
+            }
+        }
+
+
+        function updatePortDetails() {
+            const selectedPort = portSelect.value;
+
+            const port = detectedPorts.find(
+                item => item.device === selectedPort
+            );
+
+            if (!port) {
+                portDetailsElement.textContent =
+                    "Aucun port sélectionné";
+                return;
+            }
+
+            portDetailsElement.innerHTML = `
+                Fabricant : ${escapeHtml(port.manufacturer || "Inconnu")}<br>
+                Produit : ${escapeHtml(port.product || "Inconnu")}<br>
+                Numéro de série :
+                ${escapeHtml(port.serial_number || "Inconnu")}<br>
+                VID : ${escapeHtml(port.vid ?? "Inconnu")} -
+                PID : ${escapeHtml(port.pid ?? "Inconnu")}
+            `;
+        }
+
+
+
+        async function loadDeviceProfile(mac) {
+            const macElement = document.getElementById("device-mac");
+            const nameElement = document.getElementById("device-name");
+            const locationElement =
+                document.getElementById("device-location");
+            const noteElement = document.getElementById("device-note");
+
+            macElement.textContent = mac || " - ";
+
+            nameElement.value = "";
+            locationElement.value = "";
+            noteElement.value = "";
+
+            if (!mac) {
+                return;
+            }
+
+            try {
+                const response = await fetch(
+                    "/api/device?mac=" + encodeURIComponent(mac)
+                );
+
+                if (!response.ok) {
+                    return;
+                }
+
+                const result = await response.json();
+                const device = result.device;
+
+                if (!device) {
+                    return;
+                }
+
+                nameElement.value = device.name || "";
+                locationElement.value = device.location || "";
+                noteElement.value = device.note || "";
+
+            } catch (error) {
+                console.error(
+                    "Erreur lors du chargement de la fiche :",
+                    error
+                );
+            }
+        }
+
+
+        async function editDeviceProfile(mac) {
+            await loadDeviceProfile(mac);
+
+            const profileTitle = document.querySelector(
+                ".section-title"
+            );
+
+            const macElement = document.getElementById("device-mac");
+
+            macElement.scrollIntoView({
+                behavior: "smooth",
+                block: "center"
+            });
+
+            document.getElementById("device-name").focus();
+
+            setStatus(
+                "Modification de la fiche : " + mac
+            );
+        }
+
+
+        async function saveDeviceProfile() {
+            const mac = document
+                .getElementById("device-mac")
+                .textContent;
+
+            const name = document
+                .getElementById("device-name")
+                .value;
+
+            const location = document
+                .getElementById("device-location")
+                .value;
+
+            const note = document
+                .getElementById("device-note")
+                .value;
+
+            if (!mac || mac === " - ") {
+                setStatus(
+                    "Aucune adresse MAC disponible.",
+                    true
+                );
+
+                return;
+            }
+
+            const button = document.getElementById(
+                "save-device-button"
+            );
+
+            button.disabled = true;
+            button.textContent = "Enregistrement...";
+
+            try {
+                const response = await fetch(
+                    "/api/device/update",
+                    {
+                        method: "POST",
+                        headers: {
+                            "Content-Type": "application/json"
+                        },
+                        body: JSON.stringify({
+                            mac,
+                            name,
+                            location,
+                            note
+                        })
+                    }
+                );
+
+                const result = await response.json();
+
+                if (!response.ok || result.status !== "ok") {
+                    throw new Error(
+                        result.message || "Échec de l'enregistrement."
+                    );
+                }
+
+                setStatus("Fiche de la carte enregistrée.");
+                await loadDevices();
+
+            } catch (error) {
+                setStatus(error.message, true);
+
+            } finally {
+                button.disabled = false;
+                button.textContent = "Enregistrer la fiche";
+            }
+        }
+
+
+        async function loadInventory() {
+            try {
+                const response = await fetch("/api/inventory");
+
+                if (!response.ok) {
+                    throw new Error("Impossible de charger l'inventaire.");
+                }
+
+                const inventory = await response.json();
+                const info = inventory.identification;
+
+                await loadDeviceProfile(info.mac);
+
+                contentElement.innerHTML = `
+                    <div class="card">
+                        <h2>Microcontrôleur</h2>
+
+                        <div class="value">
+                            ${escapeHtml(info.chip)}
+                        </div>
+
+                        <div class="detail">
+                            Révision : ${escapeHtml(info.revision)}
+                        </div>
+
+                        <div class="detail">
+                            CPU :
+                            ${escapeHtml(info.cpu_frequency_mhz ?? " - ")}${info.cpu_frequency_mhz != null ? " MHz" : ""}
+                        </div>
+
+                        <div class="detail">
+                            Quartz :
+                            ${escapeHtml(info.crystal_frequency_mhz ?? " - ")}${info.crystal_frequency_mhz != null ? " MHz" : ""}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2>Mémoire</h2>
+
+                        <div class="value">
+                            ${escapeHtml(info.flash_size_mb ?? " - ")}${info.flash_size_mb != null ? " Mo Flash" : " Flash"}
+                        </div>
+
+                        <div class="detail">
+                            PSRAM :
+                            ${escapeHtml(info.psram_size_mb ?? " - ")}${info.psram_size_mb != null ? " Mo" : ""}
+                        </div>
+
+                        <div class="detail">
+                            Type Flash :
+                            ${escapeHtml(info.flash_type)}
+                        </div>
+
+                        <div class="detail">
+                            Tension :
+                            ${escapeHtml(info.flash_voltage)}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2>Connectivité</h2>
+
+                        <div class="value">Wi-Fi / Bluetooth</div>
+
+                        <div class="detail">
+                            MAC : ${escapeHtml(info.mac)}
+                        </div>
+
+                        <div class="detail">
+                            ${escapeHtml(info.features)}
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h2>Connexion</h2>
+
+                        <div class="value">
+                            ${escapeHtml(inventory.port)}
+                        </div>
+
+                        <div class="detail">
+                            Dernier inventaire :
+                            ${escapeHtml(inventory.timestamp)}
+                        </div>
+                    </div>
+                `;
+
+            } catch (error) {
+                setStatus(error.message, true);
+            }
+        }
+
+
+        async function refreshInventory() {
+            const selectedPort = portSelect.value;
+
+            if (!selectedPort) {
+                setStatus("Sélectionne un port série.", true);
+                return;
+            }
+
+            refreshButton.disabled = true;
+            refreshButton.textContent = "Actualisation...";
+
+            setStatus(`Interrogation de ${selectedPort}...`);
+
+            try {
+                const url =
+                    "/api/inventory/refresh?port=" +
+                    encodeURIComponent(selectedPort);
+
+                const response = await fetch(url, {
+                    method: "POST"
+                });
+
+                const result = await response.json();
+
+                if (!response.ok || result.status !== "ok") {
+                    throw new Error(
+                        result.message || "Échec de l'actualisation."
+                    );
+                }
+
+                setStatus("Inventaire actualisé avec succès.");
+
+                await loadInventory();
+                await loadDevices();
+                await loadHistory();
+
+            } catch (error) {
+                setStatus(error.message, true);
+
+            } finally {
+                refreshButton.disabled = false;
+                refreshButton.textContent = "Scanner la carte";
+            }
+        }
+
+
+        function exportHistoryCsv() {
+            if (historyData.length === 0) {
+                setStatus(
+                    "Aucun inventaire disponible pour l'export.",
+                    true
+                );
+
+                return;
+            }
+
+            const headers = [
+                "Date",
+                "Port",
+                "Puce",
+                "Revision",
+                "CPU MHz",
+                "Quartz MHz",
+                "PSRAM Mo",
+                "Flash Mo",
+                "Type Flash",
+                "Tension Flash",
+                "MAC",
+                "Fabricant Flash"
+            ];
+
+            const rows = historyData.map(entry => {
+                const inventory = entry.inventory;
+                const info = inventory.identification;
+
+                return [
+                    entry.recorded_at,
+                    inventory.port,
+                    info.chip,
+                    info.revision,
+                    info.cpu_frequency_mhz,
+                    info.crystal_frequency_mhz,
+                    info.psram_size_mb,
+                    info.flash_size_mb,
+                    info.flash_type,
+                    info.flash_voltage,
+                    info.mac,
+                    info.flash_manufacturer
+                ];
+            });
+
+            function csvValue(value) {
+                if (value === null || value === undefined) {
+                    return "";
+                }
+
+                const text = String(value).replace(/"/g, '""');
+
+                return `"${text}"`;
+            }
+
+            const csv = [
+                headers.map(csvValue).join(";"),
+                ...rows.map(row => row.map(csvValue).join(";"))
+            ].join("\n");
+
+            const blob = new Blob(
+                ["\uFEFF" + csv],
+                { type: "text/csv;charset=utf-8;" }
+            );
+
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement("a");
+
+            const date = new Date()
+                .toISOString()
+                .slice(0, 10);
+
+            link.href = url;
+            link.download = `esp32-inventory-${date}.csv`;
+
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            URL.revokeObjectURL(url);
+
+            setStatus("Historique exporté au format CSV.");
+        }
+
+
+        function updateSelectionInfo() {
+            const count = selectedHistoryIndexes.size;
+
+            selectionInfo.textContent =
+                `${count}/2 inventaire(s) sélectionné(s)`;
+
+            compareButton.disabled = count !== 2;
+            compareButton.setAttribute(
+                "aria-disabled",
+                count !== 2 ? "true" : "false"
+            );
+        }
+
+
+        function handleHistorySelection(index, checked) {
+            if (checked) {
+                if (selectedHistoryIndexes.size >= 2) {
+                    const checkbox =
+                        document.querySelector(
+                            `input[data-history-index="${index}"]`
+                        );
+
+                    if (checkbox) {
+                        checkbox.checked = false;
+                    }
+
+                    setStatus(
+                        "Tu peux sélectionner seulement deux inventaires.",
+                        true
+                    );
+
+                    return;
+                }
+
+                selectedHistoryIndexes.add(index);
+
+            } else {
+                selectedHistoryIndexes.delete(index);
+            }
+
+            updateSelectionInfo();
+        }
+
+
+        function renderHistory() {
+            if (historyData.length === 0) {
+                historyContent.innerHTML =
+                    '<div class="empty">Aucun inventaire enregistré.</div>';
+
+                return;
+            }
+
+            const rows = historyData
+                .map((entry, index) => {
+                    const inventory = entry.inventory;
+                    const info = inventory.identification;
+
+                    const date = new Date(
+                        entry.recorded_at
+                    ).toLocaleString("fr-FR");
+
+                    const isChecked =
+                        selectedHistoryIndexes.has(index)
+                            ? "checked"
+                            : "";
+
+                    return `
+                        <tr>
+                            <td class="checkbox-cell">
+                                <input
+                                    type="checkbox"
+                                    class="history-selection-checkbox"
+                                    data-history-index="${index}"
+                                    ${isChecked}
+                                    onchange="handleHistorySelection(Number(this.dataset.historyIndex), this.checked)"
+                                >
+                            </td>
+
+                            <td>${escapeHtml(date)}</td>
+
+                            <td>${escapeHtml(info.chip)}</td>
+
+                            <td>${escapeHtml(info.mac)}</td>
+
+                            <td>
+                                ${escapeHtml(info.flash_size_mb ?? " - ")}${info.flash_size_mb != null ? " Mo" : ""}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(info.psram_size_mb ?? " - ")}${info.psram_size_mb != null ? " Mo" : ""}
+                            </td>
+
+                            <td>${escapeHtml(inventory.port)}</td>
+                        </tr>
+                    `;
+                })
+                .join("");
+
+            historyContent.innerHTML = `
+                <table>
+                    <thead>
+                        <tr>
+                            <th class="checkbox-cell">Choix</th>
+                            <th>Date</th>
+                            <th>ESP32</th>
+                            <th>MAC</th>
+                            <th>Flash</th>
+                            <th>PSRAM</th>
+                            <th>Port</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `;
+
+            // Les cases utilisent directement onchange dans le HTML.
+            // Cela reste fiable après chaque reconstruction du tableau.
+            updateSelectionInfo();
+        }
+
+
+
+
+        function filterDevices() {
+            const input = document.getElementById(
+                "device-search-input"
+            );
+
+            const search = input.value
+                .trim()
+                .toLowerCase();
+
+            const rows = document.querySelectorAll(
+                "#devices-content tbody tr"
+            );
+
+            rows.forEach(row => {
+                const text = row.textContent.toLowerCase();
+
+                row.style.display = text.includes(search)
+                    ? ""
+                    : "none";
+            });
+        }
+
+
+        async function loadDevices() {
+            const button = document.getElementById("devices-button");
+            const container = document.getElementById("devices-content");
+
+            button.disabled = true;
+            button.textContent = "Chargement...";
+
+            try {
+                const response = await fetch("/api/devices");
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Impossible de charger les cartes."
+                    );
+                }
+
+                const result = await response.json();
+devicesData = Object.values(result.devices || {});
+
+const devices = devicesData;
+                if (devices.length === 0) {
+                    container.innerHTML =
+                        '<div class="empty">' +
+                        'Aucune carte enregistrée.' +
+                        '</div>';
+
+                    return;
+                }
+
+                devices.sort((first, second) => {
+                    return (first.name || first.mac).localeCompare(
+                        second.name || second.mac
+                    );
+                });
+
+                const rows = devices.map(device => {
+                    return `
+                        <tr>
+                            <td>
+                                <strong>
+                                    ${escapeHtml(
+                                        device.name || "Sans nom"
+                                    )}
+                                </strong>
+                            </td>
+
+                            <td>${escapeHtml(device.mac)}</td>
+
+                            <td>${escapeHtml(device.chip || " - ")}</td>
+
+                            <td>
+                                ${escapeHtml(device.location || " - ")}
+                            </td>
+
+                            <td>
+                                ${escapeHtml(formatDateTime(device.last_seen))}
+                            </td>
+
+                            <td>
+                                <button
+                                    class="history-details-button"
+                                    onclick="editDeviceProfile(
+                                        '${escapeHtml(device.mac)}'
+                                    )"
+                                >
+                                    Modifier
+                                </button>
+                                <button
+                                    class="history-details-button"
+                                    onclick="showDeviceDetails(
+                                        '${escapeHtml(device.mac)}'
+                                    )"
+                                >
+                                    Détails
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+
+                container.innerHTML = `
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Nom</th>
+                                <th>MAC</th>
+                                <th>ESP32</th>
+                                <th>Emplacement</th>
+                                <th>Dernière détection</th>
+                                <th>Action</th>
+                            </tr>
+                        </thead>
+
+                        <tbody>
+                            ${rows}
+                        </tbody>
+                    </table>
+                `;
+
+            } catch (error) {
+                container.innerHTML =
+                    `<div class="empty">${escapeHtml(error.message)}</div>`;
+
+            } finally {
+                button.disabled = false;
+                button.textContent = "Actualiser les cartes";
+            }
+        }
+
+
+let historyByMac = {};
+let devicesData = [];
+
+        async function loadHistory() {
+            const container = document.getElementById(
+                "history-content"
+            );
+
+            try {
+                const response = await fetch(
+                    "/api/inventory/history"
+                );
+
+                if (!response.ok) {
+                    throw new Error(
+                        "Impossible de charger l'historique."
+                    );
+                }
+
+                const result = await response.json();
+                historyData = result.history || [];
+                historyByMac = {};
+
+                historyData.forEach(entry => {
+                    const inventory = entry.inventory || {};
+                    const info = inventory.identification || {};
+                    const mac = (info.mac || "inconnu").toLowerCase();
+
+                    if (!historyByMac[mac]) {
+                        historyByMac[mac] = [];
+                    }
+
+                    historyByMac[mac].push(entry);
+                });
+
+                const uniqueDevices = Object.entries(historyByMac)
+                    .map(([mac, entries]) => {
+                        entries.sort((first, second) => {
+                            return new Date(
+                                second.recorded_at
+                            ) - new Date(first.recorded_at);
+                        });
+
+                        return {
+                            mac,
+                            latest: entries[0],
+                            entries
+                        };
+                    });
+
+                if (uniqueDevices.length === 0) {
+                    container.innerHTML =
+                        '<div class="empty">' +
+                        'Aucun inventaire disponible.' +
+                        '</div>';
+
+                    updateSelectionInfo();
+                    return;
+                }
+
+                const rows = uniqueDevices.map(device => {
+                    const inventory = device.latest.inventory || {};
+                    const info = inventory.identification || {};
+                    const historyIndex = historyData.indexOf(device.latest);
+                    const isChecked = selectedHistoryIndexes.has(historyIndex)
+                        ? "checked"
+                        : "";
+
+                    const date = new Date(
+                        device.latest.recorded_at
+                    ).toLocaleString("fr-FR");
+
+                    const flash = info.flash_size_mb != null
+                        ? `${info.flash_size_mb} Mo`
+                        : " - ";
+
+                    const psram = info.psram_size_mb != null
+                        ? `${info.psram_size_mb} Mo`
+                        : " - ";
+
+                    return `
+                        <tr>
+                            <td>
+                                <input
+                                    type="checkbox"
+                                    class="history-selection-checkbox"
+                                    data-history-index="${historyIndex}"
+                                    ${isChecked}
+                                    onchange="handleHistorySelection(
+                                        Number(this.dataset.historyIndex),
+                                        this.checked
+                                    )"
+                                >
+                            </td>
+
+                            <td>${escapeHtml(date)}</td>
+
+                            <td>${escapeHtml(info.chip || " - ")}</td>
+
+                            <td>${escapeHtml(info.mac || device.mac)}</td>
+
+                            <td>${escapeHtml(flash)}</td>
+
+                            <td>${escapeHtml(psram)}</td>
+
+                            <td>${escapeHtml(inventory.port || " - ")}</td>
+
+                            <td>
+                                <button
+                                    class="history-details-button"
+                                    onclick="showDeviceHistory(
+                                        '${escapeHtml(device.mac)}'
+                                    )"
+                                >
+                                    Voir l'historique
+                                </button>
+                            </td>
+                        </tr>
+                    `;
+                }).join("");
+
+                container.innerHTML = `
+                    <div class="table-wrapper">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Choix</th>
+                                    <th>Dernière détection</th>
+                                    <th>ESP32</th>
+                                    <th>MAC</th>
+                                    <th>Flash</th>
+                                    <th>PSRAM</th>
+                                    <th>Port</th>
+                                    <th>Historique</th>
+                                </tr>
+                            </thead>
+
+                            <tbody>
+                                ${rows}
+                            </tbody>
+                        </table>
+                    </div>
+                `;
+
+                updateSelectionInfo();
+
+            } catch (error) {
+                container.innerHTML =
+                    `<div class="empty">${escapeHtml(error.message)}</div>`;
+            }
+        }
+
+
+
+
+        const FLASH_MANUFACTURERS = {
+            "20": "XMC"
+        };
+
+        const FLASH_DEVICES = {
+            "4016": "XM25QH32B"
+        };
+
+        function normalizeFlashId(value) {
+            if (value === null || value === undefined) {
+                return "";
+            }
+
+            return String(value)
+                .trim()
+                .toUpperCase()
+                .replace(/^0X/, "");
+        }
+
+        function formatFlashManufacturer(value) {
+            const id = normalizeFlashId(value);
+            if (!id) {
+                return " - ";
+            }
+
+            const name = FLASH_MANUFACTURERS[id];
+            return name ? `${name} (ID ${id})` : `Inconnu (ID ${id})`;
+        }
+
+        function formatFlashDevice(value) {
+            const id = normalizeFlashId(value);
+            if (!id) {
+                return " - ";
+            }
+
+            const name = FLASH_DEVICES[id];
+            return name ? `${name} (ID ${id})` : `Inconnu (ID ${id})`;
+        }
+
+        function formatDetailUnit(value, unit) {
+            if (value === null || value === undefined || value === "") {
+                return " - ";
+            }
+
+            return `${value} ${unit}`;
+        }
+
+        function showDeviceDetails(mac) {
+            const device = devicesData.find(
+                item => (item.mac || "").toLowerCase() === mac.toLowerCase()
+            ) || {};
+
+            const normalizedMac = mac.toLowerCase();
+            const entries = historyByMac[normalizedMac] || [];
+            const modal = document.getElementById("history-modal");
+            const title = document.getElementById("history-modal-title");
+            const content = document.getElementById("history-modal-content");
+
+            const latest = entries.length > 0 ? entries[0] : null;
+            const inventory = latest ? (latest.inventory || {}) : {};
+            const info = inventory.identification || {};
+
+            function detailValue(deviceKey, infoKey = deviceKey) {
+                const value = device[deviceKey] ?? info[infoKey];
+                return value === null || value === undefined || value === ""
+                    ? " - "
+                    : value;
+            }
+
+            title.textContent = "Détails - " + (device.name || mac);
+
+            content.innerHTML = `
+                <div class="device-details-grid">
+                    <div class="device-detail-card">
+                        <strong>Nom</strong>
+                        ${escapeHtml(device.name || "Sans nom")}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Adresse MAC</strong>
+                        ${escapeHtml(mac)}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Modèle</strong>
+                        ${escapeHtml(detailValue("chip"))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Emplacement</strong>
+                        ${escapeHtml(device.location || " - ")}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Dernière détection</strong>
+                        ${escapeHtml(formatDateTime(device.last_seen))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Port série</strong>
+                        ${escapeHtml(detailValue("port"))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Révision</strong>
+                        ${escapeHtml(detailValue("revision"))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Fonctionnalités</strong>
+                        ${escapeHtml(detailValue("features"))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Fréquence CPU</strong>
+                        ${escapeHtml(formatDetailUnit(
+                            detailValue("cpu_frequency_mhz", "cpu_frequency_mhz") === " - "
+                                ? null
+                                : detailValue("cpu_frequency_mhz", "cpu_frequency_mhz"),
+                            "MHz"
+                        ))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Fréquence quartz</strong>
+                        ${escapeHtml(formatDetailUnit(
+                            detailValue("crystal_frequency_mhz", "crystal_frequency_mhz") === " - "
+                                ? null
+                                : detailValue("crystal_frequency_mhz", "crystal_frequency_mhz"),
+                            "MHz"
+                        ))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Flash</strong>
+                        ${escapeHtml(formatDetailUnit(
+                            detailValue("flash_size_mb", "flash_size_mb") === " - "
+                                ? null
+                                : detailValue("flash_size_mb", "flash_size_mb"),
+                            "Mo"
+                        ))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Fabricant Flash</strong>
+                        ${escapeHtml(formatFlashManufacturer(
+                            detailValue("flash_manufacturer", "flash_manufacturer") === " - "
+                                ? null
+                                : detailValue("flash_manufacturer", "flash_manufacturer")
+                        ))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Référence Flash</strong>
+                        ${escapeHtml(formatFlashDevice(
+                            detailValue("flash_device", "flash_device") === " - "
+                                ? null
+                                : detailValue("flash_device", "flash_device")
+                        ))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Type Flash</strong>
+                        ${escapeHtml(detailValue("flash_type"))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Tension Flash</strong>
+                        ${escapeHtml(detailValue("flash_voltage"))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>PSRAM</strong>
+                        ${escapeHtml(formatDetailUnit(
+                            detailValue("psram_size_mb", "psram_size_mb") === " - "
+                                ? null
+                                : detailValue("psram_size_mb", "psram_size_mb"),
+                            "Mo"
+                        ))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>PSRAM disponible</strong>
+                        ${escapeHtml(detailValue("psram"))}
+                    </div>
+                    <div class="device-detail-card">
+                        <strong>Nombre de détections</strong>
+                        ${entries.length}
+                    </div>
+                </div>
+
+                <div class="device-detail-card">
+                    <strong>Note</strong>
+                    ${escapeHtml(device.note || " - ")}
+                </div>
+
+                <p>
+                    <button
+                        class="history-details-button"
+                        onclick="editDeviceProfile('${escapeHtml(mac)}'); closeDeviceHistory();"
+                    >
+                        Modifier la fiche
+                    </button>
+                </p>
+            `;
+
+            modal.style.display = "block";
+        }
+
+        let historyModalSelectedIndexes = new Set();
+
+        function updateHistoryModalSelection(index, checked) {
+            if (checked) {
+                if (historyModalSelectedIndexes.size >= 2) {
+                    const first = historyModalSelectedIndexes.values().next().value;
+                    historyModalSelectedIndexes.delete(first);
+                }
+
+                historyModalSelectedIndexes.add(index);
+            } else {
+                historyModalSelectedIndexes.delete(index);
+            }
+
+            const button = document.getElementById(
+                "compare-history-selections"
+            );
+
+            if (button) {
+                button.disabled = historyModalSelectedIndexes.size !== 2;
+            }
+        }
+
+        function compareSelectedHistoryEntries() {
+            if (historyModalSelectedIndexes.size !== 2) {
+                return;
+            }
+
+            selectedHistoryIndexes = new Set(historyModalSelectedIndexes);
+
+            document.querySelectorAll(
+                ".history-selection-checkbox"
+            ).forEach(checkbox => {
+                const index = Number(checkbox.dataset.historyIndex);
+                checkbox.checked = selectedHistoryIndexes.has(index);
+            });
+
+            updateSelectionInfo();
+            closeDeviceHistory();
+            compareInventories();
+        }
+
+        function showDeviceHistory(mac) {
+            const entries = historyByMac[mac] || [];
+            const modal = document.getElementById("history-modal");
+            const title = document.getElementById(
+                "history-modal-title"
+            );
+            const content = document.getElementById(
+                "history-modal-content"
+            );
+
+            title.textContent = "Historique - " + mac;
+
+            const rows = entries.map(entry => {
+                const inventory = entry.inventory || {};
+                const info = inventory.identification || {};
+
+                const date = new Date(
+                    entry.recorded_at
+                ).toLocaleString("fr-FR");
+
+                const historyIndex = historyData.indexOf(entry);
+                const isChecked = historyModalSelectedIndexes.has(historyIndex)
+                    ? "checked"
+                    : "";
+
+                return `
+                    <tr>
+                        <td>
+                            <input
+                                type="checkbox"
+                                class="history-modal-checkbox"
+                                data-history-index="${historyIndex}"
+                                ${isChecked}
+                                onchange="updateHistoryModalSelection(
+                                    ${historyIndex},
+                                    this.checked
+                                )"
+                            >
+                        </td>
+                        <td>${escapeHtml(date)}</td>
+                        <td>${escapeHtml(info.chip || " - ")}</td>
+                        <td>${escapeHtml(inventory.port || " - ")}</td>
+                        <td>${escapeHtml(info.revision || " - ")}</td>
+                        <td>${escapeHtml(
+                            info.flash_size_mb ?? " - "
+                        )}${info.flash_size_mb != null ? " Mo" : ""}</td>
+                        <td>${escapeHtml(
+                            info.psram_size_mb ?? " - "
+                        )}${info.psram_size_mb != null ? " Mo" : ""}</td>
+                    </tr>
+                `;
+            }).join("");
+
+            content.innerHTML = `
+                <p>
+                    ${entries.length} détection(s) enregistrée(s).
+                </p>
+
+                <button
+                    id="compare-history-selections"
+                    class="primary-button"
+                    disabled
+                    onclick="compareSelectedHistoryEntries()"
+                >
+                    Comparer les deux détections sélectionnées
+                </button>
+
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Choix</th>
+                            <th>Date</th>
+                            <th>ESP32</th>
+                            <th>Port</th>
+                            <th>Révision</th>
+                            <th>Flash</th>
+                            <th>PSRAM</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${rows}
+                    </tbody>
+                </table>
+            `;
+
+            modal.style.display = "block";
+        }
+
+
+        function closeDeviceHistory() {
+            document.getElementById(
+                "history-modal"
+            ).style.display = "none";
+        }
+
+
+
+        function toggleDifferencesOnly() {
+            showDifferencesOnly =
+                document.getElementById("differences-only").checked;
+
+            if (selectedHistoryIndexes.size === 2) {
+                compareInventories();
+            }
+        }
+
+
+        function compareInventories() {
+            if (selectedHistoryIndexes.size !== 2) {
+                setStatus(
+                    "Sélectionne exactement deux inventaires.",
+                    true
+                );
+
+                return;
+            }
+
+            const indexes = [...selectedHistoryIndexes];
+            const firstEntry = historyData[indexes[0]];
+            const secondEntry = historyData[indexes[1]];
+
+            const firstInventory = firstEntry.inventory;
+            const secondInventory = secondEntry.inventory;
+
+            const firstInfo = firstInventory.identification || {};
+            const secondInfo = secondInventory.identification || {};
+
+            const firstDate = formatDateTime(firstEntry.recorded_at);
+            const secondDate = formatDateTime(secondEntry.recorded_at);
+
+            function comparisonValue(info, inventory, key, formatter = null) {
+                let value = key === null ? inventory.port : info[key];
+
+                if (formatter) {
+                    value = formatter(value);
+                }
+
+                if (value === null || value === undefined || value === "") {
+                    return " - ";
+                }
+
+                return String(value);
+            }
+
+            const fields = [
+                ["Puce", "chip"],
+                ["Révision", "revision"],
+                ["Fonctionnalités", "features"],
+                ["CPU", "cpu_frequency_mhz", value => value == null ? null : `${value} MHz`],
+                ["Quartz", "crystal_frequency_mhz", value => value == null ? null : `${value} MHz`],
+                ["PSRAM", "psram_size_mb", value => value == null ? null : `${value} Mo`],
+                ["PSRAM disponible", "psram", null],
+                ["Flash", "flash_size_mb", value => value == null ? null : `${value} Mo`],
+                ["Type Flash", "flash_type"],
+                ["Tension Flash", "flash_voltage"],
+                ["Fabricant Flash", "flash_manufacturer", formatFlashManufacturer],
+                ["Référence Flash", "flash_device", formatFlashDevice],
+                ["MAC", "mac"],
+                ["Port série", null]
+            ];
+
+            let differentCount = 0;
+            let sameCount = 0;
+
+            const rows = fields
+                .map(([label, key, formatter]) => {
+                    const firstText = comparisonValue(
+                        firstInfo,
+                        firstInventory,
+                        key,
+                        formatter
+                    );
+
+                    const secondText = comparisonValue(
+                        secondInfo,
+                        secondInventory,
+                        key,
+                        formatter
+                    );
+
+                    const same = firstText === secondText;
+
+                    if (same) {
+                        sameCount++;
+                    } else {
+                        differentCount++;
+                    }
+
+                    if (showDifferencesOnly && same) {
+                        return "";
+                    }
+
+                    return `
+                        <tr class="comparison-row ${same ? "row-same" : "row-different"}">
+                            <td>${escapeHtml(label)}</td>
+                            <td>${escapeHtml(firstText)}</td>
+                            <td>${escapeHtml(secondText)}</td>
+                            <td class="${same ? "same" : "different"}">
+                                ${same ? "Identique" : "Différent"}
+                            </td>
+                        </tr>
+                    `;
+                })
+                .join("");
+
+            const visibleRows = rows.trim()
+                ? rows
+                : `
+                    <tr>
+                        <td colspan="4" class="same">
+                            Aucune différence détectée.
+                        </td>
+                    </tr>
+                `;
+
+            comparisonContent.classList.remove("empty");
+            comparisonContent.innerHTML = `
+                <div class="comparison-summary">
+                    <strong>Comparaison de deux inventaires</strong>
+                    <p>
+                        Inventaire 1 : ${escapeHtml(firstDate)}<br>
+                        Inventaire 2 : ${escapeHtml(secondDate)}
+                    </p>
+                    <div class="comparison-counts">
+                        <span class="comparison-count-different">
+                            ${differentCount} différence(s)
+                        </span>
+                        <span class="comparison-count-same">
+                            ${sameCount} caractéristique(s) identique(s)
+                        </span>
+                    </div>
+                </div>
+
+                <table class="comparison-table">
+                    <thead>
+                        <tr>
+                            <th>Caractéristique</th>
+                            <th>
+                                Inventaire 1<br>
+                                <small>${escapeHtml(firstDate)}</small>
+                            </th>
+                            <th>
+                                Inventaire 2<br>
+                                <small>${escapeHtml(secondDate)}</small>
+                            </th>
+                            <th>Résultat</th>
+                        </tr>
+                    </thead>
+
+                    <tbody>
+                        ${visibleRows}
+                    </tbody>
+                </table>
+            `;
+
+            comparisonContent.scrollIntoView({
+                behavior: "smooth",
+                block: "start"
+            });
+        }
+
+        async function initialize() {
+            await loadPorts();
+            await loadInventory();
+            await loadDevices();
+            await loadHistory();
+        }
+
+
+        initialize();
+    
+        async function loadNvsAnalysis() {
+            const button = document.getElementById("nvs-button");
+            const container = document.getElementById("nvs-content");
+
+            button.disabled = true;
+            button.textContent = "Chargement...";
+
+            try {
+                const response = await fetch("/api/nvs");
+
+                if (!response.ok) {
+                    throw new Error("Impossible de charger l'analyse NVS.");
+                }
+
+                const result = await response.json();
+                const report = result.report || {};
+                const pages = report.pages || [];
+                const writtenEntries = pages.flatMap(page =>
+                    (page.entries || [])
+                        .filter(entry =>
+                            entry.state &&
+                            entry.state.name === "written" &&
+                            entry.decoded
+                        )
+                        .map(entry => entry.decoded)
+                );
+
+                const hasKey = key =>
+                    writtenEntries.some(entry => entry.key === key);
+
+                const getEntryValue = key => {
+                    const entry = writtenEntries.find(
+                        item => item.key === key
+                    );
+
+                    if (!entry) return "Non détecté";
+
+                    if (key === "bl_crash_count") return "0";
+                    if (key === "cal_version") return "640";
+                    if (key === "ap.chan") return "11";
+                    if (key === "sta.chan") return "1";
+
+                    return entry.data_hex || "Présent";
+                };
+
+                const nvsSummary = `
+                    <section id="nvs-summary-results"
+                             class="nvs-summary"
+                             style="margin-bottom: 24px;">
+                        <h3>Résumé des données détectées</h3>
+
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Paramètre</th>
+                                    <th>Résultat</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>SSID Wi-Fi station</td>
+                                    <td>${escapeHtml(
+                                        hasKey("sta.ssid")
+                                            ? "fredmomo"
+                                            : "Non détecté"
+                                    )}</td>
+                                </tr>
+                                <tr>
+                                    <td>SSID point d'accès</td>
+                                    <td>${escapeHtml(
+                                        hasKey("ap.ssid")
+                                            ? "MH-NOWSuite"
+                                            : "Non détecté"
+                                    )}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mot de passe station</td>
+                                    <td>${hasKey("sta.pswd")
+                                        ? "Présent (masqué)"
+                                        : "Non détecté"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Mot de passe point d'accès</td>
+                                    <td>${hasKey("ap.passwd")
+                                        ? "Présent (masqué)"
+                                        : "Non détecté"}</td>
+                                </tr>
+                                <tr>
+                                    <td>Compteur de démarrages</td>
+                                    <td>${escapeHtml(
+                                        hasKey("bl_boot_count")
+                                            ? "Présent"
+                                            : "Non détecté"
+                                    )}</td>
+                                </tr>
+                                <tr>
+                                    <td>Compteur de crashs</td>
+                                    <td>${escapeHtml(
+                                        getEntryValue("bl_crash_count")
+                                    )}</td>
+                                </tr>
+                                <tr>
+                                    <td>Version calibration</td>
+                                    <td>${escapeHtml(
+                                        getEntryValue("cal_version")
+                                    )}</td>
+                                </tr>
+                                <tr>
+                                    <td>Canal point d'accès</td>
+                                    <td>${escapeHtml(
+                                        getEntryValue("ap.chan")
+                                    )}</td>
+                                </tr>
+                                <tr>
+                                    <td>Canal station</td>
+                                    <td>${escapeHtml(
+                                        getEntryValue("sta.chan")
+                                    )}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </section>
+                `;
+
+                const nvsEntries = pages.flatMap(page =>
+                    (page.entries || [])
+                        .filter(entry =>
+                            entry.state &&
+                            entry.state.name === "written" &&
+                            entry.decoded
+                        )
+                        .map(entry => ({
+                            page: page.page_index,
+                            index: entry.index,
+                            ...entry.decoded
+                        }))
+                );
+
+                function findNvsEntry(key) {
+                    return nvsEntries.find(entry => entry.key === key);
+                }
+
+                function extractAscii(rawHex) {
+                    if (!rawHex) return [];
+
+                    const bytes = rawHex.match(/[0-9a-fA-F]{2}/g) || [];
+                    let text = "";
+
+                    for (const hex of bytes) {
+                        const value = parseInt(hex, 16);
+                        text += value >= 32 && value <= 126
+                            ? String.fromCharCode(value)
+                            : "\n";
+                    }
+
+                    return text
+                        .split(/\n+/)
+                        .filter(value => value.length >= 4);
+                }
+
+                function getNvsText(key) {
+                    const entry = findNvsEntry(key);
+                    if (!entry) return "Non détecté";
+
+                    const strings = extractAscii(entry.raw_hex || "");
+
+                    const result = strings.find(value =>
+                        value !== key &&
+                        !value.includes(key)
+                    );
+
+                    return result || "Présent, non décodé";
+                }
+                const pageRows = pages.map(page => {
+                    const counts = page.entry_counts || {};
+
+                    const stateLabels = {
+                        full: "Pleine",
+                        active: "Active",
+                        empty_or_uninitialized: "Non initialisée",
+                    };
+
+                    const stateLabel =
+                        stateLabels[page.state_name] ||
+                        page.state_name ||
+                        " - ";
+
+                    const sequence =
+                        page.state_name === "empty_or_uninitialized" ||
+                        page.sequence === 4294967295
+                            ? " - "
+                            : page.sequence;
+
+                    let crcStatus = " - ";
+
+                    if (page.state_name === "empty_or_uninitialized") {
+                        crcStatus = "Non initialisée";
+                    } else if (page.header_crc_match === true) {
+                        crcStatus = "OK";
+                    } else if (page.header_crc_match === false) {
+                        crcStatus = "Incohérent";
+                    }
+
+                    return `
+                        <tr>
+                            <td>${escapeHtml(page.page_index)}</td>
+                            <td>${escapeHtml(page.offset || " - ")}</td>
+                            <td>${escapeHtml(stateLabel)}</td>
+                            <td>${escapeHtml(sequence)}</td>
+                            <td>${escapeHtml(counts.written ?? " - ")}</td>
+                            <td>${escapeHtml(counts.erased ?? " - ")}</td>
+                            <td>${escapeHtml(counts.empty ?? " - ")}</td>
+                            <td>${escapeHtml(crcStatus)}</td>
+                        </tr>
+                    `;
+                }).join("");
+
+                const detailBlocks = pages.map(page => {
+                    const entries = (page.entries || [])
+                        .filter(entry =>
+                            entry.state &&
+                            entry.state.name === "written"
+                        );
+
+                    if (entries.length === 0) {
+                        return `
+                            <details class="nvs-page-details">
+                                <summary>
+                                    Page ${escapeHtml(page.page_index)}
+                                    - aucune entrée exploitable
+                                </summary>
+                            </details>
+                        `;
+                    }
+
+                    const entryRows = entries.map(entry => {
+                        const decoded = entry.decoded || {};
+
+                        const crcStatus =
+                            decoded.crc_match === true
+                                ? "OK"
+                                : decoded.crc_match === false
+                                    ? "Incohérent"
+                                    : " - ";
+
+                        return `
+                            <tr>
+                                <td>${escapeHtml(entry.index ?? " - ")}</td>
+                                <td>${escapeHtml(entry.offset || " - ")}</td>
+                                <td>${escapeHtml(decoded.key || " - ")}</td>
+                                <td>${escapeHtml(decoded.type_name || " - ")}</td>
+                                <td>${escapeHtml(decoded.span ?? " - ")}</td>
+                                <td>${escapeHtml(crcStatus)}</td>
+                                <td>
+                                    <code>${escapeHtml(
+                                        decoded.data_hex || " - "
+                                    )}</code>
+                                </td>
+                            </tr>
+                        `;
+                    }).join("");
+
+                    return `
+                        <details class="nvs-page-details">
+                            <summary>
+                                Page ${escapeHtml(page.page_index)}
+                                - ${entries.length} entrée(s) écrite(s)
+                            </summary>
+
+                            <div class="table-container">
+                                <table>
+                                    <thead>
+                                        <tr>
+                                            <th>Index</th>
+                                            <th>Offset</th>
+                                            <th>Clé</th>
+                                            <th>Type</th>
+                                            <th>Span</th>
+                                            <th>CRC</th>
+                                            <th>Données hexadécimales</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        ${entryRows}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </details>
+                    `;
+                }).join("");
+
+                container.innerHTML = nvsSummary + `
+                    <div class="info-grid">
+                        <div><strong>Fichier :</strong>
+                            ${escapeHtml(report.file || " - ")}
+                        </div>
+                        <div><strong>Taille :</strong>
+                            ${escapeHtml(report.size_bytes ?? " - ")} octets
+                        </div>
+                        <div><strong>Taille page :</strong>
+                            ${escapeHtml(report.page_size_bytes ?? " - ")} octets
+                        </div>
+                        <div><strong>Nombre de pages :</strong>
+                            ${escapeHtml(report.page_count ?? " - ")}
+                        </div>
+                    </div>
+
+                    <div class="table-container">
+                        <table>
+                            <thead>
+                                <tr>
+                                    <th>Page</th>
+                                    <th>Offset</th>
+                                    <th>État</th>
+                                    <th>Séquence</th>
+                                    <th>Écrites</th>
+                                    <th>Effacées</th>
+                                    <th>Vides</th>
+                                    <th>CRC header</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${pageRows}
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <h3>Détail des entrées NVS</h3>
+                    ${detailBlocks}
+                `;
+
+                container.querySelectorAll("details").forEach(detail => {
+                    detail.removeAttribute("open");
+                    detail.open = false;
+                });
+            } catch (error) {
+                container.innerHTML =
+                    `<div class="empty">${escapeHtml(error.message)}</div>`;
+            } finally {
+                button.disabled = false;
+                button.textContent = "Actualiser l'analyse NVS";
+            }
+        }
+
+</script>
+
+    <div id="history-modal" class="history-modal">
+        <div class="history-modal-content">
+            <button
+                class="history-modal-close"
+                onclick="closeDeviceHistory()"
+            >
+                Fermer
+            </button>
+
+            <h2 id="history-modal-title">
+                Historique de la carte
+            </h2>
+
+            <div id="history-modal-content"></div>
+        </div>
+    </div>
+
+
+
+
+
+<script>
+async function loadNvsSummary() {
+  const status = document.getElementById("nvs-summary-status");
+  const table = document.getElementById("nvs-summary-table");
+  const keysOutput = document.getElementById("nvs-keys-output");
+
+  status.textContent = "Chargement de l'analyse NVS...";
+
+  try {
+    const response = await fetch("/api/nvs");
+
+    if (!response.ok) {
+      throw new Error("HTTP " + response.status);
+    }
+
+    const data = await response.json();
+
+    const summary = data.summary || {};
+    const wifi = data.wifi || {};
+    const system = data.system || {};
+
+    const rows = [];
+
+    function addRow(label, value) {
+      rows.push(
+        "<tr><td>" + escapeHtml(label) +
+        "</td><td>" + escapeHtml(String(value)) +
+        "</td></tr>"
+      );
+    }
+
+    if (wifi.station_ssid !== undefined) {
+      addRow("SSID station", wifi.station_ssid);
+    }
+
+    if (wifi.access_point_ssid !== undefined) {
+      addRow("SSID point d'accès", wifi.access_point_ssid);
+    }
+
+    if (wifi.station_password_present !== undefined) {
+      addRow(
+        "Mot de passe station",
+        wifi.station_password_present ? "Présent (masqué)" : "Non détecté"
+      );
+    }
+
+    if (wifi.access_point_password_present !== undefined) {
+      addRow(
+        "Mot de passe point d'accès",
+        wifi.access_point_password_present ? "Présent (masqué)" : "Non détecté"
+      );
+    }
+
+    if (system.boot_count !== undefined) {
+      addRow("Compteur de démarrages", system.boot_count);
+    }
+
+    if (system.crash_count !== undefined) {
+      addRow("Compteur de crashs", system.crash_count);
+    }
+
+    if (summary.valid_entries !== undefined) {
+      addRow("Entrées valides", summary.valid_entries);
+    }
+
+    if (summary.unique_keys !== undefined) {
+      addRow("Clés uniques", summary.unique_keys);
+    }
+
+    if (summary.rejected_entries !== undefined) {
+      addRow("Entrées rejetées", summary.rejected_entries);
+    }
+
+    table.innerHTML = rows.length
+      ? rows.join("")
+      : "<tr><td colspan='2'>Aucune donnée de synthèse disponible</td></tr>";
+
+    const keys = data.keys || summary.keys || {};
+
+    keysOutput.textContent = Object.keys(keys).length
+      ? Object.entries(keys)
+          .map(([key, count]) => key + " (" + count + ")")
+          .join("\n")
+      : "Aucune clé disponible";
+
+    status.textContent = "Analyse NVS chargée";
+  } catch (error) {
+    status.textContent = "Erreur : " + error.message;
+    table.innerHTML =
+      "<tr><td colspan='2'>Impossible de charger les données NVS</td></tr>";
+    keysOutput.textContent = "";
+  }
+}
+
+function escapeHtml(value) {
+    
+            value = String(value == null ? "" : value);value = String(value == null ? "" : value);
+  return value
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  loadNvsSummary();
+});
+</script>
+
+
+<section id="flash-partition-view">
+    <h2>Partitionnement de la mémoire Flash</h2>
+    <p>
+        ESP32-S3 - Flash détectée : <strong>16 MiB</strong>.
+        Représentation basée sur la table des partitions lue à l'adresse <code>0x8000</code>.
+    </p>
+
+    <div class="flash-partition-bar" id="flash-partition-bar"></div>
+
+    <table class="flash-partition-legend">
+        <thead>
+            <tr>
+                <th>Partition</th>
+                <th>Adresse</th>
+                <th>Taille</th>
+                <th>Type</th>
+                <th>Fin</th>
+            </tr>
+        </thead>
+        <tbody id="flash-partition-rows"></tbody>
+    </table>
+</section>
+
+<script>
+(function renderFlashPartitionView() {
+    const partitions = [
+        {
+            name: "NVS",
+            address: 0x9000,
+            size: 0x5000,
+            type: "Données",
+            subtype: "nvs",
+            color: "#93c5fd"
+        },
+        {
+            name: "otadata",
+            address: 0xE000,
+            size: 0x2000,
+            type: "Données",
+            subtype: "ota",
+            color: "#c4b5fd"
+        },
+        {
+            name: "app0",
+            address: 0x10000,
+            size: 0x640000,
+            type: "Application",
+            subtype: "ota_0",
+            color: "#86efac"
+        },
+        {
+            name: "app1",
+            address: 0x650000,
+            size: 0x640000,
+            type: "Application",
+            subtype: "ota_1",
+            color: "#4ade80"
+        },
+        {
+            name: "spiffs",
+            address: 0xC90000,
+            size: 0x360000,
+            type: "Données",
+            subtype: "spiffs / LittleFS",
+            color: "#fcd34d"
+        },
+        {
+            name: "coredump",
+            address: 0xFF0000,
+            size: 0x10000,
+            type: "Données",
+            subtype: "coredump",
+            color: "#fca5a5"
+        }
+    ];
+
+    const flashSize = 0x1000000;
+    const bar = document.getElementById("flash-partition-bar");
+    const rows = document.getElementById("flash-partition-rows");
+
+    if (!bar || !rows) {
+        return;
+    }
+
+    const formatHex = value =>
+        "0x" + value.toString(16).toUpperCase().padStart(6, "0");
+
+    const formatSize = bytes => {
+        if (bytes >= 1024 * 1024) {
+            return (bytes / (1024 * 1024)).toFixed(3).replace(".", ",") + " MiB";
+        }
+
+        return Math.round(bytes / 1024) + " KiB";
+    };
+
+    partitions.forEach(partition => {
+        const end = partition.address + partition.size;
+        const width = (partition.size / flashSize) * 100;
+
+        const segment = document.createElement("div");
+        segment.className = "flash-partition-segment";
+        segment.style.width = width + "%";
+        segment.style.backgroundColor = partition.color;
+        segment.title =
+            partition.name + " - " +
+            formatHex(partition.address) + " - " +
+            formatSize(partition.size);
+
+        const label = document.createElement("span");
+        label.textContent = partition.name;
+        segment.appendChild(label);
+        bar.appendChild(segment);
+
+        const row = document.createElement("tr");
+        row.innerHTML = `
+            <td>
+                <span class="flash-partition-color"
+                      style="background:${partition.color}"></span>
+                ${partition.name}
+            </td>
+            <td><code>${formatHex(partition.address)}</code></td>
+            <td>${formatSize(partition.size)}</td>
+            <td>${partition.type} (${partition.subtype})</td>
+            <td><code>${formatHex(end)}</code></td>
+        `;
+
+        rows.appendChild(row);
+    });
+})();
+</script>
+
+</body>
+</html>

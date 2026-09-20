@@ -6,10 +6,27 @@ import json
 from datetime import datetime, timezone
 from pathlib import Path
 
+from core import flash_catalog
 from core.esp32_identification import (
     identify_esp32,
     parse_identification,
 )
+
+
+def enrich_identification(information):
+    """Ajoute les libellés lisibles du catalogue Flash à l'identification."""
+
+    manufacturer = flash_catalog.describe_manufacturer(
+        information.get("flash_manufacturer")
+    )
+    device = flash_catalog.describe_device(
+        information.get("flash_device")
+    )
+
+    information["flash_manufacturer_name"] = manufacturer
+    information["flash_device_name"] = device
+
+    return information
 
 
 def create_inventory(port="/dev/ttyACM0"):
@@ -19,10 +36,12 @@ def create_inventory(port="/dev/ttyACM0"):
 
     if result["return_code"] != 0:
         raise RuntimeError(
-            f"Échec de l'identification : {result['stderr']}"
+            f"Échec de l'identification : {result['stderr'].strip()}"
         )
 
-    information = parse_identification(result["stdout"])
+    information = enrich_identification(
+        parse_identification(result["stdout"])
+    )
 
     return {
         "timestamp": datetime.now(timezone.utc).isoformat(),

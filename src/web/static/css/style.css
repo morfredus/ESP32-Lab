@@ -1,0 +1,543 @@
+/* ==========================================================================
+   ESP32-Lab — feuille de style principale
+   ========================================================================== */
+
+:root {
+    --color-bg: #f2f4f7;
+    --color-text: #20242a;
+    --color-muted: #667085;
+    --color-primary: #2563eb;
+    --color-primary-dark: #1d4ed8;
+    --color-border: #d0d5dd;
+    --color-card: #ffffff;
+    --shadow-card: 0 2px 8px #00000012;
+}
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background: var(--color-bg);
+    color: var(--color-text);
+    margin: 0;
+    padding: 30px;
+}
+
+main {
+    max-width: 1200px;
+    margin: auto;
+}
+
+h1 {
+    margin-bottom: 5px;
+}
+
+.subtitle {
+    color: var(--color-muted);
+    margin-bottom: 25px;
+}
+
+.section-title {
+    margin-top: 30px;
+    margin-bottom: 15px;
+}
+
+/* --- Boutons et champs ---------------------------------------------------- */
+
+select,
+button {
+    border-radius: 8px;
+    padding: 12px 16px;
+    font-size: 15px;
+}
+
+select {
+    background: white;
+    border: 1px solid var(--color-border);
+    min-width: 230px;
+}
+
+button {
+    background: var(--color-primary);
+    color: white;
+    border: none;
+    cursor: pointer;
+}
+
+button:hover {
+    background: var(--color-primary-dark);
+}
+
+button:disabled {
+    background: #9ca3af;
+    cursor: wait;
+}
+
+/* --- Barre d'outils / statut ---------------------------------------------- */
+
+.toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.status,
+.error {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+}
+
+.status {
+    background: #d1fadf;
+    color: #027a48;
+}
+
+.error {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+.note {
+    background: #fef7e0;
+    color: #7a5b00;
+    border: 1px solid #f5d78a;
+    padding: 10px 12px;
+    border-radius: 8px;
+    font-size: 13px;
+    margin: 12px 0;
+}
+
+.port-details {
+    color: var(--color-muted);
+    font-size: 13px;
+    margin-top: 6px;
+    line-height: 1.5;
+}
+
+/* --- Cartes / grille ------------------------------------------------------ */
+
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 16px;
+}
+
+.card {
+    background: var(--color-card);
+    border-radius: 10px;
+    padding: 20px;
+    box-shadow: var(--shadow-card);
+}
+
+.card h2 {
+    font-size: 18px;
+    margin-top: 0;
+}
+
+.value {
+    font-size: 24px;
+    font-weight: bold;
+    margin: 10px 0;
+}
+
+.detail {
+    color: var(--color-muted);
+    margin: 6px 0;
+    word-break: break-word;
+}
+
+/* --- Onglets -------------------------------------------------------------- */
+
+.tabs {
+    position: sticky;
+    top: 0;
+    z-index: 50;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    padding: 12px 0;
+    margin: 10px 0 24px;
+    background: var(--color-bg);
+    border-bottom: 1px solid #d1d5db;
+}
+
+.tabs button {
+    border: 1px solid #cbd5e1;
+    border-radius: 7px;
+    padding: 10px 18px;
+    background: #e5e7eb;
+    color: #1f2937;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 600;
+}
+
+.tabs button:hover {
+    background: #d5d9df;
+}
+
+.tabs button.active {
+    background: var(--color-primary);
+    border-color: var(--color-primary);
+    color: white;
+}
+
+.tab-panel {
+    display: none;
+}
+
+.tab-panel.active {
+    display: block;
+}
+
+/* --- Fiche carte / recherche --------------------------------------------- */
+
+.device-search {
+    margin: 15px 0;
+    max-width: 650px;
+}
+
+.device-search input {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    font-family: inherit;
+    font-size: 15px;
+}
+
+.profile-form {
+    display: grid;
+    gap: 10px;
+    margin-top: 18px;
+    max-width: 650px;
+}
+
+.profile-form label {
+    font-weight: bold;
+    font-size: 14px;
+}
+
+.profile-form input,
+.profile-form textarea {
+    font-family: inherit;
+    font-size: 15px;
+    padding: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    resize: vertical;
+}
+
+/* --- Tableaux ------------------------------------------------------------- */
+
+.history-container,
+.comparison-container,
+.panel {
+    background: var(--color-card);
+    border-radius: 10px;
+    padding: 20px;
+    overflow-x: auto;
+    box-shadow: var(--shadow-card);
+    margin-bottom: 16px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    min-width: 700px;
+}
+
+th,
+td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #eaecf0;
+}
+
+th {
+    background: #f9fafb;
+    font-size: 13px;
+}
+
+td {
+    font-size: 14px;
+}
+
+.empty {
+    color: var(--color-muted);
+    padding: 10px 0;
+}
+
+/* --- Comparaison ---------------------------------------------------------- */
+
+.comparison-toolbar {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+    margin-bottom: 15px;
+}
+
+.selection-info {
+    color: var(--color-muted);
+    font-size: 14px;
+}
+
+.same {
+    color: #027a48;
+    font-weight: bold;
+}
+
+.different {
+    color: #b42318;
+    font-weight: bold;
+}
+
+.comparison-table tr.row-different td {
+    background: #fff4f2;
+}
+
+.comparison-table tr.row-same td {
+    background: #f2fbf6;
+}
+
+.comparison-table tr.row-different td:first-child {
+    border-left: 4px solid #d92d20;
+}
+
+.comparison-table tr.row-same td:first-child {
+    border-left: 4px solid #12b76a;
+}
+
+.comparison-summary {
+    padding: 12px 15px;
+    margin-bottom: 15px;
+    border-radius: 8px;
+    background: #f8fafc;
+    border: 1px solid #e4e7ec;
+}
+
+.comparison-counts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-top: 10px;
+    font-size: 14px;
+}
+
+.comparison-count-different {
+    color: #b42318;
+    font-weight: bold;
+}
+
+.comparison-count-same {
+    color: #027a48;
+    font-weight: bold;
+}
+
+.checkbox-cell {
+    text-align: center;
+    width: 60px;
+}
+
+input[type="checkbox"] {
+    width: 17px;
+    height: 17px;
+    cursor: pointer;
+}
+
+/* --- Boutons secondaires -------------------------------------------------- */
+
+.history-details-button {
+    padding: 5px 9px;
+    border: none;
+    border-radius: 6px;
+    background: #64748b;
+    color: white;
+    cursor: pointer;
+    font-size: 12px;
+    margin-right: 4px;
+}
+
+.history-details-button:hover {
+    background: #475569;
+}
+
+.primary-button {
+    background: var(--color-primary);
+}
+
+/* --- Modale historique ---------------------------------------------------- */
+
+.history-modal {
+    display: none;
+    position: fixed;
+    z-index: 1000;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.55);
+    padding: 30px;
+    overflow-y: auto;
+}
+
+.history-modal-content {
+    max-width: 900px;
+    margin: 30px auto;
+    padding: 25px;
+    background: white;
+    border-radius: 12px;
+    box-shadow: 0 8px 30px rgba(0, 0, 0, 0.25);
+}
+
+.history-modal-close {
+    float: right;
+    border: none;
+    background: #dc2626;
+    color: white;
+    border-radius: 6px;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+
+.history-modal table {
+    margin-top: 20px;
+}
+
+.device-details-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 20px 0;
+}
+
+.device-detail-card {
+    padding: 14px;
+    background: #f8fafc;
+    border-radius: 8px;
+    border: 1px solid #e2e8f0;
+}
+
+.device-detail-card strong {
+    display: block;
+    margin-bottom: 5px;
+    color: #475569;
+}
+
+/* --- NVS ------------------------------------------------------------------ */
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 12px;
+    margin: 16px 0;
+}
+
+.info-grid > div {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 12px;
+    font-size: 14px;
+}
+
+.nvs-page-details:not([open]) > *:not(summary) {
+    display: none !important;
+}
+
+.nvs-page-details summary {
+    cursor: pointer;
+    padding: 10px;
+    font-weight: bold;
+    background: #eef2f7;
+    border-radius: 6px;
+}
+
+.nvs-page-details[open] {
+    margin-bottom: 12px;
+}
+
+.nvs-page-details table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+/* --- Partitionnement Flash ------------------------------------------------ */
+
+.flash-partition-bar {
+    display: flex;
+    width: 100%;
+    height: 58px;
+    border-radius: 8px;
+    overflow: hidden;
+    border: 1px solid #cbd5e1;
+    background: #e5e7eb;
+    margin-top: 8px;
+}
+
+.flash-partition-segment {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 2px;
+    overflow: hidden;
+    border-right: 1px solid white;
+    color: #111827;
+    font-size: 11px;
+    font-weight: 600;
+    text-align: center;
+    cursor: default;
+}
+
+.flash-partition-segment span {
+    padding: 3px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.flash-partition-legend {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 14px;
+    font-size: 13px;
+    min-width: 0;
+}
+
+.flash-partition-legend th,
+.flash-partition-legend td {
+    padding: 8px;
+    border-bottom: 1px solid #e5e7eb;
+    text-align: left;
+}
+
+.flash-partition-color {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    border-radius: 3px;
+    vertical-align: middle;
+    margin-right: 6px;
+}
+
+/* --- Responsive ----------------------------------------------------------- */
+
+@media (max-width: 700px) {
+    body {
+        padding: 16px;
+    }
+
+    .tabs button {
+        flex: 1 1 auto;
+        padding: 9px 10px;
+        font-size: 12px;
+    }
+
+    table {
+        min-width: 560px;
+    }
+}

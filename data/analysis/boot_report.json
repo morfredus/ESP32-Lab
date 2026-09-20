@@ -1,0 +1,120 @@
+{
+  "source_file": "data/analysis/json_candidates_summary.json",
+  "journal_count": 3,
+  "journals": [
+    {
+      "source_offset": 286721,
+      "source_size": null,
+      "boot_count": 3,
+      "reset_reason": "Inconnue (0)",
+      "temperature_c": 40.8,
+      "boot_ms": 5086,
+      "uptime_at_reset_ms": 45859,
+      "wifi": {
+        "ssid": "fredmomo",
+        "ip": "192.168.1.25",
+        "rssi_dbm": -28
+      },
+      "filesystem": {
+        "used_bytes": 20480,
+        "total_bytes": 3538944
+      },
+      "inventory": {
+        "components": 0,
+        "locations": 0
+      },
+      "modules": [
+        "Initialisation terminée — 5 modules actifs"
+      ],
+      "services": [
+        "mDNS actif : http://componenthub-esp32.local",
+        "ArduinoOTA actif (nom réseau : componenthub-esp32)",
+        "Synchronisation NTP démarrée (serveur pool.ntp.org, tz UTC)",
+        "Serveur web démarré sur le port 80"
+      ],
+      "invalid_lines": 1,
+      "recovered_lines": 1,
+      "raw_line_count": 13,
+      "previous_boot_count": 2,
+      "previous_crash_count": 0
+    },
+    {
+      "source_offset": 364665,
+      "source_size": null,
+      "boot_count": 2,
+      "reset_reason": "Inconnue (0)",
+      "temperature_c": 37.8,
+      "boot_ms": 5358,
+      "uptime_at_reset_ms": 284098,
+      "wifi": {
+        "ssid": "fredmomo",
+        "ip": "192.168.1.25",
+        "rssi_dbm": -28
+      },
+      "filesystem": {
+        "used_bytes": 16384,
+        "total_bytes": 3538944
+      },
+      "inventory": {
+        "components": 0,
+        "locations": 0
+      },
+      "modules": [
+        "Initialisation terminée — 5 modules actifs"
+      ],
+      "services": [
+        "mDNS actif : http://componenthub-esp32.local",
+        "ArduinoOTA actif (nom réseau : componenthub-esp32)",
+        "Synchronisation NTP démarrée (serveur pool.ntp.org, tz UTC)",
+        "Serveur web démarré sur le port 80"
+      ],
+      "invalid_lines": 1,
+      "recovered_lines": 1,
+      "raw_line_count": 13,
+      "previous_boot_count": 1,
+      "previous_crash_count": 0
+    },
+    {
+      "source_offset": 664329,
+      "source_size": null,
+      "boot_count": 12,
+      "reset_reason": "Mise sous tension (1)",
+      "temperature_c": 40.8,
+      "boot_ms": 5504,
+      "uptime_at_reset_ms": 4000,
+      "wifi": {
+        "ssid": "fredmomo",
+        "ip": "192.168.1.25",
+        "rssi_dbm": -43
+      },
+      "filesystem": {
+        "used_bytes": 49152,
+        "total_bytes": 3538944
+      },
+      "inventory": {
+        "components": 39,
+        "locations": 7
+      },
+      "modules": [
+        "Initialisation terminée — 5 modules actifs"
+      ],
+      "services": [
+        "mDNS actif : http://componenthub-esp32.local",
+        "ArduinoOTA actif (nom réseau : componenthub-esp32)",
+        "Synchronisation NTP démarrée (serveur pool.ntp.org, tz UTC)",
+        "Serveur web démarré sur le port 80"
+      ],
+      "invalid_lines": 1,
+      "recovered_lines": 1,
+      "raw_line_count": 13,
+      "previous_boot_count": 11,
+      "previous_crash_count": 0
+    }
+  ],
+  "limitations": [
+    "Les lignes Wi-Fi malformées sont récupérées par expression régulière.",
+    "Les valeurs absentes ne sont pas déduites.",
+    "Les données proviennent de journaux applicatifs extraits de la Flash.",
+    "Ce rapport ne prouve pas la cause matérielle des resets."
+  ]
+}

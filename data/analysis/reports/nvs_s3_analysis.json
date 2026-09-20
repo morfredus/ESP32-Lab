@@ -1,0 +1,58 @@
+{
+    "file": "data/analysis/raw/nvs_s3.bin",
+    "size_bytes": 20480,
+    "page_size_bytes": 4096,
+    "page_count": 5,
+    "pages": [
+        {
+            "offset": "0x00000",
+            "size_bytes": 4096,
+            "ff_bytes": 1083,
+            "zero_bytes": 1872,
+            "non_ff_bytes": 3013,
+            "is_blank": false,
+            "first_32_bytes": "fc ff ff ff 00 00 00 00 fe ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff 84 2d ba b9"
+        },
+        {
+            "offset": "0x01000",
+            "size_bytes": 4096,
+            "ff_bytes": 1090,
+            "zero_bytes": 1435,
+            "non_ff_bytes": 3006,
+            "is_blank": false,
+            "first_32_bytes": "fc ff ff ff 05 00 00 00 fe ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff fc d6 99 51"
+        },
+        {
+            "offset": "0x02000",
+            "size_bytes": 4096,
+            "ff_bytes": 1093,
+            "zero_bytes": 811,
+            "non_ff_bytes": 3003,
+            "is_blank": false,
+            "first_32_bytes": "fc ff ff ff 06 00 00 00 fe ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff d4 7f 87 09"
+        },
+        {
+            "offset": "0x03000",
+            "size_bytes": 4096,
+            "ff_bytes": 4096,
+            "zero_bytes": 0,
+            "non_ff_bytes": 0,
+            "is_blank": true,
+            "first_32_bytes": "ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff"
+        },
+        {
+            "offset": "0x04000",
+            "size_bytes": 4096,
+            "ff_bytes": 1468,
+            "zero_bytes": 710,
+            "non_ff_bytes": 2628,
+            "is_blank": false,
+            "first_32_bytes": "fe ff ff ff 07 00 00 00 fe ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff f3 1a a2 88"
+        }
+    ],
+    "limitations": [
+        "Cette analyse ne décode pas les entrées NVS.",
+        "La présence d'octets non vierges ne prouve pas qu'une donnée utilisateur est exploitable.",
+        "Les valeurs NVS ne sont pas extraites dans cette étape."
+    ]
+}

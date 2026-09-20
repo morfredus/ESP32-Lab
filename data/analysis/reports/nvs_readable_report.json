@@ -1,0 +1,330 @@
+{
+  "source": "data/analysis/reports/nvs_scalar_values.json",
+  "entries": [
+    {
+      "page": 0,
+      "entry": 0,
+      "namespace": 0,
+      "type": 1,
+      "key": "misc",
+      "raw_hex": "01 ff ff ff ff ff ff ff",
+      "value": 1,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 1,
+      "namespace": 0,
+      "type": 1,
+      "key": "nvs.net80211",
+      "raw_hex": "02 ff ff ff ff ff ff ff",
+      "value": 2,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 4,
+      "namespace": 0,
+      "type": 1,
+      "key": "phy",
+      "raw_hex": "03 ff ff ff ff ff ff ff",
+      "value": 3,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 70,
+      "namespace": 3,
+      "type": 4,
+      "key": "cal_version",
+      "raw_hex": "80 02 00 00 ff ff ff ff",
+      "value": 640,
+      "interpretation": "Calibration version candidate"
+    },
+    {
+      "page": 0,
+      "entry": 81,
+      "namespace": 2,
+      "type": 2,
+      "key": "sta.lis_intval",
+      "raw_hex": "03 00 ff ff ff ff ff ff",
+      "value": 3,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 83,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.scan_method",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 84,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.sort_method",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 86,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.minauth",
+      "raw_hex": "03 ff ff ff ff ff ff ff",
+      "value": 3,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 90,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.pmf_e",
+      "raw_hex": "01 ff ff ff ff ff ff ff",
+      "value": 1,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 91,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.pmf_r",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 92,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.rrm_e",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 93,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.btm_e",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 94,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.mbo_e",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 95,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.bss_retry",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 96,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.trans_d",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 97,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.sae_h2e",
+      "raw_hex": "02 ff ff ff ff ff ff ff",
+      "value": 2,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 0,
+      "entry": 122,
+      "namespace": 0,
+      "type": 1,
+      "key": "dhcp_state",
+      "raw_hex": "04 ff ff ff ff ff ff ff",
+      "value": 4,
+      "interpretation": "Raw enum"
+    },
+    {
+      "page": 1,
+      "entry": 0,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.phybw",
+      "raw_hex": "01 ff ff ff ff ff ff ff",
+      "value": 1,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 1,
+      "entry": 1,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.phybw",
+      "raw_hex": "01 ff ff ff ff ff ff ff",
+      "value": 1,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 1,
+      "entry": 2,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.authmode",
+      "raw_hex": "03 ff ff ff ff ff ff ff",
+      "value": 3,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 1,
+      "entry": 8,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.hidden",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 1,
+      "entry": 9,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.max.conn",
+      "raw_hex": "04 ff ff ff ff ff ff ff",
+      "value": 4,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 1,
+      "entry": 10,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.p_cipher",
+      "raw_hex": "04 ff ff ff ff ff ff ff",
+      "value": 4,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 1,
+      "entry": 11,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.sndchan",
+      "raw_hex": "02 ff ff ff ff ff ff ff",
+      "value": 2,
+      "interpretation": "Wi-Fi channel"
+    },
+    {
+      "page": 1,
+      "entry": 44,
+      "namespace": 2,
+      "type": 1,
+      "key": "bssid.set",
+      "raw_hex": "01 ff ff ff ff ff ff ff",
+      "value": 1,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 2,
+      "entry": 0,
+      "namespace": 2,
+      "type": 2,
+      "key": "bcn.interval",
+      "raw_hex": "64 00 ff ff ff ff ff ff",
+      "value": 100,
+      "interpretation": "Beacon interval candidate"
+    },
+    {
+      "page": 2,
+      "entry": 1,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.ftm_r",
+      "raw_hex": "00 ff ff ff ff ff ff ff",
+      "value": 0,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 2,
+      "entry": 36,
+      "namespace": 0,
+      "type": 1,
+      "key": "app",
+      "raw_hex": "05 ff ff ff ff ff ff ff",
+      "value": 5,
+      "interpretation": "Raw integer candidate"
+    },
+    {
+      "page": 4,
+      "entry": 0,
+      "namespace": 2,
+      "type": 1,
+      "key": "ap.chan",
+      "raw_hex": "0b ff ff ff ff ff ff ff",
+      "value": 11,
+      "interpretation": "Wi-Fi channel"
+    },
+    {
+      "page": 4,
+      "entry": 12,
+      "namespace": 2,
+      "type": 1,
+      "key": "opmode",
+      "raw_hex": "01 ff ff ff ff ff ff ff",
+      "value": 1,
+      "interpretation": "Raw enum"
+    },
+    {
+      "page": 4,
+      "entry": 99,
+      "namespace": 2,
+      "type": 1,
+      "key": "sta.chan",
+      "raw_hex": "01 ff ff ff ff ff ff ff",
+      "value": 1,
+      "interpretation": "Wi-Fi channel"
+    },
+    {
+      "page": 4,
+      "entry": 105,
+      "namespace": 4,
+      "type": 4,
+      "key": "WIFI_STA_DEF",
+      "raw_hex": "c0 a8 01 19 ff ff ff ff",
+      "value": "192.168.1.25",
+      "interpretation": "IPv4 candidate"
+    }
+  ],
+  "limitations": [
+    "Les valeurs sont extraites du dump NVS.",
+    "Les enums Wi-Fi et les structures internes ne sont pas tous décodés.",
+    "Les interprétations candidates ne remplacent pas la documentation ESP-IDF."
+  ]
+}

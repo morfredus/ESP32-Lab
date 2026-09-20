@@ -1,0 +1,50 @@
+{
+    "file": "data/analysis/raw/sfdp_s3.bin",
+    "size_bytes": 256,
+    "signature": "SFDP",
+    "valid_signature": true,
+    "header": {
+        "minor_revision": 0,
+        "major_revision": 1,
+        "number_of_parameter_headers": 2,
+        "access_protocol": "0xFF"
+    },
+    "parameter_headers": [
+        {
+            "offset": "0x08",
+            "parameter_id": "0xFF00",
+            "minor_revision": 0,
+            "major_revision": 1,
+            "length_dwords": 9,
+            "length_bytes": 36,
+            "parameter_pointer": "0x000030"
+        },
+        {
+            "offset": "0x10",
+            "parameter_id": "0xFF68",
+            "minor_revision": 0,
+            "major_revision": 1,
+            "length_dwords": 3,
+            "length_bytes": 12,
+            "parameter_pointer": "0x000060"
+        }
+    ],
+    "tables": [
+        {
+            "parameter_id": "0xFF00",
+            "start": "0x000030",
+            "length_bytes": 36,
+            "available_in_capture": true,
+            "data_hex": "e5 20 f1 ff ff ff ff 07 44 eb 08 6b 08 3b 42 bb ee ff ff ff ff ff 00 ff ff ff 00 ff 0c 20 0f 52 10 d8 00 ff"
+        },
+        {
+            "parameter_id": "0xFF68",
+            "start": "0x000060",
+            "length_bytes": 12,
+            "available_in_capture": true,
+            "data_hex": "00 36 00 27 9f e9 77 64 fc eb ff ff"
+        }
+    ],
+    "raw_hex": "53 46 44 50 00 01 01 ff 00 00 01 09 30 00 00 ff 68 00 01 03 60 00 00 ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff e5 20 f1 ff ff ff ff 07 44 eb 08 6b 08 3b 42 bb ee ff ff ff ff ff 00 ff ff ff 00 ff 0c 20 0f 52 10 d8 00 ff ff ff ff ff ff ff ff ff ff ff ff ff 00 36 00 27 9f e9 77 64 fc eb ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff ff",
+    "limitations": []
+}

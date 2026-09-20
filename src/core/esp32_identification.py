@@ -4,27 +4,14 @@ Identification et analyse d'un ESP32 via esptool.
 
 import json
 import re
-import subprocess
+
+from core.esptool_runner import run_esptool
 
 
 def identify_esp32(port="/dev/ttyACM0"):
     """Récupère les informations brutes via esptool."""
 
-    command = [
-        ".venv/bin/python",
-        "-m",
-        "esptool",
-        "--port",
-        port,
-        "flash-id",
-    ]
-
-    result = subprocess.run(
-        command,
-        capture_output=True,
-        text=True,
-        check=False,
-    )
+    result = run_esptool(["--port", port, "flash-id"])
 
     return {
         "port": port,
@@ -39,6 +26,7 @@ def parse_identification(raw_output):
 
     info = {
         "chip": None,
+        "chip_family": None,
         "revision": None,
         "features": None,
         "cpu_frequency_mhz": None,
@@ -85,7 +73,37 @@ def parse_identification(raw_output):
 
             info[key] = value
 
+    info["chip_family"] = chip_family(info["chip"])
+
     return info
+
+
+def chip_family(chip):
+    """
+    Déduit l'identifiant esptool (``esp32s3``, ``esp32c3``, ``esp32``...)
+    à partir du libellé de puce renvoyé par esptool.
+    """
+
+    if not chip:
+        return None
+
+    normalized = chip.lower()
+
+    known_families = (
+        "esp32-s3",
+        "esp32-s2",
+        "esp32-c3",
+        "esp32-c6",
+        "esp32-c2",
+        "esp32-h2",
+        "esp32",
+    )
+
+    for family in known_families:
+        if family in normalized:
+            return family.replace("-", "")
+
+    return None
 
 if __name__ == "__main__":
 
