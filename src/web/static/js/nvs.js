@@ -32,12 +32,19 @@ async function loadNvsAnalysis() {
                 .map(entry => entry.decoded)
         );
 
+        // Liste ordonnée de tous les slots décodés (avec raw_hex), nécessaire
+        // pour reconstituer les valeurs multi-slots (SSID stockés en blob).
+        const orderedDecoded = pages.flatMap(page =>
+            (page.entries || []).map(entry => entry.decoded || {})
+        );
+
         container.innerHTML =
-            renderNvsSummary(writtenEntries) +
+            renderNvsSummary(writtenEntries, orderedDecoded) +
             renderNvsMeta(report) +
             renderNvsPages(pages) +
             "<h3>Détail des entrées NVS</h3>" +
-            renderNvsDetails(pages);
+            renderNvsDetails(pages) +
+            renderNvsLimitations(report);
 
         container.querySelectorAll("details").forEach(detail => {
             detail.open = false;
@@ -51,7 +58,44 @@ async function loadNvsAnalysis() {
     }
 }
 
-function renderNvsSummary(entries) {
+/**
+ * Reconstitue la plus longue chaîne ASCII imprimable d'une entrée blob/str
+ * répartie sur plusieurs slots (ex. un SSID Wi-Fi). Retourne null si rien
+ * d'exploitable. Le premier slot (32 octets) est l'en-tête : on l'ignore.
+ */
+function extractNvsString(ordered, index) {
+    const descriptor = ordered[index] || {};
+    const span = descriptor.span || 1;
+
+    let hex = "";
+    for (let j = index; j < index + span && j < ordered.length; j++) {
+        hex += ordered[j].raw_hex || "";
+    }
+
+    const bytes = hex.match(/../g) || [];
+    const data = bytes.slice(32);   // ignore le slot descripteur
+
+    let best = "";
+    let current = "";
+    for (const pair of data) {
+        const code = parseInt(pair, 16);
+        if (code >= 0x20 && code < 0x7f) {
+            current += String.fromCharCode(code);
+        } else {
+            if (current.length > best.length) {
+                best = current;
+            }
+            current = "";
+        }
+    }
+    if (current.length > best.length) {
+        best = current;
+    }
+
+    return best.length >= 3 ? best : null;
+}
+
+function renderNvsSummary(entries, ordered = []) {
     const byKey = key => entries.find(entry => entry.key === key);
     const has = key => Boolean(byKey(key));
 
@@ -70,13 +114,27 @@ function renderNvsSummary(entries) {
         return entry ? decodeNvsHuman(entry) : "Non détecté";
     };
 
+    /* SSID : reconstitution du texte depuis le blob multi-slots. */
+    const ssid = key => {
+        const index = ordered.findIndex(
+            item => item.key === key && item.type_raw === "0x42"
+        );
+        if (index >= 0) {
+            const text = extractNvsString(ordered, index);
+            if (text) {
+                return `« ${text} »`;
+            }
+        }
+        return human(key);
+    };
+
     const secret = key =>
         has(key) ? "Présent (masqué)" : "Non détecté";
 
     /* [libellé, valeur brute, valeur lisible] */
     const definitions = [
-        ["SSID Wi-Fi station", raw("sta.ssid"), human("sta.ssid")],
-        ["SSID point d'accès", raw("ap.ssid"), human("ap.ssid")],
+        ["SSID Wi-Fi station", raw("sta.ssid"), ssid("sta.ssid")],
+        ["SSID point d'accès", raw("ap.ssid"), ssid("ap.ssid")],
         ["Mot de passe station", secret("sta.pswd"), secret("sta.pswd")],
         ["Mot de passe point d'accès", secret("ap.passwd"), secret("ap.passwd")],
         ["Canal station", raw("sta.chan"), human("sta.chan")],
@@ -112,6 +170,32 @@ function renderNvsSummary(entries) {
                 </thead>
                 <tbody>${rows}</tbody>
             </table>
+        </section>
+    `;
+}
+
+function renderNvsLimitations(report) {
+    const limitations = report.limitations || [];
+    if (!limitations.length) {
+        return "";
+    }
+
+    const items = limitations
+        .map(text => `<li>${escapeHtml(text)}</li>`)
+        .join("");
+
+    return `
+        <section class="panel" style="margin-top:16px;">
+            <h3>Limitations connues de l'analyse</h3>
+            <p class="note">
+                Ces limites proviennent de l'outil qui a généré le rapport,
+                pas d'un défaut de la carte. Elles expliquent notamment les
+                CRC « Incohérent » et les caractères binaires : les grandes
+                zones (calibration Wi-Fi/RF, PHY) sont des données binaires,
+                et les slots de données des blobs sont listés comme des
+                entrées à part entière.
+            </p>
+            <ul>${items}</ul>
         </section>
     `;
 }

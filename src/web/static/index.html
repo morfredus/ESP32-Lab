@@ -10,7 +10,11 @@
 <body>
     <main>
         <h1>ESP32-Lab</h1>
-        <div class="subtitle">Laboratoire d'analyse et de test ESP32</div>
+        <div class="subtitle">
+            Laboratoire d'analyse et de test ESP32
+            <!-- Renseigné par /api/health (source unique : le fichier VERSION). -->
+            <span id="app-version" class="app-version"></span>
+        </div>
 
         <div id="status" class="status">Initialisation...</div>
 
@@ -37,6 +41,7 @@
         <!-- Navigation par onglets -->
         <nav class="tabs" aria-label="Navigation ESP32-Lab">
             <button data-tab="general">Général</button>
+            <button data-tab="efuse">Identité &amp; Sécurité</button>
             <button data-tab="nvs">Analyse NVS</button>
             <button data-tab="partitions">Partitions Flash</button>
             <button data-tab="inventory">Inventaire</button>
@@ -73,6 +78,26 @@
             </div>
         </section>
 
+        <!-- ===================== IDENTITÉ & SÉCURITÉ ===================== -->
+        <section class="tab-panel" data-panel="efuse">
+            <h2 class="section-title">Identité &amp; Sécurité (eFuses)</h2>
+            <p class="note">
+                Lecture des eFuses de la puce (lecture seule) : révision exacte
+                du silicium, identifiant unique, état de sécurité, calibration.
+                Ces informations proviennent directement du matériel et sont
+                rarement exposées ailleurs. Le port doit être sélectionné dans
+                l'onglet Général.
+            </p>
+
+            <button id="efuse-button" onclick="loadEfuses()">
+                Lire les eFuses
+            </button>
+
+            <div id="efuse-content" style="margin-top:16px;">
+                <div class="empty">Aucune lecture d'eFuse effectuée.</div>
+            </div>
+        </section>
+
         <!-- ============================= NVS ============================= -->
         <section class="tab-panel" data-panel="nvs">
             <h2 class="section-title">Analyse NVS</h2>
@@ -92,6 +117,22 @@
 
         <!-- ========================= PARTITIONS ========================== -->
         <section class="tab-panel" data-panel="partitions">
+            <h2 class="section-title">Puce Flash (SFDP &amp; identifiant unique)</h2>
+            <p class="note">
+                Lecture des paramètres gravés par le fabricant (SFDP, JESD216) et
+                de l'identifiant unique 64 bits de la puce Flash — des
+                informations rarement exposées. Lecture seule. Le port doit être
+                sélectionné dans l'onglet Général.
+            </p>
+
+            <button id="flash-sfdp-button" onclick="loadFlashDetails()">
+                Lire les détails de la Flash (SFDP)
+            </button>
+
+            <div id="flash-sfdp-content" style="margin:16px 0 8px;">
+                <div class="empty">Aucune lecture SFDP effectuée.</div>
+            </div>
+
             <h2 class="section-title">Partitionnement de la mémoire Flash</h2>
             <p class="note">
                 La table de partitions est lue directement sur la carte
@@ -189,6 +230,8 @@
     <script src="/js/devices.js"></script>
     <script src="/js/history.js"></script>
     <script src="/js/partitions.js"></script>
+    <script src="/js/flash_sfdp.js"></script>
+    <script src="/js/efuse.js"></script>
     <script src="/js/nvs.js"></script>
     <script src="/js/tabs.js"></script>
     <script src="/js/main.js"></script>

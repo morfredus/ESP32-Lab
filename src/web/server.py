@@ -14,6 +14,8 @@ from core.device_registry import (
     update_device,
     update_device_from_inventory,
 )
+from core.esp32_efuse import read_efuses
+from core.esp32_flash_sfdp import read_flash_details
 from core.esp32_inventory import create_inventory, save_inventory
 from core.esp32_partitions import read_partition_table
 from core.inventory_history import get_history, save_history
@@ -24,6 +26,19 @@ from transport.serial_detect import detect_serial_ports
 HOST = "0.0.0.0"
 PORT = 8765
 STATIC_DIRECTORY = Path(__file__).resolve().parent / "static"
+VERSION_FILE = Path(__file__).resolve().parents[2] / "VERSION"
+
+
+def read_version():
+    """Lit la version du projet depuis le fichier VERSION."""
+
+    try:
+        return VERSION_FILE.read_text(encoding="utf-8").strip()
+    except OSError:
+        return "dev"
+
+
+APP_VERSION = read_version()
 
 CONTENT_TYPES = {
     ".html": "text/html; charset=utf-8",
@@ -88,6 +103,7 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             self.send_json({
                 "status": "ok",
                 "service": "ESP32-Lab",
+                "version": APP_VERSION,
             })
             return
 
@@ -185,6 +201,14 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
 
         if path == "/api/partitions":
             self.read_partitions(query)
+            return
+
+        if path == "/api/efuse":
+            self.read_efuse(query)
+            return
+
+        if path == "/api/flash":
+            self.read_flash(query)
             return
 
         if path == "/api/device/update":
@@ -305,6 +329,58 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
         status = 200 if result.get("status") == "ok" else 502
         self.send_json(result, status=status)
 
+    def read_efuse(self, query):
+        """Lit et analyse les eFuses de la carte (lecture seule)."""
+
+        selected_port = query.get("port", [None])[0]
+
+        if not selected_port:
+            self.send_json({
+                "status": "error",
+                "message": "Le port série est obligatoire.",
+            }, status=400)
+            return
+
+        chip = query.get("chip", [None])[0]
+
+        try:
+            result = read_efuses(selected_port, chip=chip)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
+            return
+
+        status = 200 if result.get("status") == "ok" else 502
+        self.send_json(result, status=status)
+
+    def read_flash(self, query):
+        """Lit le SFDP et l'identifiant unique de la puce Flash (lecture seule)."""
+
+        selected_port = query.get("port", [None])[0]
+
+        if not selected_port:
+            self.send_json({
+                "status": "error",
+                "message": "Le port série est obligatoire.",
+            }, status=400)
+            return
+
+        chip = query.get("chip", [None])[0]
+
+        try:
+            result = read_flash_details(selected_port, chip=chip)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
+            return
+
+        status = 200 if result.get("status") == "ok" else 502
+        self.send_json(result, status=status)
+
     def serve_static_file(self, relative_path):
         """Sert un fichier statique depuis le dossier ``static``."""
 
@@ -349,7 +425,7 @@ def main():
 
     server = HTTPServer((HOST, PORT), ESP32LabHandler)
 
-    print(f"ESP32-Lab Web disponible sur http://0.0.0.0:{PORT}")
+    print(f"ESP32-Lab v{APP_VERSION} — Web disponible sur http://0.0.0.0:{PORT}")
     print("Ctrl+C pour arrêter le serveur.")
 
     try:

@@ -87,13 +87,32 @@ def esptool_base_command():
     return list(_cached_base_command)
 
 
-def run_esptool(arguments, timeout=60):
+def espefuse_base_command():
     """
-    Exécute esptool avec les arguments fournis.
+    Retourne la commande de base pour lancer espefuse.
 
-    ``arguments`` est la liste des arguments qui suivent la commande esptool
-    (par exemple ``["--port", "/dev/ttyACM0", "flash-id"]``).
+    espefuse est fourni par le même paquet qu'esptool : on réutilise donc
+    le même interpréteur, en remplaçant simplement le module. Si esptool a
+    été résolu via une commande console (``esptool`` du PATH), on tente
+    ``espefuse``.
     """
+
+    base = esptool_base_command()
+
+    if len(base) >= 2 and base[1] == "-m":
+        # [python, "-m", "esptool", ...] -> [python, "-m", "espefuse"]
+        return [base[0], "-m", "espefuse"]
+
+    # Commande console : esptool -> espefuse (même dossier).
+    console = shutil.which("espefuse")
+    if console:
+        return [console]
+
+    return [sys.executable or "python", "-m", "espefuse"]
+
+
+def run_esptool(arguments, timeout=60):
+    """Exécute esptool avec les arguments fournis (après ``-m esptool``)."""
 
     command = esptool_base_command() + list(arguments)
 
@@ -104,3 +123,32 @@ def run_esptool(arguments, timeout=60):
         check=False,
         timeout=timeout,
     )
+
+
+def run_espefuse(arguments, timeout=90):
+    """Exécute espefuse avec les arguments fournis (lecture seule attendue)."""
+
+    command = espefuse_base_command() + list(arguments)
+
+    return subprocess.run(
+        command,
+        capture_output=True,
+        text=True,
+        check=False,
+        timeout=timeout,
+    )
+
+
+def resolved_python():
+    """
+    Retourne l'interpréteur Python disposant d'esptool, pour exécuter des
+    scripts utilisant directement l'API Python d'esptool. Retourne ``None``
+    si esptool n'est accessible que via une commande console.
+    """
+
+    base = esptool_base_command()
+
+    if len(base) >= 2 and base[1] == "-m":
+        return base[0]
+
+    return None

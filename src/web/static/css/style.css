@@ -39,6 +39,22 @@ h1 {
     margin-bottom: 25px;
 }
 
+.app-version {
+    display: inline-block;
+    margin-left: 8px;
+    padding: 2px 8px;
+    border-radius: 999px;
+    background: #e5e7eb;
+    color: #475569;
+    font-size: 12px;
+    font-weight: 600;
+    vertical-align: middle;
+}
+
+.app-version:empty {
+    display: none;
+}
+
 .section-title {
     margin-top: 30px;
     margin-bottom: 15px;
@@ -464,6 +480,107 @@ input[type="checkbox"] {
     display: block;
     overflow-x: auto;
     max-width: 100%;
+}
+
+/* --- eFuses / Identité & Sécurité ----------------------------------------- */
+
+.efuse-tiles {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 12px;
+    margin: 12px 0;
+}
+
+.efuse-tile {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+}
+
+.efuse-tile-label {
+    color: #475569;
+    font-size: 13px;
+    margin-bottom: 6px;
+}
+
+.efuse-tile-value {
+    font-size: 18px;
+}
+
+.efuse-tile-hint {
+    color: var(--color-muted);
+    font-size: 12px;
+    margin-top: 6px;
+    line-height: 1.4;
+}
+
+.efuse-unique {
+    background: #f8fafc;
+    border: 1px solid #e2e8f0;
+    border-radius: 8px;
+    padding: 14px;
+    margin-top: 12px;
+}
+
+.efuse-unique code {
+    display: block;
+    margin-top: 6px;
+    font-size: 15px;
+    letter-spacing: 1px;
+    word-break: break-all;
+}
+
+.efuse-mac-table {
+    min-width: 0;
+    max-width: 520px;
+}
+
+.efuse-category {
+    margin-bottom: 10px;
+}
+
+.efuse-category summary {
+    cursor: pointer;
+    padding: 10px;
+    font-weight: bold;
+    background: #eef2f7;
+    border-radius: 6px;
+}
+
+.efuse-category[open] {
+    margin-bottom: 16px;
+}
+
+.efuse-category table {
+    display: block;
+    overflow-x: auto;
+    max-width: 100%;
+}
+
+.badge {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.badge-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 8px;
+}
+
+.badge-on {
+    background: #d1fadf;
+    color: #027a48;
+}
+
+.badge-off {
+    background: #e5e7eb;
+    color: #475569;
 }
 
 /* --- Partitionnement Flash ------------------------------------------------ */

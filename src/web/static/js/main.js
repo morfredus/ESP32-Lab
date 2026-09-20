@@ -2,8 +2,21 @@
    ESP32-Lab — initialisation
    ========================================================================== */
 
+async function loadVersion() {
+    try {
+        const health = await apiGet("/api/health");
+        const label = document.getElementById("app-version");
+        if (label && health.version) {
+            label.textContent = "v" + health.version;
+        }
+    } catch (error) {
+        /* La version est purement informative : on ignore l'échec. */
+    }
+}
+
 async function initialize() {
     initTabs();
+    loadVersion();
 
     setStatus("Initialisation...");
 
