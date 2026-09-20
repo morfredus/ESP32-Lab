@@ -1,39 +1,22 @@
 """
-Lecture des inventaires ESP32 sauvegardés.
+Lecture du dernier inventaire ESP32.
+
+Conservé pour compatibilité : délègue à la base SQLite (``core.database``).
 """
 
-import json
-from pathlib import Path
-
-
-INVENTORY_FILE = (
-    Path(__file__).resolve().parents[2]
-    / "data"
-    / "last_inventory.json"
-)
+from core import database
 
 
 def load_last_inventory():
     """
-    Charge le dernier inventaire enregistré.
-
-    Retourne ``None`` si aucun inventaire n'existe encore (le serveur Web
-    s'appuie sur cette valeur pour renvoyer un 404 propre).
+    Charge le dernier inventaire enregistré, ou ``None`` si aucun.
     """
 
-    if not INVENTORY_FILE.exists():
-        return None
-
-    with INVENTORY_FILE.open("r", encoding="utf-8") as file:
-        return json.load(file)
+    return database.get_last_inventory()
 
 
 if __name__ == "__main__":
+    import json
 
-    inventory = load_last_inventory()
-
-    print(json.dumps(
-        inventory,
-        indent=4,
-        ensure_ascii=False,
-    ))
+    database.init_db()
+    print(json.dumps(load_last_inventory(), indent=4, ensure_ascii=False))

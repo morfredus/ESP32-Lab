@@ -1,63 +1,38 @@
 """
-Gestion de l'historique des inventaires ESP32.
+Historique des inventaires ESP32.
+
+Conservé pour compatibilité : délègue à la base SQLite (``core.database``).
 """
 
-import json
-from datetime import datetime, timezone
-from pathlib import Path
-
-
-PROJECT_ROOT = Path(__file__).resolve().parents[2]
-HISTORY_FILE = PROJECT_ROOT / "data" / "inventory_history.json"
-
-
-def load_history():
-    """Charge l'historique existant."""
-
-    if not HISTORY_FILE.exists():
-        return []
-
-    with HISTORY_FILE.open("r", encoding="utf-8") as file:
-        return json.load(file)
+from core import database
 
 
 def save_history(inventory):
-    """Ajoute un inventaire à l'historique."""
+    """Ajoute un inventaire à l'historique (base SQLite)."""
 
-    history = load_history()
+    identification = inventory.get("identification", {})
+    mac = identification.get("mac")
 
-    entry = {
-        "recorded_at": datetime.now(timezone.utc).isoformat(),
-        "inventory": inventory,
-    }
+    if not mac:
+        return None
 
-    history.append(entry)
-
-    HISTORY_FILE.parent.mkdir(
-        parents=True,
-        exist_ok=True,
+    return database.save_reading(
+        mac,
+        "inventory",
+        inventory,
+        port=inventory.get("port"),
+        recorded_at=inventory.get("timestamp"),
     )
-
-    with HISTORY_FILE.open("w", encoding="utf-8") as file:
-        json.dump(
-            history,
-            file,
-            indent=4,
-            ensure_ascii=False,
-        )
-
-    return HISTORY_FILE
 
 
 def get_history():
-    """Retourne l'historique des inventaires."""
+    """Retourne l'historique des inventaires (liste {recorded_at, inventory})."""
 
-    return load_history()
+    return database.get_inventory_history()
 
 
 if __name__ == "__main__":
-    print(json.dumps(
-        get_history(),
-        indent=4,
-        ensure_ascii=False,
-    ))
+    import json
+
+    database.init_db()
+    print(json.dumps(get_history(), indent=4, ensure_ascii=False))
