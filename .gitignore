@@ -8,9 +8,8 @@ include/wifi-config.h
 # Fichier de configuration locale (contient mots de passe, jetons, chemins)
 config.json
 
-# Donnees de scan cartes
+# Données générées par l'application
 data/
-/data/
 
 # Variables d'environnement (peuvent contenir des clés d'API, tokens, etc.)
 .env
