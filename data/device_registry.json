@@ -1,0 +1,18 @@
+{
+    "f0:f5:bd:fb:5e:88": {
+        "mac": "f0:f5:bd:fb:5e:88",
+        "name": "C3 test",
+        "note": "pas de note",
+        "location": "salon",
+        "chip": "",
+        "last_seen": null
+    },
+    "80:b5:4e:d9:63:4c": {
+        "mac": "80:b5:4e:d9:63:4c",
+        "name": "Carte Test 2",
+        "note": "Pas plus de note",
+        "location": "Sous la table",
+        "chip": "ESP32-S3 (QFN56)",
+        "last_seen": "2026-09-19T19:52:20.769977+00:00"
+    }
+}

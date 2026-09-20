@@ -1,0 +1,19 @@
+{
+    "timestamp": "2026-09-19T19:52:20.769977+00:00",
+    "port": "/dev/ttyACM0",
+    "identification": {
+        "chip": "ESP32-S3 (QFN56)",
+        "revision": "v0.2",
+        "features": "Wi-Fi, BT 5 (LE), Dual Core + LP Core, 240MHz, Embedded PSRAM 8MB (AP_3v3)",
+        "cpu_frequency_mhz": 240,
+        "psram": "Embedded PSRAM 8MB",
+        "psram_size_mb": 8,
+        "crystal_frequency_mhz": 40,
+        "mac": "80:b5:4e:d9:63:4c",
+        "flash_manufacturer": "68",
+        "flash_device": "4018",
+        "flash_size_mb": 16,
+        "flash_type": "quad (4 data lines)",
+        "flash_voltage": "3.3V"
+    }
+}
