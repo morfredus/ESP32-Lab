@@ -254,7 +254,8 @@
                         onclick="document.getElementById('import-db-input').click()">
                     Importer une base
                 </button>
-                <input type="file" id="import-db-input" accept="application/json"
+                <input type="file" id="import-db-input"
+                       accept=".json,application/json"
                        style="display:none" onchange="importDatabase(this)">
                 <button id="verify-db-button" onclick="verifyDatabase()">
                     Vérifier la base
