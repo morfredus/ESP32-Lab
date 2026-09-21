@@ -4,16 +4,16 @@ Les problèmes les plus courants et leurs solutions.
 
 ## Erreur « externally-managed-environment »
 
-**Symptôme** — `pip install -r requirements.txt` affiche :
+**Symptôme** - `pip install -r requirements.txt` affiche :
 
 ```
 error: externally-managed-environment
 ```
 
-**Cause** — Raspberry Pi OS (et Debian récent) empêche volontairement
+**Cause** - Raspberry Pi OS (et Debian récent) empêche volontairement
 d'installer des paquets Python directement sur le système.
 
-**Solution** — utilise un environnement virtuel :
+**Solution** - utilise un environnement virtuel :
 
 ```bash
 python3 -m venv .venv
@@ -25,10 +25,10 @@ voir ci-dessous).
 
 ## « No module named esptool »
 
-**Symptôme** — la lecture des partitions ou le scan échoue avec
+**Symptôme** - la lecture des partitions ou le scan échoue avec
 `/usr/bin/python: No module named esptool`.
 
-**Cause** — le serveur a été lancé avec un Python (souvent le Python système)
+**Cause** - le serveur a été lancé avec un Python (souvent le Python système)
 qui ne dispose pas d'esptool.
 
 **Solutions** :
@@ -48,7 +48,7 @@ qui ne dispose pas d'esptool.
 
 ## Aucun port détecté
 
-**Symptôme** — le menu affiche « Aucun port USB détecté ».
+**Symptôme** - le menu affiche « Aucun port USB détecté ».
 
 **À vérifier** :
 
@@ -67,17 +67,17 @@ qui ne dispose pas d'esptool.
 
 ## Le port est occupé / busy
 
-**Symptôme** — `Could not open ... the port is busy`.
+**Symptôme** - `Could not open ... the port is busy`.
 
-**Cause** — un autre programme utilise déjà le port (moniteur série, autre
+**Cause** - un autre programme utilise déjà le port (moniteur série, autre
 instance, IDE…).
 
-**Solution** — ferme l'autre programme (moniteur série Arduino/PlatformIO,
+**Solution** - ferme l'autre programme (moniteur série Arduino/PlatformIO,
 `screen`, `minicom`, etc.) puis réessaie.
 
 ## La page est cassée / sans style après une mise à jour
 
-**Symptôme** — après avoir modifié le code, la page s'affiche sans style ou une
+**Symptôme** - après avoir modifié le code, la page s'affiche sans style ou une
 fonction ne marche pas.
 
 **Causes possibles** :
@@ -88,11 +88,25 @@ fonction ne marche pas.
   (`Ctrl+C` puis relance la commande). Les fichiers HTML/CSS/JS, eux, sont
   relus à chaque requête : un simple rechargement suffit.
 
-## « Rapport NVS indisponible »
+## L'analyse NVS affiche « (non stocké en base) »
 
-Ce n'est pas une erreur bloquante : l'analyse NVS a besoin d'un fichier
-`data/analysis/reports/nvs_structure_analysis.json` généré au préalable. Sans
-lui, l'onglet reste vide. Les autres fonctions marchent normalement.
+**Ce n'est pas un bug, c'est voulu.** Pour ne jamais conserver de secret (ni de
+copie résiduelle de mot de passe/SSID), ESP32-Lab n'enregistre **aucun octet
+brut NVS** en base : seule la structure est gardée. Donc, quand tu **charges
+depuis la base**, les valeurs décodées apparaissent « (non stocké en base) » et
+les mots de passe « Présent (masqué) ».
+
+Pour voir les valeurs décodées (SSID, canal…), fais une **lecture live** : bouton
+**« Analyser la NVS de la carte »** (la carte doit être branchée). Les autres
+sections (eFuses, SFDP, partitions) se réaffichent, elles, entièrement depuis la
+base avec « Charger depuis la base ».
+
+## L'onglet NVS reste vide pour une carte
+
+« Charger l'analyse NVS » cherche la dernière analyse **de cette carte** en base
+(par sa MAC). Si aucune n'existe et qu'un port est sélectionné, l'analyse est
+**déclenchée automatiquement**. Sinon, branche la carte, sélectionne son port
+(onglet Général) puis clique sur « Analyser la NVS de la carte ».
 
 ## Vérifier que le serveur répond
 
@@ -103,7 +117,7 @@ curl http://localhost:8765/api/health
 Réponse attendue :
 
 ```json
-{ "status": "ok", "service": "ESP32-Lab", "version": "0.6.0" }
+{ "status": "ok", "service": "ESP32-Lab", "version": "0.6.5" }
 ```
 
 ## Toujours bloqué ?

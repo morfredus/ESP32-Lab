@@ -158,11 +158,20 @@ Le **registre** de toutes les cartes déjà vues. Colonnes : nom, MAC, modèle,
 emplacement, dernière détection, **nombre de scans**, et actions :
 
 - **Modifier** - édite la fiche de la carte.
-- **Détails** - ouvre une fenêtre avec toutes les caractéristiques connues.
+- **Détails** - ouvre une fenêtre avec toutes les caractéristiques connues. On y
+  trouve aussi **Suivi des secrets** (voir ci-dessous).
 - **Comparer les scans** - compare deux scans de **cette même carte** (actif
   seulement à partir de 2 scans).
 - **Supprimer** - retire **définitivement** la carte et toutes ses lectures de
   la base (une confirmation est demandée).
+
+#### Suivi des secrets (détection de changement)
+Dans la fenêtre **Détails**, le bouton **Suivi des secrets** compare, entre les
+**deux dernières analyses** d'une carte, l'**empreinte** de chaque secret (mot
+de passe Wi-Fi, clé eFuse provisionnée) pour dire s'il a **changé** - sans jamais
+stocker le secret lui-même. Cinq verdicts : *inchangé*, *changé*, *nouveau*,
+*disparu*, et *indéterminable* (quand les deux analyses viennent de postes
+différents, dont les empreintes ne sont pas comparables).
 
 Un champ de recherche filtre la liste.
 
@@ -212,6 +221,26 @@ Quatre outils :
 > le nouveau poste. Seuls les **octets bruts NVS** ne sont pas conservés (pour
 > ne laisser passer aucun secret) : leurs valeurs décodées ne réapparaissent
 > qu'en **relisant la carte**.
+
+## Sécurité et confidentialité
+
+ESP32-Lab est conçu pour ne rien exposer de sensible :
+
+- **Lecture seule.** Aucune écriture sur la carte : pas de flash, pas de
+  modification d'eFuse. La table de partitions et la NVS sont seulement **lues**.
+- **Aucun secret stocké.** Les mots de passe Wi-Fi et les clés eFuse ne sont
+  **jamais enregistrés** en base. À la place, une **empreinte HMAC-SHA-256** est
+  conservée : elle permet de détecter un changement (voir « Suivi des secrets »)
+  sans jamais garder la valeur. L'empreinte est calculée avec une **clé propre à
+  l'installation**, rangée hors de la base (jamais versionnée, jamais exportée).
+- **Aucun octet brut NVS en base.** Comme la NVS est un journal où d'anciennes
+  valeurs subsistent, ESP32-Lab ne stocke **aucun dump hexadécimal** NVS : cela
+  garantit qu'aucune copie résiduelle de mot de passe ou de SSID ne traîne dans
+  la base ni dans un export. La contrepartie : la vue **NVS « depuis la base »**
+  n'affiche que la structure (« non stocké en base ») ; une **lecture live** sur
+  la carte montre, elle, toutes les valeurs décodées.
+- **Export/sauvegarde sans risque.** Un export de base ou une copie de
+  `data/esp32lab.db` ne peut donc pas divulguer de secret.
 
 ## Astuce
 

@@ -39,8 +39,8 @@ Puis installe les dépendances **dans** cet environnement :
 
 Les deux dépendances installées sont :
 
-- `pyserial` — pour détecter les ports série ;
-- `esptool` — l'outil officiel Espressif qui communique avec l'ESP32.
+- `pyserial` - pour détecter les ports série ;
+- `esptool` - l'outil officiel Espressif qui communique avec l'ESP32.
 
 > ### Erreur « externally-managed-environment » ?
 > Sur Raspberry Pi OS récent, `pip install` directement sur le système est
@@ -79,7 +79,7 @@ PYTHONPATH=src .venv/bin/python -m web.server
 Tu devrais voir :
 
 ```
-ESP32-Lab v0.6.0 — Web disponible sur http://0.0.0.0:8765
+ESP32-Lab v0.6.5 - Web disponible sur http://0.0.0.0:8765
 Ctrl+C pour arrêter le serveur.
 ```
 
@@ -117,12 +117,12 @@ du `.venv` du projet s'il existe.
 Deux scripts à la racine du projet évitent de retaper les commandes. Ils
 vérifient le `.venv`, lancent le serveur et gèrent l'accès.
 
-### Windows — `launch_esp32_lab.bat`
+### Windows - `launch_esp32_lab.bat`
 
 Double-clic (ou `launch_esp32_lab.bat` en ligne de commande). Le serveur démarre
 dans une fenêtre dédiée et le navigateur s'ouvre sur http://127.0.0.1:8765.
 
-### Linux / Raspberry Pi — `launch_esp32_lab.sh`
+### Linux / Raspberry Pi - `launch_esp32_lab.sh`
 
 ```bash
 ./launch_esp32_lab.sh
@@ -132,7 +132,7 @@ Le script affiche les **adresses d'accès** puis :
 
 - **Pi avec écran** : ouvre le navigateur local automatiquement.
 - **Pi sans écran (headless)** : n'ouvre rien (pas d'erreur) et **indique les
-  adresses à saisir depuis le navigateur d'un autre poste** — l'IP réseau et le
+  adresses à saisir depuis le navigateur d'un autre poste** - l'IP réseau et le
   nom mDNS `<hôte>.local`. Exemple :
 
   ```

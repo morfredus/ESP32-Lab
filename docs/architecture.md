@@ -73,6 +73,7 @@ build. Chaque fichier a une responsabilité :
 | `flash_sfdp.js` | SFDP de la puce Flash + identifiant unique. |
 | `efuse.js`      | eFuses : identité, sécurité, MAC dérivées, dump complet. |
 | `nvs.js`        | Analyse NVS et décodage lisible. |
+| `db_compare.js` | Export/import de la base, comparaison de deux cartes, suivi des secrets. |
 | `tabs.js`       | Navigation par onglets. |
 | `main.js`       | Initialisation au chargement. |
 
@@ -135,23 +136,52 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 
 Le dossier `data/` contient les fichiers produits à l'usage :
 
-- `esp32lab.db` — **base SQLite**, source de vérité (cartes + toutes les
+- `esp32lab.db` - **base SQLite**, source de vérité (cartes + toutes les
   lectures). Créée automatiquement au premier lancement, avec migration des
   anciens JSON ;
-- `last_inventory.json` — dernier scan (compat) ;
-- `inventory_history.json`, `device_registry.json` — anciens fichiers migrés
+- `last_inventory.json` - dernier scan (compat) ;
+- `inventory_history.json`, `device_registry.json` - anciens fichiers migrés
   une fois dans la base au premier démarrage ;
-- `analysis/reports/nvs_structure_analysis.json` — dernier rapport NVS généré.
+- `analysis/reports/nvs_structure_analysis.json` - dernier rapport NVS généré.
 
 ### Base de données
 
 Deux tables :
 
 - `devices(mac, name, location, note, first_seen, last_seen, port,
-  identification)` — une carte par MAC (métadonnées + dernière identité) ;
-- `readings(id, mac, section, recorded_at, port, payload)` — chaque lecture
+  identification)` - une carte par MAC (métadonnées + dernière identité) ;
+- `readings(id, mac, section, recorded_at, port, payload)` : chaque lecture
   (section : `inventory`, `efuse`, `sfdp`, `partitions`, `nvs`) avec sa charge
-  utile JSON complète.
+  utile JSON, **assainie des secrets** avant stockage (voir ci-dessous).
 
 Le schéma se crée à la première connexion (`database.connect`), donc une
-installation neuve fonctionne sans aucune préparation.
+installation neuve fonctionne sans aucune préparation. Les métadonnées de
+migration/purge sont conservées dans une table `meta`.
+
+Réaffichage : chaque section peut être rechargée depuis la base par MAC
+(`GET /api/db/reading?mac=&section=`), ce qui permet de tout revoir sur un autre
+poste sans la carte. Comparaison de deux cartes via `comparison.py`
+(`/api/db/compare`), suppression d'une carte et de ses lectures via
+`database.delete_device` (`/api/device/delete`).
+
+### Sécurité des secrets
+
+Aucun secret n'est stocké en base. Le nettoyage se fait sur une **copie** avant
+écriture (`secret_redaction.py`) ; l'affichage live (lecture directe de la
+carte) reste complet.
+
+- **eFuses** : les blocs `BLOCK_KEYx` provisionnés sont caviardés et remplacés
+  par une **empreinte HMAC-SHA-256** (`install_key.py`, clé propre à
+  l'installation, hors base et non versionnée).
+- **NVS** : les entrées sensibles (denylist : `pswd`, `passwd`, `psk`, `pmk`,
+  `token`, `secret`) reçoivent une empreinte ; surtout, **aucun octet brut NVS**
+  (`raw_hex`/`data_hex`/`key_hex`) n'est conservé, car la NVS est un journal où
+  d'anciennes copies de secrets subsistent dans des slots effacés/orphelins. La
+  « clé » des slots à CRC invalide (fragments de secret) est aussi neutralisée.
+- **Détection de changement** (`secret_changes.py`, `/api/db/changes`) : compare
+  les empreintes d'une même clé entre deux scans pour signaler un secret modifié,
+  sans jamais le stocker.
+
+La purge des secrets déjà présents (installations antérieures) est appliquée
+**une fois** au démarrage via des marqueurs `meta` (`readings_redacted`,
+`nvs_hex_purged`).
