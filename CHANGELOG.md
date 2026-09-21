@@ -24,6 +24,8 @@ Scripts de lancement documentés et adaptés au Raspberry Pi sans écran.
 ### Ajouté
 - Documentation des deux scripts de lancement (`launch_esp32_lab.bat` /
   `launch_esp32_lab.sh`) dans le README et `docs/installation.md`.
+- **README bilingue** : `README.md` en anglais, `README_fr.md` en français,
+  avec sélecteur de langue en tête de chaque fichier.
 
 ## [0.4.1] - 2026-09-21
 

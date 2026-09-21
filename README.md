@@ -1,128 +1,131 @@
 # ESP32-Lab
 
+🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
+
 ![Version](https://img.shields.io/badge/version-0.4.2-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-35%20passing-brightgreen)
-![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
-![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
-![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
+![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
+![Mode](https://img.shields.io/badge/hardware-read%20only-success)
+![Status](https://img.shields.io/badge/status-in%20development-yellow)
 
-Laboratoire de diagnostic et de test pour microcontrôleurs ESP32, avec
-interface web. Détecte, identifie et analyse une carte ESP32 connectée en USB
-à un Raspberry Pi (ou tout autre hôte Linux/Windows).
+Diagnostic and test lab for ESP32 microcontrollers, with a web interface.
+Detects, identifies and analyses an ESP32 board connected over USB to a
+Raspberry Pi (or any other Linux/Windows host).
 
-> **Nouveau ?** Commence par le [guide de démarrage rapide](docs/demarrage-rapide.md).
-> La documentation complète est dans le dossier [`docs/`](docs/).
+> **New here?** Start with the [quick-start guide](docs/demarrage-rapide.md).
+> The full documentation lives in the [`docs/`](docs/) folder.
+> Note: the detailed docs are currently written in **French**.
 
-## Objectif
+## Goal
 
-Permettre l'identification, l'analyse et le test **non destructifs** d'un ESP32
-connecté, et conserver un historique des diagnostics.
+Enable the **non-destructive** identification, analysis and testing of a
+connected ESP32, and keep a history of the diagnostics.
 
-## Cibles
+## Targets
 
 - ESP32-S3
 - ESP32-C3
-- Versions avec ou sans PSRAM
+- Variants with or without PSRAM
 
-## Fonctionnalités
+## Features
 
-- Détection des ports USB / série
-- Identification du SoC (puce, révision, fréquences, PSRAM)
-- Analyse de la Flash (fabricant, référence JEDEC, taille, type, tension)
-- **Lecture des eFuses** : identité du silicium, identifiant unique 128 bits,
-  posture de sécurité, calibration, MAC universelles (lecture seule)
-- **SFDP de la puce Flash** (JESD216) : densité, adressage, granularités
-  d'effacement, modes de lecture rapide, et identifiant unique 64 bits
-- **Lecture réelle de la table de partitions** (lecture seule, à `0x8000`)
-- **Analyse structurelle NVS** avec décodage lisible des valeurs
-- **Base de données SQLite** conservant toutes les lectures par carte
-- Registre des cartes connues (nom, emplacement, note par adresse MAC)
-- Historique des inventaires, **comparaison de deux scans** et
-  **comparaison complète de deux cartes différentes**
-- **Analyse NVS à la demande** (lecture de la partition NVS de la carte)
-- Export CSV
-- Interface web organisée en onglets
+- USB / serial port detection
+- SoC identification (chip, revision, frequencies, PSRAM)
+- Flash analysis (manufacturer, JEDEC reference, size, type, voltage)
+- **eFuse reading**: silicon identity, 128-bit unique ID, security posture,
+  calibration, universal MAC addresses (read-only)
+- **Flash chip SFDP** (JESD216): density, addressing, erase granularities,
+  fast-read modes, and 64-bit unique ID
+- **Real partition table reading** (read-only, at `0x8000`)
+- **Structural NVS analysis** with human-readable value decoding
+- **SQLite database** storing every reading per board
+- Registry of known boards (name, location, note per MAC address)
+- Inventory history, **two-scan comparison** and
+  **full comparison between two different boards**
+- **On-demand NVS analysis** (reads the board's NVS partition)
+- CSV export
+- Tab-based web interface
 
-## Démarrage rapide
+## Quick start
 
 ```bash
-# 1. Installer les dépendances dans un environnement virtuel
+# 1. Install the dependencies in a virtual environment
 python3 -m venv .venv
 .venv/bin/pip install -r requirements.txt
 
-# 2. Lancer le serveur
+# 2. Start the server
 PYTHONPATH=src .venv/bin/python -m web.server
 
-# 3. Ouvrir l'interface
-#    http://<adresse-du-serveur>:8765
+# 3. Open the interface
+#    http://<server-address>:8765
 ```
 
-### Scripts de lancement
+### Launch scripts
 
-Deux scripts à la racine automatisent le démarrage (vérification du `.venv`,
-lancement du serveur, ouverture ou affichage de l'adresse) :
+Two scripts at the project root automate startup (they check the `.venv`, start
+the server, and open or print the access address):
 
-- **Windows** : double-clic sur `launch_esp32_lab.bat` (ouvre le navigateur
-  local sur http://127.0.0.1:8765).
-- **Linux / Raspberry Pi** : `./launch_esp32_lab.sh`. Sur un Pi **avec** écran,
-  il ouvre le navigateur ; sur un Pi **sans écran** (headless), il n'ouvre rien
-  et **affiche les adresses à saisir depuis un autre poste** (IP réseau et nom
-  mDNS `<hôte>.local`).
+- **Windows**: double-click `launch_esp32_lab.bat` (opens the local browser at
+  http://127.0.0.1:8765).
+- **Linux / Raspberry Pi**: `./launch_esp32_lab.sh`. On a Pi **with** a screen
+  it opens the browser; on a **headless** Pi it opens nothing and **prints the
+  addresses to type from another machine** (LAN IP and mDNS name
+  `<host>.local`).
 
-Détails et alternatives (hors venv, Windows, Raspberry Pi) :
-voir [`docs/installation.md`](docs/installation.md).
+Details and alternatives (without a venv, Windows, Raspberry Pi):
+see [`docs/installation.md`](docs/installation.md) (in French).
 
-## Structure du projet
+## Project layout
 
 ```
 ESP32-Lab/
-├── VERSION                 Version courante du projet
-├── CHANGELOG.md            Journal des modifications
-├── requirements.txt        Dépendances Python
-├── docs/                   Documentation (débutant + architecture)
-├── data/                   Données générées (inventaires, historique, registre)
+├── VERSION                 Current project version
+├── CHANGELOG.md            Change log
+├── requirements.txt        Python dependencies
+├── docs/                   Documentation (beginner + architecture)
+├── data/                   Generated data (inventories, history, registry)
 ├── src/
-│   ├── core/               Logique métier (identification, partitions, NVS…)
-│   ├── transport/          Accès série / détection des ports
-│   └── web/                Serveur HTTP + interface statique (HTML/CSS/JS)
-├── tests/                  Tests unitaires
-└── tools/                  Utilitaires (lecture SFDP, etc.)
+│   ├── core/               Business logic (identification, partitions, NVS…)
+│   ├── transport/          Serial access / port detection
+│   └── web/                HTTP server + static interface (HTML/CSS/JS)
+├── tests/                  Unit tests
+└── tools/                  Utilities (SFDP reading, etc.)
 ```
 
-Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
+See [`docs/architecture.md`](docs/architecture.md) for details (in French).
 
-## API HTTP
+## HTTP API
 
-| Méthode | Route                       | Description                              |
-|---------|-----------------------------|------------------------------------------|
-| GET     | `/api/health`               | État du service + version                |
-| GET     | `/api/ports`                | Ports série détectés                     |
-| GET     | `/api/inventory`            | Dernier inventaire enregistré            |
-| GET     | `/api/inventory/history`    | Historique des inventaires               |
-| GET     | `/api/devices`              | Registre des cartes                      |
-| GET     | `/api/device?mac=…`         | Fiche d'une carte                        |
-| GET     | `/api/db/device?mac=…`      | Dossier complet d'une carte (base)       |
-| GET     | `/api/db/compare?mac_a=…&mac_b=…` | Comparaison de deux cartes         |
-| GET     | `/api/nvs`                  | Dernier rapport d'analyse NVS            |
-| POST    | `/api/inventory/refresh?port=…` | Scanne la carte et met à jour        |
-| POST    | `/api/partitions?port=…`    | Lit la table de partitions (lecture seule) |
-| POST    | `/api/efuse?port=…`         | Lit et analyse les eFuses (lecture seule) |
-| POST    | `/api/flash?port=…`         | Lit le SFDP et l'ID unique de la Flash (lecture seule) |
-| POST    | `/api/nvs/analyze?port=…`   | Lit et analyse la partition NVS (lecture seule) |
-| GET     | `/api/db/export`            | Exporte toute la base (JSON portable)    |
-| GET     | `/api/db/verify`            | Vérifie l'intégrité et les statistiques  |
-| POST    | `/api/db/import`            | Importe/fusionne un export de base       |
-| POST    | `/api/db/reset`             | Remet la base à zéro (irréversible)      |
-| POST    | `/api/device/update`        | Enregistre la fiche d'une carte          |
+| Method | Route                       | Description                              |
+|--------|-----------------------------|------------------------------------------|
+| GET    | `/api/health`               | Service status + version                 |
+| GET    | `/api/ports`                | Detected serial ports                    |
+| GET    | `/api/inventory`            | Last saved inventory                     |
+| GET    | `/api/inventory/history`    | Inventory history                        |
+| GET    | `/api/devices`              | Board registry                           |
+| GET    | `/api/device?mac=…`         | A board's record                         |
+| GET    | `/api/db/device?mac=…`      | A board's full dossier (database)        |
+| GET    | `/api/db/compare?mac_a=…&mac_b=…` | Comparison of two boards           |
+| GET    | `/api/nvs`                  | Last NVS analysis report                 |
+| POST   | `/api/inventory/refresh?port=…` | Scan the board and update            |
+| POST   | `/api/partitions?port=…`    | Read the partition table (read-only)     |
+| POST   | `/api/efuse?port=…`         | Read and analyse the eFuses (read-only)  |
+| POST   | `/api/flash?port=…`         | Read the SFDP and Flash unique ID (read-only) |
+| POST   | `/api/nvs/analyze?port=…`   | Read and analyse the NVS partition (read-only) |
+| GET    | `/api/db/export`            | Export the whole database (portable JSON) |
+| GET    | `/api/db/verify`            | Check integrity and statistics           |
+| POST   | `/api/db/import`            | Import/merge a database export           |
+| POST   | `/api/db/reset`             | Reset the database (irreversible)        |
+| POST   | `/api/device/update`        | Save a board's record                    |
 
-## Principes
+## Principles
 
-- Aucun effacement automatique
-- Aucune modification des eFuses
-- Tests non destructifs par défaut
-- Séparation entre informations **détectées** et informations **rapportées**
-- Compatibilité multi-familles ESP32
+- No automatic erasing
+- No eFuse modification
+- Non-destructive tests by default
+- Separation between **detected** and **reported** information
+- Multi-family ESP32 compatibility
 
 ## Tests
 
@@ -130,6 +133,6 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 ```
 
-## Licence
+## License
 
-Projet personnel. Voir avec l'auteur pour toute réutilisation.
+Personal project. Contact the author for any reuse.
