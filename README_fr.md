@@ -8,6 +8,7 @@
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
+![Licence](https://img.shields.io/badge/licence-GPL--3.0--only-blue)
 
 Laboratoire de diagnostic et de test pour microcontrôleurs ESP32, avec
 interface web. Détecte, identifie et analyse une carte ESP32 connectée en USB
@@ -144,4 +145,14 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 
 ## Licence
 
-Projet personnel. Voir avec l'auteur pour toute réutilisation.
+Ce projet est distribué sous licence **GNU General Public License v3.0
+uniquement** (`GPL-3.0-only`). Voir le fichier [LICENSE](LICENSE) pour le texte
+complet.
+
+Copyright (C) 2026 Frédéric Biron.
+
+Ce programme est un logiciel libre : vous pouvez le redistribuer et/ou le
+modifier selon les termes de la GNU General Public License telle que publiée
+par la Free Software Foundation, version 3 uniquement. Il est distribué dans
+l'espoir qu'il sera utile, mais SANS AUCUNE GARANTIE, ni explicite ni implicite,
+notamment de QUALITÉ MARCHANDE ou d'ADÉQUATION À UN USAGE PARTICULIER.

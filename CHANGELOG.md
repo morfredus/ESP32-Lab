@@ -25,6 +25,10 @@ Détection de changement de secrets, par empreinte HMAC, entre deux scans.
 - Tests `test_secret_changes.py` (inchangé / changé / nouveau / disparu /
   indéterminable, extraction des empreintes NVS et eFuse).
 
+### Licence
+- Le projet passe sous **GNU GPL v3.0 only** (`GPL-3.0-only`). Ajout du fichier
+  `LICENSE` (texte intégral) et mise à jour des mentions dans les README.
+
 ### Modifié
 - `VERSION` → 0.6.1.
 
