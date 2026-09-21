@@ -132,7 +132,7 @@ async function resetDatabase() {
     const confirmed = window.confirm(
         "Effacer DÉFINITIVEMENT toutes les cartes et toutes les lectures de la " +
         "base ? Cette action est irréversible.\n\n" +
-        "Conseil : exporte la base d'abord."
+        "Conseil : exportez la base d'abord."
     );
     if (!confirmed) {
         return;
@@ -182,13 +182,13 @@ async function compareTwoCards() {
 
     if (!macA || !macB) {
         container.innerHTML =
-            '<div class="empty">Choisis deux cartes à comparer.</div>';
+            '<div class="empty">Choisissez deux cartes à comparer.</div>';
         return;
     }
 
     if (macA === macB) {
         container.innerHTML =
-            '<div class="empty">Choisis deux cartes différentes.</div>';
+            '<div class="empty">Choisissez deux cartes différentes.</div>';
         return;
     }
 

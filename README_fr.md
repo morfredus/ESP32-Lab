@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.9.0-blue)
+![Version](https://img.shields.io/badge/version-0.10.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-100%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-102%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -50,7 +50,7 @@ connecté, et conserver un historique des diagnostics.
 - Historique des inventaires, **comparaison de deux scans** et
   **comparaison complète de deux cartes différentes**
 - **Analyse NVS à la demande** (lecture de la partition NVS de la carte)
-- **GPIO Inspector** (niveau puce, dépendant de la famille) : classification de
+- **GPIO Inspector** (niveau puce, 6 familles : ESP32, S3, C3, C6, S2, H2) : classification de
   chaque broche (strapping, entrée seule, Flash/PSRAM, USB-JTAG, ADC, DAC),
   statut d'usage et avertissements de boot - appuyé sur une **base de références
   Espressif locale** disponible hors ligne (curée d'après les datasheets

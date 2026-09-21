@@ -21,7 +21,7 @@ async function loadEfusesFromDb() {
         } else {
             container.innerHTML =
                 '<div class="empty">Aucune lecture eFuse en base pour cette ' +
-                'carte. Branche-la puis clique « Lire les eFuses ».</div>';
+                'carte. Branchez-la puis cliquez « Lire les eFuses ».</div>';
         }
     } catch (error) {
         container.innerHTML =
@@ -47,7 +47,7 @@ async function loadEfuses() {
     const selectedPort = portSelect.value;
     if (!selectedPort) {
         container.innerHTML =
-            '<div class="empty">Sélectionne un port série (onglet Général).</div>';
+            '<div class="empty">Sélectionnez un port série (onglet Général).</div>';
         return;
     }
 

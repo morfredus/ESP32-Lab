@@ -21,7 +21,7 @@ async function loadFlashDetailsFromDb() {
         } else {
             container.innerHTML =
                 '<div class="empty">Aucune lecture SFDP en base pour cette ' +
-                'carte. Branche-la puis clique « Lire les détails de la ' +
+                'carte. Branchez-la puis cliquez « Lire les détails de la ' +
                 'Flash (SFDP) ».</div>';
         }
     } catch (error) {
@@ -41,7 +41,7 @@ async function loadFlashDetails() {
     const selectedPort = portSelect.value;
     if (!selectedPort) {
         container.innerHTML =
-            '<div class="empty">Sélectionne un port série (onglet Général).</div>';
+            '<div class="empty">Sélectionnez un port série (onglet Général).</div>';
         return;
     }
 

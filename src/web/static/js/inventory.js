@@ -32,7 +32,7 @@ async function showInventoryForSelectedPort() {
 async function loadInventory(mac) {
     if (!mac) {
         showEmptyInventory(
-            "Aucune carte affichée. Clique « Actualiser les ports » " +
+            "Aucune carte affichée. Cliquez « Actualiser les ports » " +
             "(la dernière analyse s'affiche si la carte a déjà été scannée) " +
             "ou « Scanner la carte »."
         );
@@ -47,7 +47,7 @@ async function loadInventory(mac) {
 
         if (!reading || !reading.payload) {
             showEmptyInventory(
-                "Cette carte n'a pas encore été scannée. Clique « Scanner la carte »."
+                "Cette carte n'a pas encore été scannée. Cliquez « Scanner la carte »."
             );
             return;
         }
@@ -134,7 +134,7 @@ async function refreshInventory() {
     const selectedPort = portSelect.value;
 
     if (!selectedPort) {
-        setStatus("Sélectionne un port série.", true);
+        setStatus("Sélectionnez un port série.", true);
         return;
     }
 

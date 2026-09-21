@@ -10,7 +10,7 @@ async function loadFirmware() {
     const selectedPort = portSelect.value;
     if (!selectedPort) {
         container.innerHTML =
-            '<div class="empty">Sélectionne un port série (onglet Général).</div>';
+            '<div class="empty">Sélectionnez un port série (onglet Général).</div>';
         return;
     }
 
@@ -66,7 +66,7 @@ async function loadFirmwareFromDb() {
         } else {
             container.innerHTML =
                 '<div class="empty">Aucune lecture firmware en base pour cette ' +
-                'carte. Branche-la puis clique « Lire le firmware ».</div>';
+                'carte. Branchez-la puis cliquez « Lire le firmware ».</div>';
         }
     } catch (error) {
         container.innerHTML =

@@ -120,7 +120,7 @@ async function loadGpio() {
 
     if (!chip) {
         container.innerHTML =
-            '<div class="empty">Scanne d\'abord une carte (onglet Général) ' +
+            '<div class="empty">Scannez d\'abord une carte (onglet Général) ' +
             'pour connaître la famille de la puce.</div>';
         return;
     }

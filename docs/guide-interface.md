@@ -150,8 +150,9 @@ La lecture (en **lecture seule**, à l'adresse `0x8000`) affiche :
 ## Onglet GPIO Inspector
 
 Cet onglet décrit les **GPIO au niveau de la puce**, calculés d'après la
-**famille exacte** détectée lors du scan (ESP32, ESP32-S3, ESP32-C3). Les
-informations dépendent de la famille : jamais de table générique. Lecture seule.
+**famille exacte** détectée lors du scan (ESP32, ESP32-S3, ESP32-C3, ESP32-C6,
+ESP32-S2, ESP32-H2). Les informations dépendent de la famille : jamais de table
+générique. Lecture seule.
 Fais d'abord un **scan** dans l'onglet Général.
 
 ![Onglet GPIO Inspector : base Espressif locale, résumé, tableau des broches et sections repliables](images/06-gpio-inspector.png)
@@ -187,9 +188,10 @@ permettent de n'afficher que les broches concernées.
 
 ### Profils de cartes (exposition réelle)
 Sous le résumé, un menu **« Carte »** (filtré par la famille détectée) permet de
-choisir ton **modèle exact** (ESP32-DevKitC, ESP32-S3-DevKitC-1 v1.0/v1.1,
-ESP32-C3-DevKitM-1, Seeed XIAO ESP32-S3/C3, ESP32-C3 SuperMini, ESP32-S3
-SuperMini/Zero N4R2, uPesy ESP32-S3 N16R8). Le tableau gagne alors une colonne
+choisir ton **modèle exact** (ESP32-DevKitC, ESP32-S3-DevKitC-1 v1.0/v1.1 et
+sa variante N16R8 Octal, ESP32-C3-DevKitM-1, Seeed XIAO ESP32-S3/C3, ESP32-C3
+SuperMini, ESP32-S3 SuperMini/Zero N4R2, uPesy ESP32-S3 N16R8). Le tableau gagne
+alors une colonne
 **« Sur la carte »** qui indique, pour chaque broche, si elle est :
 
 - **utilisée par une fonction embarquée** (bouton BOOT, LED, USB natif, pont

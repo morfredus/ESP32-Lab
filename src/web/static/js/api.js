@@ -15,7 +15,7 @@ async function loadStoredReading(section) {
 
     if (!mac) {
         throw new Error(
-            "Aucune carte identifiée. Affiche d'abord une carte (onglet " +
+            "Aucune carte identifiée. Affichez d'abord une carte (onglet " +
             "Général : « Actualiser les ports » ou « Scanner la carte »)."
         );
     }

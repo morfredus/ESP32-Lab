@@ -104,7 +104,8 @@ def test_usb_jtag_restreint():
 
 
 def test_famille_non_couverte():
-    report = compute_gpio_map("esp32s2")
+    # esp32p4 n'a pas (encore) de profil GPIO dans la base.
+    report = compute_gpio_map("esp32p4")
     assert report["status"] == "ok"
     assert report["family_supported"] is False
     assert report["pins"] == []
@@ -113,6 +114,26 @@ def test_famille_non_couverte():
 def test_chip_vide_erreur():
     report = compute_gpio_map("")
     assert report["status"] == "error"
+
+
+def test_familles_supplementaires():
+    assert compute_gpio_map("esp32c6")["gpio_count"] == 31
+    assert compute_gpio_map("esp32s2")["gpio_count"] == 43
+    assert compute_gpio_map("esp32h2")["gpio_count"] == 28
+
+    def strap(fam):
+        return sorted(p["gpio"] for p in compute_gpio_map(fam)["pins"]
+                      if p["strapping"])
+
+    assert strap("esp32c6") == [4, 5, 8, 9, 15]
+    assert strap("esp32s2") == [0, 45, 46]
+    assert strap("esp32h2") == [2, 3, 8, 9, 25]
+
+    # ESP32-S2 : entree seule GPIO46, DAC 17/18.
+    s2 = _pins(compute_gpio_map("esp32s2"))
+    assert s2[46]["input_only"] is True
+    assert s2[17]["dac"] is True
+    assert s2[18]["dac"] is True
 
 
 def test_boot_caveat_sur_strapping():

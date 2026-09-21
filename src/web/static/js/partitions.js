@@ -21,7 +21,7 @@ async function loadPartitionsFromDb() {
         } else {
             container.innerHTML =
                 '<div class="empty">Aucune table de partitions en base pour ' +
-                'cette carte. Branche-la puis clique « Lire la table de ' +
+                'cette carte. Branchez-la puis cliquez « Lire la table de ' +
                 'partitions ».</div>';
         }
     } catch (error) {
@@ -65,7 +65,7 @@ async function loadPartitions() {
     const selectedPort = portSelect.value;
     if (!selectedPort) {
         container.innerHTML =
-            '<div class="empty">Sélectionne un port série (onglet Général).</div>';
+            '<div class="empty">Sélectionnez un port série (onglet Général).</div>';
         return;
     }
 

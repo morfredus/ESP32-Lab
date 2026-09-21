@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — historique des inventaires et comparaison
+   ESP32-Lab - historique des inventaires et comparaison
    ========================================================================== */
 
 async function loadHistory() {
@@ -218,7 +218,7 @@ function toggleDifferencesOnly() {
 
 function compareInventories() {
     if (selectedHistoryIndexes.size !== 2) {
-        setStatus("Sélectionne exactement deux inventaires.", true);
+        setStatus("Sélectionnez exactement deux inventaires.", true);
         return;
     }
 

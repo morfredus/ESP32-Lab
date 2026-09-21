@@ -106,3 +106,13 @@ def test_garde_fou_pas_d_alerte_si_profil_octal():
     report = compute_gpio_map(
         "esp32s3", board="upesy-esp32-s3-n16r8", psram_size=8)
     assert report["board_exposure"]["warning"] is None
+
+
+def test_devkit_variante_octal():
+    # Variante N16R8 (Octal) du DevKitC-1 : 33-37 reserves, pas d'alerte en Octal.
+    report = compute_gpio_map(
+        "esp32s3", board="esp32-s3-devkitc-1-n16r8", psram_size=8)
+    pins = _pins(report)
+    assert pins[33]["board"]["exposure"] == "not_exposed"
+    assert pins[37]["board"]["exposure"] == "not_exposed"
+    assert report["board_exposure"]["warning"] is None

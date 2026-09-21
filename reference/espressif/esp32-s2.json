@@ -1,0 +1,40 @@
+{
+    "schema_version": 1,
+    "family": "esp32s2",
+    "label": "ESP32-S2",
+    "pins_present": [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
+        42, 43, 44, 45, 46
+    ],
+    "strapping": [0, 45, 46],
+    "input_only": [46],
+    "flash_psram": [26, 27, 28, 29, 30, 31, 32],
+    "flash_psram_octal": [],
+    "usb_jtag": [],
+    "adc1": {
+        "1": 0, "2": 1, "3": 2, "4": 3, "5": 4,
+        "6": 5, "7": 6, "8": 7, "9": 8, "10": 9
+    },
+    "adc2": {
+        "11": 0, "12": 1, "13": 2, "14": 3, "15": 4,
+        "16": 5, "17": 6, "18": 7, "19": 8, "20": 9
+    },
+    "dac": [17, 18],
+    "notes": {
+        "0": "Strapping (mode de boot) ; souvent relie au bouton BOOT.",
+        "17": "DAC1 (sortie analogique).",
+        "18": "DAC2 (sortie analogique).",
+        "19": "USB natif D- (USB OTG).",
+        "20": "USB natif D+ (USB OTG).",
+        "26": "Reserve : Flash SPI / PSRAM.",
+        "27": "Reserve : Flash SPI / PSRAM.",
+        "28": "Reserve : Flash SPI / PSRAM.",
+        "29": "Reserve : Flash SPI / PSRAM.",
+        "30": "Reserve : Flash SPI / PSRAM.",
+        "31": "Reserve : Flash SPI / PSRAM.",
+        "32": "Reserve : Flash SPI / PSRAM.",
+        "45": "Strapping (tension VDD_SPI).",
+        "46": "Strapping ; entree seule, pull-down fixe (pas de sortie ni de pull logiciel)."
+    }
+}

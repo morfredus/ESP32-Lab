@@ -261,8 +261,8 @@ def compute_gpio_map(chip, board=None, psram_size=None):
                 lo, hi = min(exposed_octal), max(exposed_octal)
                 warning = (
                     f"PSRAM Octal detectee au scan ({mb} Mo) : GPIO{lo} a "
-                    f"GPIO{hi} sont en realite reserves sur ta carte, "
-                    "contrairement a ce profil. Verifie le modele exact."
+                    f"GPIO{hi} sont en realite reserves sur votre carte, "
+                    "contrairement a ce profil. Verifiez le modele exact."
                 )
 
         board_exposure = {
@@ -280,7 +280,7 @@ def compute_gpio_map(chip, board=None, psram_size=None):
         board_exposure_note = (
             "L'exposition reelle des broches sur la carte (BOOT, LED, ecran, USB "
             "natif du fabricant) depend du profil de la carte et n'est pas "
-            "deductible de la puce. Choisis ta carte pour l'afficher."
+            "deductible de la puce. Choisissez votre carte pour l'afficher."
         )
 
     return {

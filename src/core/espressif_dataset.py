@@ -40,7 +40,11 @@ CHANNEL_BASE = (
 
 # Fichiers du jeu de donnees (hors metadata). Inclut le catalogue de cartes,
 # qui beneficie ainsi du seed, du controle d'integrite et du refresh.
-DATASET_FILES = ("esp32.json", "esp32-s3.json", "esp32-c3.json", "boards.json")
+DATASET_FILES = (
+    "esp32.json", "esp32-s3.json", "esp32-c3.json",
+    "esp32-c6.json", "esp32-s2.json", "esp32-h2.json",
+    "boards.json",
+)
 METADATA_FILE = "metadata.json"
 BOARDS_FILE = "boards.json"
 
@@ -49,6 +53,9 @@ _FAMILY_FILES = {
     "esp32": "esp32",
     "esp32s3": "esp32-s3",
     "esp32c3": "esp32-c3",
+    "esp32c6": "esp32-c6",
+    "esp32s2": "esp32-s2",
+    "esp32h2": "esp32-h2",
 }
 
 

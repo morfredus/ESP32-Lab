@@ -50,7 +50,7 @@ async function loadNvsAnalysis() {
             } else {
                 container.innerHTML =
                     '<div class="empty">Aucune analyse NVS en base pour cette ' +
-                    'carte. Sélectionne un port (onglet Général) puis ' +
+                    'carte. Sélectionnez un port (onglet Général) puis ' +
                     '« Analyser la NVS de la carte ».</div>';
             }
             return;
@@ -68,7 +68,7 @@ async function loadNvsAnalysis() {
         } else {
             container.innerHTML =
                 `<div class="empty">${escapeHtml(error.message)} ` +
-                'Scanne une carte (onglet Général) puis relance l\'analyse NVS.</div>';
+                'Scannez une carte (onglet Général) puis relancez l\'analyse NVS.</div>';
         }
     } finally {
         button.disabled = false;
@@ -83,7 +83,7 @@ async function triggerNvsAnalysis() {
 
     const selectedPort = portSelect.value;
     if (!selectedPort) {
-        setStatus("Sélectionne un port série (onglet Général).", true);
+        setStatus("Sélectionnez un port série (onglet Général).", true);
         return;
     }
 

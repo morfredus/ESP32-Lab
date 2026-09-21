@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — état applicatif partagé et références DOM
+   ESP32-Lab - état applicatif partagé et références DOM
    ========================================================================== */
 
 /* Références DOM globales (les scripts sont chargés en fin de <body>,

@@ -9,6 +9,24 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.10.0] - 2026-09-22
+
+Familles GPIO supplementaires, variante PSRAM Octal et vouvoiement de l'interface.
+
+### Ajoute
+- **Trois familles GPIO** dans le GPIO Inspector : **ESP32-C6** (31 GPIO),
+  **ESP32-S2** (43 GPIO, dont GPIO46 entree seule et DAC 17/18) et **ESP32-H2**
+  (28 GPIO). Donnees curees sur les sources Espressif (six familles couvertes au
+  total).
+- **Profil de carte ESP32-S3-DevKitC-1 (N16R8, Octal)** : sur cette variante,
+  GPIO33 a GPIO37 sont reserves a la PSRAM Octal (contrairement aux variantes
+  quad). Evite un mauvais affichage de l'exposition GPIO pour les cartes a PSRAM
+  Octal.
+
+### Modifie
+- **Interface web au vouvoiement** : tous les textes de l'interface (notes,
+  messages, confirmations) s'adressent desormais a l'utilisateur en vouvoyant.
+
 ## [0.9.0] - 2026-09-22
 
 Nouvelle fonctionnalite : identite du firmware et etat OTA (lecture seule).

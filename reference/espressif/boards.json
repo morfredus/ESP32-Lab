@@ -53,6 +53,24 @@
             "revision_note": "LED RGB sur GPIO38 (v1.1). Les cartes v1.0 utilisent GPIO48."
         },
         {
+            "id": "esp32-s3-devkitc-1-n16r8",
+            "name": "ESP32-S3-DevKitC-1 (v1.1, N16R8 Octal)",
+            "vendor": "Espressif",
+            "chip_family": "esp32s3",
+            "source_url": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html",
+            "onboard": {
+                "0": {"role": "button", "label": "Bouton BOOT"},
+                "38": {"role": "led", "label": "LED RGB adressable (WS2812)"},
+                "19": {"role": "usb", "label": "USB natif D-"},
+                "20": {"role": "usb", "label": "USB natif D+"},
+                "43": {"role": "uart", "label": "Pont USB-UART TXD"},
+                "44": {"role": "uart", "label": "Pont USB-UART RXD"}
+            },
+            "not_exposed": [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+            "notes": "Variante N16R8 : PSRAM Octal, donc GPIO33 a GPIO37 sont reserves (non disponibles), contrairement aux variantes quad (N8R2).",
+            "revision_note": "LED RGB sur GPIO38 (v1.1)."
+        },
+        {
             "id": "esp32-c3-devkitm-1",
             "name": "ESP32-C3-DevKitM-1",
             "vendor": "Espressif",
