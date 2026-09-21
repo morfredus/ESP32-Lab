@@ -9,6 +9,25 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.4.1] - 2026-09-21
+
+Correctifs révélés par le test « changement de poste » (clone neuf + import).
+
+### Corrigé
+- **`.gitignore` : la règle `web/` (non ancrée) ignorait `src/web/`**, ce qui a
+  fait qu'un fichier neuf de l'interface (`db_compare.js`) n'a pas été versionné
+  et manquait sur un clone neuf → Export/Import/Vérifier/Comparer inopérants.
+  Ancrée en `/web/` ; `src/web/` n'est plus jamais ignoré.
+- Sauvegardes datées locales (`*.bak-*`, `*.backup-*`) désormais ignorées pour
+  ne pas polluer le dépôt.
+
+### Modifié
+- **Import de base robuste** : retour visible directement dans la section
+  Maintenance (lecture du fichier, JSON invalide, import en cours, résultat ou
+  erreur), au lieu du seul bandeau de statut en haut de page. Sélecteur de
+  fichier plus tolérant (`.json` + type MIME).
+- `VERSION` → 0.4.1.
+
 ## [0.4.0] - 2026-09-21
 
 Base de données SQLite, comparaison inter-cartes et analyse NVS à la demande.

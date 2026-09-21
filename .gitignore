@@ -51,6 +51,9 @@ beacon_status.md
 *.bak
 *.tmp
 *.orig
+# Sauvegardes datées locales (ex. index.html.backup-YYYYMMDD, *.bak-nvs-ui)
+*.bak-*
+*.backup-*
 
 
 # =============================================================================
@@ -106,8 +109,10 @@ node_modules/
 /.cache/appimage-tools/
 
 # Interface web générée (web_src/ -> web/ -> src/generated/)
-# Jamais éditée à la main, régénérée automatiquement avant chaque compilation
-web/
+# Jamais éditée à la main, régénérée automatiquement avant chaque compilation.
+# Ancré à la racine (/web/) pour NE PAS ignorer src/web/ d'ESP32-Lab, qui
+# contient l'interface éditée à la main (un simple "web/" ignorerait src/web/).
+/web/
 src/generated/
 
 

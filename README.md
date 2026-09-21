@@ -1,8 +1,8 @@
 # ESP32-Lab
 
-![Version](https://img.shields.io/badge/version-0.4.0-blue)
+![Version](https://img.shields.io/badge/version-0.4.1-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-31%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-35%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
