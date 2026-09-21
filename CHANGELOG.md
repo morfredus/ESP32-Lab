@@ -9,6 +9,35 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.5.0] - 2026-09-21
+
+Les secrets ne sont plus jamais stockés en base (piste 1).
+
+### Ajouté
+- **Rédaction des secrets avant stockage** (`secret_redaction.py`) : les mots de
+  passe Wi-Fi, PMK et clés eFuse provisionnées ne sont **plus jamais écrits en
+  base** ; ils sont remplacés par une **empreinte HMAC-SHA-256** permettant de
+  détecter un changement d'un scan au suivant, sans conserver le secret.
+  L'affichage live (lecture directe de la carte) reste complet.
+- **Clé d'installation** (`install_key.py`) : générée une fois, dans la config
+  du service (jamais en base ni versionnée), avec résolution multi-plateforme
+  (Linux `/etc/morfsystem/esp32-lab/` ou `~/.config/…`, Windows
+  `%ProgramData%\morfsystem\esp32-lab\` ou `%APPDATA%\…`) et droits restreints.
+- **Purge rétroactive** : au premier lancement après mise à jour, les lectures
+  NVS/eFuse déjà enregistrées (versions < 0.5.0, contenant des secrets en clair)
+  sont caviardées une fois.
+- Tests `test_secret_redaction.py` + purge dans `test_database.py`.
+
+### Sécurité
+- Aucune copie stockée (base `.db` ou export JSON) ne contient de secret :
+  un backup ou un transfert entre postes ne peut plus fuiter un mot de passe.
+- Les empreintes sont **locales à l'installation** (clé propre à la machine) :
+  la détection de changement se rebase automatiquement après un transfert de
+  données vers un autre poste, sans jamais exposer le secret.
+
+### Modifié
+- `VERSION` → 0.5.0.
+
 ## [0.4.3] - 2026-09-21
 
 Analyse NVS cohérente par carte (lecture depuis la base).

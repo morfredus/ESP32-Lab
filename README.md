@@ -2,9 +2,9 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.4.3-blue)
+![Version](https://img.shields.io/badge/version-0.5.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-36%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-43%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/hardware-read%20only-success)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
@@ -40,6 +40,8 @@ connected ESP32, and keep a history of the diagnostics.
 - **Real partition table reading** (read-only, at `0x8000`)
 - **Structural NVS analysis** with human-readable value decoding
 - **SQLite database** storing every reading per board
+- **No secrets stored**: Wi-Fi passwords and eFuse keys are never written to the
+  database (an HMAC-SHA-256 fingerprint tracks changes without keeping the secret)
 - Registry of known boards (name, location, note per MAC address)
 - Inventory history, **two-scan comparison** and
   **full comparison between two different boards**

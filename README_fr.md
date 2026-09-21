@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.4.3-blue)
+![Version](https://img.shields.io/badge/version-0.5.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-36%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-43%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -39,6 +39,8 @@ connecté, et conserver un historique des diagnostics.
 - **Lecture réelle de la table de partitions** (lecture seule, à `0x8000`)
 - **Analyse structurelle NVS** avec décodage lisible des valeurs
 - **Base de données SQLite** conservant toutes les lectures par carte
+- **Aucun secret en base** : mots de passe Wi-Fi et clés eFuse jamais stockés
+  (une empreinte HMAC-SHA-256 détecte les changements sans garder le secret)
 - Registre des cartes connues (nom, emplacement, note par adresse MAC)
 - Historique des inventaires, **comparaison de deux scans** et
   **comparaison complète de deux cartes différentes**

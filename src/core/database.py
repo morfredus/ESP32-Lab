@@ -134,6 +134,49 @@ def init_db():
         migrate_from_json()
         set_meta("json_migrated", "1")
 
+    # Purge unique des secrets dans les lectures enregistrées avant la
+    # rédaction (versions < 0.5.0).
+    if get_meta("readings_redacted") != "1":
+        redact_existing_readings()
+        set_meta("readings_redacted", "1")
+
+
+def redact_existing_readings():
+    """Caviarde les secrets des lectures NVS/eFuse déjà en base (rétroactif)."""
+
+    from core.secret_redaction import (
+        sanitize_efuse_for_storage,
+        sanitize_nvs_for_storage,
+    )
+
+    sanitizers = {
+        "nvs": sanitize_nvs_for_storage,
+        "efuse": sanitize_efuse_for_storage,
+    }
+
+    with connect() as connection:
+        rows = connection.execute(
+            "SELECT id, section, payload FROM readings "
+            "WHERE section IN ('nvs', 'efuse')"
+        ).fetchall()
+
+        for row in rows:
+            sanitize = sanitizers.get(row["section"])
+            if not sanitize:
+                continue
+            try:
+                payload = json.loads(row["payload"])
+            except (TypeError, json.JSONDecodeError):
+                continue
+
+            cleaned = sanitize(payload)
+            connection.execute(
+                "UPDATE readings SET payload = ? WHERE id = ?",
+                (json.dumps(cleaned, ensure_ascii=False), row["id"]),
+            )
+
+        connection.commit()
+
 
 def reset_database():
     """

@@ -21,6 +21,10 @@ from core.esp32_flash_sfdp import read_flash_details
 from core.esp32_inventory import create_inventory, save_inventory
 from core.esp32_nvs import read_and_analyze_nvs
 from core.esp32_partitions import read_partition_table
+from core.secret_redaction import (
+    sanitize_efuse_for_storage,
+    sanitize_nvs_for_storage,
+)
 from core.inventory_history import get_history, save_history
 from core.inventory_store import load_last_inventory
 from transport.serial_detect import detect_serial_ports
@@ -416,8 +420,17 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
 
         port = query.get("port", [None])[0]
 
+        # Assainit une COPIE avant stockage : les secrets (mots de passe NVS,
+        # clés eFuse) ne sont jamais écrits en base, seulement une empreinte.
+        # L'objet `result` renvoyé à l'interface reste complet.
+        to_store = result
+        if section == "nvs":
+            to_store = sanitize_nvs_for_storage(result)
+        elif section == "efuse":
+            to_store = sanitize_efuse_for_storage(result)
+
         try:
-            database.save_reading(mac, section, result, port=port)
+            database.save_reading(mac, section, to_store, port=port)
         except Exception:
             # La persistance ne doit jamais faire échouer la lecture matérielle.
             pass

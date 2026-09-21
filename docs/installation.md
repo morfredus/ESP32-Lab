@@ -79,7 +79,7 @@ PYTHONPATH=src .venv/bin/python -m web.server
 Tu devrais voir :
 
 ```
-ESP32-Lab v0.4.3 — Web disponible sur http://0.0.0.0:8765
+ESP32-Lab v0.5.0 — Web disponible sur http://0.0.0.0:8765
 Ctrl+C pour arrêter le serveur.
 ```
 

@@ -178,6 +178,32 @@ def test_get_latest_reading():
     assert database.get_latest_reading(mac, "efuse") is None
 
 
+def test_redact_existing_readings():
+    _fresh_db()
+    from core import install_key
+    install_key._cached_key = b"0123456789abcdef0123456789abcdef"
+
+    mac = "aa:bb:cc:dd:ee:50"
+    # Lecture NVS ancienne (avec un secret en clair) insérée directement.
+    old = {
+        "status": "ok",
+        "report": {"pages": [{"entries": [
+            {"index": 0, "decoded": {"key": "sta.pswd",
+                                     "data_hex": "aa", "raw_hex": "deadbeef",
+                                     "span": 1}},
+        ]}]},
+    }
+    database.save_reading(mac, "nvs", old, recorded_at="2026-01-01T00:00:00")
+
+    database.redact_existing_readings()
+
+    reading = database.get_latest_reading(mac, "nvs")
+    decoded = reading["payload"]["report"]["pages"][0]["entries"][0]["decoded"]
+    assert decoded["raw_hex"] == "<redacted>"
+    assert decoded.get("redacted") is True
+    assert "fingerprint" in decoded
+
+
 def test_verify_database():
     _fresh_db()
     database.set_meta("json_migrated", "1")
@@ -203,5 +229,6 @@ if __name__ == "__main__":
     test_import_rejects_bad_format()
     test_reset_and_no_remigration()
     test_get_latest_reading()
+    test_redact_existing_readings()
     test_verify_database()
     print("Tous les tests de base de données sont réussis.")

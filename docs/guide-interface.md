@@ -170,8 +170,13 @@ Quatre outils :
 - **Remettre à zéro** — efface **définitivement** toutes les données (une
   confirmation est demandée ; pense à exporter avant).
 
-> Pour transférer une installation d'un poste à l'autre, tu peux aussi
-> simplement copier le fichier `data/esp32lab.db` : il contient tout.
+> **Changer de poste** : l'export/import **et** la copie du fichier
+> `data/esp32lab.db` fonctionnent tous les deux. Aucun des deux ne contient de
+> secret (mots de passe, clés) — ils ne sont **jamais stockés**, seulement une
+> empreinte pour détecter un changement. Cette empreinte est calculée avec une
+> **clé propre à chaque installation** (hors base) : après un transfert vers un
+> autre poste, la détection de changement se rebase simplement au prochain scan.
+> Rien à faire de spécial, et aucun secret ne circule.
 
 ## Astuce
 

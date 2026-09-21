@@ -34,6 +34,8 @@ src/
 │   ├── esp32_nvs.py             Lit + analyse la partition NVS (à la demande)
 │   ├── database.py              Base SQLite : cartes + toutes les lectures
 │   ├── comparison.py            Comparaison riche entre deux cartes
+│   ├── secret_redaction.py     Caviarde les secrets avant stockage (empreinte)
+│   ├── install_key.py          Clé d'installation + empreintes HMAC-SHA-256
 │   ├── flash_catalog.py          Correspondance des identifiants Flash JEDEC
 │   ├── esptool_runner.py         Résolution portable d'esptool
 │   ├── device_registry.py        Registre persistant des cartes (par MAC)
@@ -121,6 +123,7 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 | `test_flash_catalog.py`          | Catalogue Flash JEDEC. |
 | `test_efuse.py`                  | Analyse eFuse, sécurité, MAC dérivées. |
 | `test_flash_sfdp.py`             | Analyse SFDP (JESD216), ID unique Flash. |
+| `test_secret_redaction.py`       | Rédaction des secrets, empreintes HMAC. |
 | `test_serial_connection.py`      | Connexion série. |
 
 ## Données générées
