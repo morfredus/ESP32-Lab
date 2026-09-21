@@ -79,7 +79,7 @@ PYTHONPATH=src .venv/bin/python -m web.server
 Tu devrais voir :
 
 ```
-ESP32-Lab v0.4.1 — Web disponible sur http://0.0.0.0:8765
+ESP32-Lab v0.4.2 — Web disponible sur http://0.0.0.0:8765
 Ctrl+C pour arrêter le serveur.
 ```
 
@@ -111,6 +111,43 @@ $env:PYTHONPATH = "src"
 
 Même si ce Python n'a pas esptool, le serveur utilisera automatiquement celui
 du `.venv` du projet s'il existe.
+
+## Scripts de lancement (raccourcis)
+
+Deux scripts à la racine du projet évitent de retaper les commandes. Ils
+vérifient le `.venv`, lancent le serveur et gèrent l'accès.
+
+### Windows — `launch_esp32_lab.bat`
+
+Double-clic (ou `launch_esp32_lab.bat` en ligne de commande). Le serveur démarre
+dans une fenêtre dédiée et le navigateur s'ouvre sur http://127.0.0.1:8765.
+
+### Linux / Raspberry Pi — `launch_esp32_lab.sh`
+
+```bash
+./launch_esp32_lab.sh
+```
+
+Le script affiche les **adresses d'accès** puis :
+
+- **Pi avec écran** : ouvre le navigateur local automatiquement.
+- **Pi sans écran (headless)** : n'ouvre rien (pas d'erreur) et **indique les
+  adresses à saisir depuis le navigateur d'un autre poste** — l'IP réseau et le
+  nom mDNS `<hôte>.local`. Exemple :
+
+  ```
+  ESP32-Lab démarré (PID : 1234)
+  -------------------------------------------------------------
+    Sur cette machine    : http://127.0.0.1:8765
+    Depuis un autre poste: http://192.168.1.104:8765
+                       ou: http://pi4dev.local:8765   (si mDNS/Bonjour actif)
+  -------------------------------------------------------------
+  ```
+
+> Le nom `<hôte>.local` fonctionne si le service mDNS (avahi sous Linux,
+> Bonjour sous Windows/macOS) est actif sur le réseau. Sinon, utilise l'IP.
+
+Rends le script exécutable la première fois si besoin : `chmod +x launch_esp32_lab.sh`.
 
 ## Étape suivante
 

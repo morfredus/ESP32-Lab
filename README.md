@@ -1,6 +1,6 @@
 # ESP32-Lab
 
-![Version](https://img.shields.io/badge/version-0.4.1-blue)
+![Version](https://img.shields.io/badge/version-0.4.2-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-35%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
@@ -57,6 +57,18 @@ PYTHONPATH=src .venv/bin/python -m web.server
 # 3. Ouvrir l'interface
 #    http://<adresse-du-serveur>:8765
 ```
+
+### Scripts de lancement
+
+Deux scripts à la racine automatisent le démarrage (vérification du `.venv`,
+lancement du serveur, ouverture ou affichage de l'adresse) :
+
+- **Windows** : double-clic sur `launch_esp32_lab.bat` (ouvre le navigateur
+  local sur http://127.0.0.1:8765).
+- **Linux / Raspberry Pi** : `./launch_esp32_lab.sh`. Sur un Pi **avec** écran,
+  il ouvre le navigateur ; sur un Pi **sans écran** (headless), il n'ouvre rien
+  et **affiche les adresses à saisir depuis un autre poste** (IP réseau et nom
+  mDNS `<hôte>.local`).
 
 Détails et alternatives (hors venv, Windows, Raspberry Pi) :
 voir [`docs/installation.md`](docs/installation.md).

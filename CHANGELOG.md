@@ -9,6 +9,22 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.4.2] - 2026-09-21
+
+Scripts de lancement documentés et adaptés au Raspberry Pi sans écran.
+
+### Modifié
+- **`launch_esp32_lab.sh`** : n'ouvre plus un navigateur à l'aveugle. Il
+  n'ouvre le navigateur local que si une **session graphique** est présente
+  (`DISPLAY`/`WAYLAND_DISPLAY`) ; sur un Pi **headless**, il **affiche les
+  adresses d'accès distant** (IP réseau et nom mDNS `<hôte>.local`) au lieu
+  d'échouer.
+- `VERSION` → 0.4.2.
+
+### Ajouté
+- Documentation des deux scripts de lancement (`launch_esp32_lab.bat` /
+  `launch_esp32_lab.sh`) dans le README et `docs/installation.md`.
+
 ## [0.4.1] - 2026-09-21
 
 Correctifs révélés par le test « changement de poste » (clone neuf + import).
