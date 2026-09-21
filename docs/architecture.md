@@ -34,6 +34,7 @@ src/
 │   ├── esp32_nvs.py             Lit + analyse la partition NVS (à la demande)
 │   ├── database.py              Base SQLite : cartes + toutes les lectures
 │   ├── comparison.py            Comparaison riche entre deux cartes
+│   ├── morfbeacon.py           Annonce morfBeacon (heartbeat UDP 45454)
 │   ├── secret_redaction.py     Caviarde les secrets avant stockage (empreinte)
 │   ├── install_key.py          Clé d'installation + empreintes HMAC-SHA-256
 │   ├── flash_catalog.py          Correspondance des identifiants Flash JEDEC

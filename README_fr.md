@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.5.3-blue)
+![Version](https://img.shields.io/badge/version-0.6.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-43%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-46%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -45,6 +45,8 @@ connecté, et conserver un historique des diagnostics.
 - Historique des inventaires, **comparaison de deux scans** et
   **comparaison complète de deux cartes différentes**
 - **Analyse NVS à la demande** (lecture de la partition NVS de la carte)
+- **Compatible morfSystem** : s'annonce via morfBeacon (heartbeat UDP) avec les
+  endpoints `/healthz` et `/status` — découvrable par morfMonitor
 - Export CSV
 - Interface web organisée en onglets
 
@@ -100,7 +102,9 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 
 | Méthode | Route                       | Description                              |
 |---------|-----------------------------|------------------------------------------|
-| GET     | `/api/health`               | État du service + version                |
+| GET     | `/api/health`               | État du service + version + port         |
+| GET     | `/healthz`                  | Liveness (contrat morfBeacon)            |
+| GET     | `/status`                   | Statut riche (contrat morfBeacon)        |
 | GET     | `/api/ports`                | Ports série détectés                     |
 | GET     | `/api/inventory`            | Dernier inventaire enregistré            |
 | GET     | `/api/inventory/history`    | Historique des inventaires               |

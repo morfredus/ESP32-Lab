@@ -192,6 +192,20 @@ def reset_database():
     return {"status": "ok", "message": "Base remise à zéro."}
 
 
+def counts():
+    """Compteurs légers (cartes, lectures) pour les métriques de supervision."""
+
+    with connect() as connection:
+        devices = connection.execute(
+            "SELECT COUNT(*) FROM devices"
+        ).fetchone()[0]
+        readings = connection.execute(
+            "SELECT COUNT(*) FROM readings"
+        ).fetchone()[0]
+
+    return {"devices": devices, "readings": readings}
+
+
 def verify_database():
     """Vérifie l'intégrité de la base et retourne des statistiques."""
 

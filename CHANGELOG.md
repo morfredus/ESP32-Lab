@@ -9,6 +9,29 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.6.0] - 2026-09-21
+
+ESP32-Lab rejoint le langage commun morfSystem (morfBeacon).
+
+### Ajouté
+- **Annonce morfBeacon** : ESP32-Lab diffuse un heartbeat UDP périodique en
+  broadcast sur **45454/UDP** (`proto: morfbeacon/1`, `app`, `host`, `version`,
+  `state`, `status_port`, `instance`, `capabilities: ["esp32-characterization"]`,
+  `ts`). morfMonitor peut ainsi le découvrir automatiquement. Module
+  `core/morfbeacon.py`.
+- Endpoints **`/healthz`** (liveness) et **`/status`** (riche : app, version,
+  state, host, port, capacité, métriques, liste d'endpoints), conformes au
+  contrat morfBeacon.
+- Métriques légères de la base (`database.counts`).
+- Tests `test_morfbeacon.py` (dont capture réelle du broadcast).
+
+### Note (autonomie)
+- L'annonce est **purement additive** : sans réseau ni morfMonitor, ESP32-Lab
+  fonctionne exactement pareil. Toute erreur d'émission est silencieuse.
+
+### Modifié
+- `VERSION` → 0.6.0.
+
 ## [0.5.3] - 2026-09-21
 
 Sélection automatique du port, et affichage du port dans l'interface.

@@ -8,7 +8,7 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
-from core import database
+from core import database, morfbeacon
 from core.comparison import compare_devices
 from core.device_registry import (
     get_device,
@@ -121,6 +121,15 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "version": APP_VERSION,
                 "port": ACTIVE_PORT,
             })
+            return
+
+        if path == "/healthz":
+            # Liveness minimale (contrat morfBeacon).
+            self.send_json({"status": "ok"})
+            return
+
+        if path == "/status":
+            self.send_json(self.build_status())
             return
 
         if path == "/api/ports":
@@ -440,6 +449,44 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             # La persistance ne doit jamais faire échouer la lecture matérielle.
             pass
 
+    def build_status(self):
+        """Statut riche (contrat morfBeacon /status)."""
+
+        import socket
+
+        try:
+            metrics = database.counts()
+        except Exception:
+            metrics = {}
+
+        return {
+            "app": "ESP32-Lab",
+            "version": APP_VERSION,
+            "state": "ok",
+            "host": socket.gethostname(),
+            "port": ACTIVE_PORT,
+            "capabilities": morfbeacon.CAPABILITIES,
+            "metrics": metrics,
+            "api": {
+                "endpoints": [
+                    {"method": "GET", "path": "/api/devices",
+                     "summary": "registre des cartes"},
+                    {"method": "GET", "path": "/api/db/compare",
+                     "summary": "comparaison de deux cartes"},
+                    {"method": "GET", "path": "/api/db/export",
+                     "summary": "export de la base"},
+                    {"method": "POST", "path": "/api/inventory/refresh",
+                     "summary": "scan d'une carte"},
+                    {"method": "POST", "path": "/api/efuse",
+                     "summary": "lecture des eFuses"},
+                    {"method": "POST", "path": "/api/flash",
+                     "summary": "lecture SFDP + identifiant unique"},
+                    {"method": "POST", "path": "/api/nvs/analyze",
+                     "summary": "analyse NVS"},
+                ],
+            },
+        }
+
     def read_partitions(self, query):
         """Lit la table de partitions réelle de la carte (lecture seule)."""
 
@@ -651,6 +698,11 @@ def main():
     print(f"ESP32-Lab v{APP_VERSION} — Web disponible sur :")
     print(f"  http://0.0.0.0:{ACTIVE_PORT}")
     print(f"  http://{host_name}.local:{ACTIVE_PORT}   (si mDNS/Bonjour actif)")
+
+    # Annonce morfBeacon (additive : sans réseau, le service tourne pareil).
+    morfbeacon.start_heartbeat(APP_VERSION, ACTIVE_PORT)
+    print(f"  Annonce morfBeacon sur {morfbeacon.BEACON_PORT}/UDP "
+          f"(capacité : {', '.join(morfbeacon.CAPABILITIES)})")
     print("Ctrl+C pour arrêter le serveur.")
 
     try:
