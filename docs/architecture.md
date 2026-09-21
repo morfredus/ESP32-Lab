@@ -127,6 +127,7 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 | `test_flash_sfdp.py`             | Analyse SFDP (JESD216), ID unique Flash. |
 | `test_secret_redaction.py`       | Rédaction des secrets, empreintes HMAC. |
 | `test_secret_changes.py`         | Détection de changement de secrets (empreintes). |
+| `test_database_import_delete.py` | Import (noms complétés) et suppression d'une carte. |
 | `test_morfbeacon.py`             | Annonce morfBeacon, endpoints /healthz + /status. |
 | `test_serial_connection.py`      | Connexion série. |
 

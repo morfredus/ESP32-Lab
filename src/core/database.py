@@ -178,6 +178,32 @@ def redact_existing_readings():
         connection.commit()
 
 
+def delete_device(mac):
+    """
+    Supprime une carte et toutes ses lectures. Opération irréversible.
+    Retourne le nombre de lectures supprimées, ou None si la carte est absente.
+    """
+
+    if not mac:
+        return None
+
+    mac = mac.lower()
+    with connect() as connection:
+        exists = connection.execute(
+            "SELECT 1 FROM devices WHERE mac = ?", (mac,)
+        ).fetchone()
+        if not exists:
+            return None
+
+        readings = connection.execute(
+            "DELETE FROM readings WHERE mac = ?", (mac,)
+        ).rowcount
+        connection.execute("DELETE FROM devices WHERE mac = ?", (mac,))
+        connection.commit()
+
+    return {"status": "ok", "mac": mac, "readings_deleted": readings}
+
+
 def reset_database():
     """
     Vide entièrement la base (cartes + lectures), sans réimporter les anciens
@@ -583,32 +609,66 @@ def import_data(payload):
         raise ValueError("Fichier d'import invalide (format inattendu).")
 
     devices_added = 0
+    devices_updated = 0
     with connect() as connection:
         for device in payload.get("devices", []):
             mac = (device.get("mac") or "").lower()
             if not mac:
                 continue
+
             identification = device.get("identification")
-            cursor = connection.execute(
-                """
-                INSERT OR IGNORE INTO devices
-                    (mac, name, location, note, first_seen, last_seen, port,
-                     identification)
-                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-                """,
-                (
-                    mac,
-                    device.get("name", ""),
-                    device.get("location", ""),
-                    device.get("note", ""),
-                    device.get("first_seen"),
-                    device.get("last_seen"),
-                    device.get("port"),
-                    json.dumps(identification, ensure_ascii=False)
-                    if identification is not None else None,
-                ),
+            identification_json = (
+                json.dumps(identification, ensure_ascii=False)
+                if identification is not None else None
             )
-            devices_added += cursor.rowcount
+
+            existing = connection.execute(
+                "SELECT name, location, note, identification "
+                "FROM devices WHERE mac = ?",
+                (mac,),
+            ).fetchone()
+
+            if existing is None:
+                connection.execute(
+                    """
+                    INSERT INTO devices
+                        (mac, name, location, note, first_seen, last_seen, port,
+                         identification)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                    """,
+                    (
+                        mac,
+                        device.get("name", ""),
+                        device.get("location", ""),
+                        device.get("note", ""),
+                        device.get("first_seen"),
+                        device.get("last_seen"),
+                        device.get("port"),
+                        identification_json,
+                    ),
+                )
+                devices_added += 1
+                continue
+
+            # Carte déjà connue : on complète seulement les champs vides
+            # (un nom édité localement n'est jamais écrasé), et on renseigne
+            # l'identification si elle manque. C'est ce qui permet à une carte
+            # créée vide par un scan de récupérer son nom lors de l'import.
+            updates = {}
+            for field in ("name", "location", "note"):
+                incoming = (device.get(field) or "").strip()
+                if incoming and not (existing[field] or "").strip():
+                    updates[field] = incoming
+            if identification_json and existing["identification"] is None:
+                updates["identification"] = identification_json
+
+            if updates:
+                assignments = ", ".join(f"{field} = ?" for field in updates)
+                connection.execute(
+                    f"UPDATE devices SET {assignments} WHERE mac = ?",
+                    (*updates.values(), mac),
+                )
+                devices_updated += 1
         connection.commit()
 
     readings_added = 0
@@ -626,7 +686,11 @@ def import_data(payload):
         )
         readings_added += 1
 
-    return {"devices_added": devices_added, "readings_added": readings_added}
+    return {
+        "devices_added": devices_added,
+        "devices_updated": devices_updated,
+        "readings_added": readings_added,
+    }
 
 
 def _reading_exists(mac, section, recorded_at):

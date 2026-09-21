@@ -9,6 +9,29 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.6.2] - 2026-09-21
+
+Correctif d'import (noms de cartes) et suppression d'une carte.
+
+### Corrigé
+- **Import** : une carte déjà présente en base (créée vide par un scan) ne
+  récupérait pas son **nom** (ni emplacement/note) lors de l'import, à cause
+  d'un `INSERT OR IGNORE`. L'import **complète désormais les champs vides** des
+  cartes existantes sans jamais écraser une valeur éditée localement, et
+  renseigne l'identification manquante. Le résumé d'import indique le nombre de
+  fiches complétées (`devices_updated`). La fiche affichée est rafraîchie après
+  import.
+
+### Ajouté
+- **Suppression d'une carte** : bouton « Supprimer » dans le registre des
+  cartes (avec confirmation), qui efface la carte **et toutes ses lectures**.
+  Endpoint `POST /api/device/delete`, fonction `database.delete_device`.
+- Tests `test_database_import_delete.py` (complétion des noms à l'import, nom
+  local préservé, suppression carte + lectures). **59 tests.**
+
+### Modifié
+- `VERSION` -> 0.6.2.
+
 ## [0.6.1] - 2026-09-21
 
 Détection de changement de secrets, par empreinte HMAC, entre deux scans.

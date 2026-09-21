@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — inventaire matériel et fiche de la carte
+   ESP32-Lab - inventaire matériel et fiche de la carte
    ========================================================================== */
 
 /** Vide la vue d'inventaire et la fiche (aucune carte affichée). */

@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — comparaison complète de deux cartes (base de données)
+   ESP32-Lab - comparaison complète de deux cartes (base de données)
    ========================================================================== */
 
 /* --- Export / Import de la base ------------------------------------------- */
@@ -73,14 +73,23 @@ async function importDatabase(input) {
     try {
         const result = await apiPost("/api/db/import", payload);
         const summary = result.summary || {};
+        const updated = summary.devices_updated || 0;
         const message =
             `Import terminé : <strong>${summary.devices_added || 0}</strong> ` +
-            `carte(s) et <strong>${summary.readings_added || 0}</strong> ` +
+            `carte(s) ajoutée(s)` +
+            (updated
+                ? `, <strong>${updated}</strong> fiche(s) complétée(s)`
+                : "") +
+            ` et <strong>${summary.readings_added || 0}</strong> ` +
             `lecture(s) ajoutée(s).`;
         showMaintenanceMessage(message);
         setStatus("Import terminé.");
         await loadHistory();
         await loadDevices();
+        // Rafraîchit la fiche affichée pour que les noms importés apparaissent.
+        if (typeof showInventoryForSelectedPort === "function") {
+            await showInventoryForSelectedPort();
+        }
     } catch (error) {
         showMaintenanceMessage(
             "Import refusé : " + escapeHtml(error.message), true);
@@ -158,7 +167,7 @@ function populateCompareSelectors() {
         return `<option value="${escapeHtml(device.mac)}">${escapeHtml(label)}</option>`;
     }).join("");
 
-    const placeholder = '<option value="">— choisir une carte —</option>';
+    const placeholder = '<option value="">- choisir une carte -</option>';
     selectA.innerHTML = placeholder + options;
     selectB.innerHTML = placeholder + options;
 
@@ -284,7 +293,7 @@ function renderSecretChanges(result, container) {
 
     container.innerHTML = `
         <div class="comparison-summary" style="margin-top:12px;">
-            <strong>Suivi des secrets — ${escapeHtml(result.name)}</strong>
+            <strong>Suivi des secrets - ${escapeHtml(result.name)}</strong>
             <div class="comparison-counts">${banner}</div>
             <p class="selection-info" style="margin-top:8px;">
                 Comparaison des deux dernières analyses, par empreinte HMAC.
@@ -302,7 +311,7 @@ function renderCardComparison(result) {
     const groups = result.groups.map(group => {
         const rows = group.rows.map(row => {
             let cls = "";
-            let verdict = "—";
+            let verdict = "-";
             if (row.comparable) {
                 cls = row.same ? "row-same" : "row-different";
                 verdict = row.same
@@ -349,8 +358,8 @@ function renderCardComparison(result) {
                 </span>
             </div>
             <p class="selection-info" style="margin-top:10px;">
-                ${escapeHtml(result.a.name)} — données : ${capturedBadges(result.a.captured)}<br>
-                ${escapeHtml(result.b.name)} — données : ${capturedBadges(result.b.captured)}
+                ${escapeHtml(result.a.name)} - données : ${capturedBadges(result.a.captured)}<br>
+                ${escapeHtml(result.b.name)} - données : ${capturedBadges(result.b.captured)}
             </p>
         </div>
         ${groups}

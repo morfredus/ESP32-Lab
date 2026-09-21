@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — cartes enregistrées (registre)
+   ESP32-Lab - cartes enregistrées (registre)
    ========================================================================== */
 
 async function loadDevices() {
@@ -46,6 +46,10 @@ async function loadDevices() {
                             onclick="compareDeviceScans('${escapeHtml(device.mac)}')"
                             ${scanCount < 2 ? "disabled title='Au moins 2 scans nécessaires'" : ""}>
                         Comparer les scans
+                    </button>
+                    <button class="history-details-button danger-button"
+                            onclick="deleteDevice('${escapeHtml(device.mac)}', '${escapeHtml((device.name || "").replace(/'/g, "\\'"))}')">
+                        Supprimer
                     </button>
                 </td>
             </tr>
@@ -97,6 +101,32 @@ function compareDeviceScans(mac) {
 
     historyModalSelectedIndexes = new Set();
     showDeviceHistory(mac);
+}
+
+async function deleteDevice(mac, name) {
+    const label = name ? `« ${name} » (${mac})` : mac;
+    const confirmed = window.confirm(
+        `Supprimer DÉFINITIVEMENT la carte ${label} et toutes ses lectures ` +
+        `(inventaires, eFuses, SFDP, partitions, NVS) ?\n\n` +
+        `Cette action est irréversible.`
+    );
+    if (!confirmed) {
+        return;
+    }
+
+    try {
+        const result = await apiPost("/api/device/delete", { mac });
+        setStatus(
+            `Carte supprimée (${result.readings_deleted || 0} lecture(s) effacée(s)).`
+        );
+        await loadHistory();
+        await loadDevices();
+        if (typeof showInventoryForSelectedPort === "function") {
+            await showInventoryForSelectedPort();
+        }
+    } catch (error) {
+        setStatus("Suppression impossible : " + error.message, true);
+    }
 }
 
 function filterDevices() {

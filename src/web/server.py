@@ -305,6 +305,10 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             self.update_device()
             return
 
+        if path == "/api/device/delete":
+            self.delete_device_handler()
+            return
+
         if path == "/api/db/import":
             self.import_db()
             return
@@ -323,6 +327,37 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             "status": "error",
             "message": "Route inconnue.",
         }, status=404)
+
+    def delete_device_handler(self):
+        """Supprime une carte de l'inventaire et toutes ses lectures."""
+
+        try:
+            data = self.read_json_body()
+            mac = data.get("mac")
+
+            if not mac:
+                self.send_json({
+                    "status": "error",
+                    "message": "L'adresse MAC est obligatoire.",
+                }, status=400)
+                return
+
+            result = database.delete_device(mac)
+
+            if result is None:
+                self.send_json({
+                    "status": "error",
+                    "message": "Carte introuvable.",
+                }, status=404)
+                return
+
+            result["message"] = "Carte supprimée."
+            self.send_json(result)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
 
     def import_db(self):
         """Importe un export de base (fusion additive)."""
@@ -701,12 +736,12 @@ def main():
         return
 
     if ACTIVE_PORT != PORT:
-        print(f"Port {PORT} occupé — bascule sur le port {ACTIVE_PORT}.")
+        print(f"Port {PORT} occupé - bascule sur le port {ACTIVE_PORT}.")
 
     import socket
     host_name = socket.gethostname()
 
-    print(f"ESP32-Lab v{APP_VERSION} — Web disponible sur :")
+    print(f"ESP32-Lab v{APP_VERSION} - Web disponible sur :")
     print(f"  http://0.0.0.0:{ACTIVE_PORT}")
     print(f"  http://{host_name}.local:{ACTIVE_PORT}   (si mDNS/Bonjour actif)")
 

@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.6.1-blue)
+![Version](https://img.shields.io/badge/version-0.6.2-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-54%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -128,6 +128,7 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 | POST    | `/api/db/import`            | Importe/fusionne un export de base       |
 | POST    | `/api/db/reset`             | Remet la base à zéro (irréversible)      |
 | POST    | `/api/device/update`        | Enregistre la fiche d'une carte          |
+| POST    | `/api/device/delete`        | Supprime une carte et toutes ses lectures |
 
 ## Principes
 

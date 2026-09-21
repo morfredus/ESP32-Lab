@@ -2,9 +2,9 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.6.1-blue)
+![Version](https://img.shields.io/badge/version-0.6.2-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-54%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/hardware-read%20only-success)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
@@ -129,6 +129,7 @@ See [`docs/architecture.md`](docs/architecture.md) for details (in French).
 | POST   | `/api/db/import`            | Import/merge a database export           |
 | POST   | `/api/db/reset`             | Reset the database (irreversible)        |
 | POST   | `/api/device/update`        | Save a board's record                    |
+| POST   | `/api/device/delete`        | Delete a board and all its readings      |
 
 ## Principles
 
