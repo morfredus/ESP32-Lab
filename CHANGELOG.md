@@ -19,11 +19,15 @@ Bilan de securite et rapport exportable par carte.
   securise, anti-rollback, cles) deviennent une checklist notee, avec une
   posture globale (developpement / partielle / durcie), une explication et un
   conseil « en production » par item. Ton **non alarmiste** : sur une carte de
-  developpement, une protection desactivee est normale (niveau info).
+  developpement, une protection desactivee est normale (niveau info). Chaque
+  ligne indique l'etat REEL en clair (« Accessible », « Desactive »,
+  « Non configure »), sans double negation.
 - **Rapport exportable** par carte (bouton « Rapport » dans l'Inventaire,
   `GET /api/report?mac=`). Page HTML **autonome, hors ligne, sans secret**
   regroupant identite, bilan de securite, Flash/SFDP, partitions, structure NVS,
-  cartographie GPIO et firmware. A ouvrir, enregistrer et partager.
+  cartographie GPIO et firmware. A ouvrir, enregistrer et partager. La section
+  GPIO distingue clairement les caracteristiques de la PUCE des fonctions issues
+  du profil de carte (a verifier avec le materiel reel).
 - **Export PDF** du rapport : bouton « Telecharger en PDF » (impression
   navigateur) et feuille de style d'impression dediee (mise en page soignee,
   couleurs conservees, en-tetes de tableaux repetes). Aucune dependance ajoutee.

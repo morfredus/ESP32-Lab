@@ -241,7 +241,8 @@ function renderEfuseAssessment(assessment) {
     const rows = assessment.items.map(item => `
         <tr>
             <td>${escapeHtml(item.label)}</td>
-            <td>${securityBadge(item.status, "Activé", "Non activé")}</td>
+            <td><span class="badge ${item.status ? "badge-on" : "badge-off"}">
+                ${escapeHtml(item.state)}</span></td>
             <td>${escapeHtml(item.summary)}</td>
             <td class="assessment-advice">${escapeHtml(item.advice)}</td>
         </tr>

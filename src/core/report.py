@@ -120,7 +120,7 @@ def _section_assessment(assessment):
     items = "".join(
         f"<tr><td>{_esc(it['label'])}</td>"
         f"<td><span class='badge {('on' if it['status'] else 'off')}'>"
-        f"{'Active' if it['status'] else 'Non active'}</span></td>"
+        f"{_esc(it['state'])}</span></td>"
         f"<td>{_esc(it['summary'])}</td>"
         f"<td class='muted'>{_esc(it['advice'])}</td></tr>"
         for it in assessment["items"]
@@ -177,7 +177,21 @@ def _section_gpio(gpio):
     ]
     if onboard:
         pairs.append(("Fonctions carte", onboard))
-    return _rows(pairs)
+
+    table = _rows(pairs)
+
+    # Les fonctions carte dependent du profil choisi, pas de la puce : le preciser
+    # pour ne pas les prendre pour des caracteristiques universelles.
+    exposure = gpio.get("board_exposure")
+    if onboard and isinstance(exposure, dict):
+        table += (
+            "<p class='muted'>Les strapping, ADC et reservations Flash/PSRAM "
+            "ci-dessus sont propres a la PUCE. En revanche les <strong>fonctions "
+            "carte</strong> (BOOT, LED, USB, UART) proviennent du profil de carte "
+            f"<code>{_esc(exposure.get('id') or exposure.get('name'))}</code> : "
+            "verifiez la correspondance avec le materiel reel.</p>"
+        )
+    return table
 
 
 def _section_firmware(payload):
