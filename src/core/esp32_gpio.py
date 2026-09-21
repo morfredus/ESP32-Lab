@@ -48,9 +48,49 @@ def _to_int_map(raw):
     return result
 
 
-def compute_gpio_map(chip):
+def _board_exposure(board, gpio):
+    """Exposition d'une broche sur une carte : onboard / header / not_exposed."""
+
+    onboard = board.get("onboard") or {}
+    entry = onboard.get(str(gpio))
+    if entry:
+        return {
+            "exposure": "onboard",
+            "role": entry.get("role"),
+            "label": entry.get("label"),
+        }
+
+    # Deux modeles : liste blanche `exposed` (petites cartes) ou liste noire
+    # `not_exposed` (DevKits ou presque tout est sorti).
+    if "exposed" in board:
+        exposed = set(board.get("exposed") or [])
+        return {"exposure": "header" if gpio in exposed else "not_exposed"}
+
+    not_exposed = set(board.get("not_exposed") or [])
+    return {"exposure": "not_exposed" if gpio in not_exposed else "header"}
+
+
+def _as_int(value):
+    """Convertit en entier si possible, sinon None."""
+
+    try:
+        return int(value)
+    except (TypeError, ValueError):
+        return None
+
+
+def compute_gpio_map(chip, board=None, psram_size=None):
     """
     Construit la cartographie GPIO pour une famille de puce.
+
+    Si ``board`` (identifiant de profil de carte) est fourni et correspond a la
+    bonne famille, l'exposition reelle de chaque broche sur la carte est ajoutee
+    (``pin["board"]``) et ``board_exposure`` decrit la carte. Un board inconnu ou
+    d'une autre famille est ignore (retour a l'exposition inconnue), sans erreur.
+
+    ``psram_size`` (Mo, issu du scan) sert de garde-fou : si une PSRAM Octal est
+    detectee alors que le profil choisi expose des broches reservees a l'Octal
+    (GPIO33-37 sur ESP32-S3), un avertissement est ajoute a ``board_exposure``.
 
     Retourne un dict pret a serialiser. ``status`` vaut ``error`` si la famille
     est absente (chip vide), ``ok`` sinon avec ``family_supported`` a ``False``
@@ -197,6 +237,52 @@ def compute_gpio_map(chip):
     if usb:
         warnings["system"] = WARNINGS["system"]
 
+    # Exposition sur la carte : seulement si un profil valide de la bonne famille
+    # est fourni. Sinon on reste au niveau puce (exposition inconnue).
+    board_profile = espressif_dataset.get_board(board) if board else None
+    if board_profile and espressif_dataset.normalize_family(
+            board_profile.get("chip_family")) == normalized:
+        for pin in pins:
+            pin["board"] = _board_exposure(board_profile, pin["gpio"])
+
+        # Garde-fou : PSRAM Octal detectee mais profil exposant les broches
+        # reservees a l'Octal (GPIO33-37 sur S3). Le scan rattrape un mauvais
+        # choix de profil (meme puce, memoire differente selon le module).
+        warning = None
+        octal_pins = set(octal)
+        mb = _as_int(psram_size)
+        if octal_pins and mb and mb >= 8:
+            exposed_octal = sorted(
+                pin["gpio"] for pin in pins
+                if pin["gpio"] in octal_pins
+                and pin["board"].get("exposure") != "not_exposed"
+            )
+            if exposed_octal:
+                lo, hi = min(exposed_octal), max(exposed_octal)
+                warning = (
+                    f"PSRAM Octal detectee au scan ({mb} Mo) : GPIO{lo} a "
+                    f"GPIO{hi} sont en realite reserves sur ta carte, "
+                    "contrairement a ce profil. Verifie le modele exact."
+                )
+
+        board_exposure = {
+            "id": board_profile.get("id"),
+            "name": board_profile.get("name"),
+            "vendor": board_profile.get("vendor"),
+            "source_url": board_profile.get("source_url"),
+            "notes": board_profile.get("notes"),
+            "revision_note": board_profile.get("revision_note"),
+            "warning": warning,
+        }
+        board_exposure_note = None
+    else:
+        board_exposure = "unknown"
+        board_exposure_note = (
+            "L'exposition reelle des broches sur la carte (BOOT, LED, ecran, USB "
+            "natif du fabricant) depend du profil de la carte et n'est pas "
+            "deductible de la puce. Choisis ta carte pour l'afficher."
+        )
+
     return {
         "status": "ok",
         "chip_family": family.get("family", normalized),
@@ -205,12 +291,8 @@ def compute_gpio_map(chip):
         "gpio_count": len(present),
         "source": source,
         "dataset_version": dataset_version,
-        "board_exposure": "unknown",
-        "board_exposure_note": (
-            "L'exposition reelle des broches sur la carte (BOOT, LED, ecran, USB "
-            "natif du fabricant) depend du profil de la carte et n'est pas "
-            "deductible de la puce. A confirmer avec la documentation de la carte."
-        ),
+        "board_exposure": board_exposure,
+        "board_exposure_note": board_exposure_note,
         "summary": summary,
         "pins": pins,
         "warnings": warnings,

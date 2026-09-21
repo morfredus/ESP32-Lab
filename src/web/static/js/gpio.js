@@ -14,7 +14,8 @@ const gpioFilters = {
     strapping: false,
     flash: false,
     special: false,
-    input: false
+    input: false,
+    exposed: false
 };
 
 let lastGpioReport = null;
@@ -124,12 +125,39 @@ async function loadGpio() {
         return;
     }
 
+    const mac = currentInventory.identification.mac;
+
     try {
-        const report = await apiGet(
-            "/api/gpio?chip=" + encodeURIComponent(chip)
-        );
+        // Cartes disponibles pour cette famille + carte mémorisée pour cette MAC.
+        let boards = [];
+        try {
+            const list = await apiGet(
+                "/api/boards?family=" + encodeURIComponent(chip));
+            boards = list.boards || [];
+        } catch (error) { /* catalogue absent : on continue sans cartes */ }
+
+        let selectedBoard = "";
+        if (mac) {
+            try {
+                const info = await apiGet(
+                    "/api/device?mac=" + encodeURIComponent(mac));
+                selectedBoard = (info.device && info.device.board_profile) || "";
+            } catch (error) { /* fiche absente : pas de carte mémorisée */ }
+        }
+
+        let url = "/api/gpio?chip=" + encodeURIComponent(chip);
+        if (selectedBoard) {
+            url += "&board=" + encodeURIComponent(selectedBoard);
+        }
+        // Taille PSRAM detectee : garde-fou de compatibilite (Octal vs quad).
+        const psram = currentInventory.identification.psram_size_mb;
+        if (psram) {
+            url += "&psram=" + encodeURIComponent(psram);
+        }
+
+        const report = await apiGet(url);
         lastGpioReport = report;
-        renderGpio(report);
+        renderGpio(report, boards, selectedBoard);
         setStatus("Cartographie GPIO calculée pour " + chip + ".");
     } catch (error) {
         container.innerHTML =
@@ -138,13 +166,45 @@ async function loadGpio() {
     }
 }
 
+/** Mémorise la carte choisie (par MAC) puis recharge la cartographie. */
+async function selectBoard(boardId) {
+    const mac = currentInventory && currentInventory.identification
+        && currentInventory.identification.mac;
+
+    if (mac) {
+        try {
+            await apiPost("/api/device/board", { mac: mac, board: boardId });
+        } catch (error) {
+            setStatus("Choix de carte non enregistré : " + error.message, true);
+        }
+    }
+
+    await loadGpio();
+}
+
 function gpioStatusBadge(status) {
     const info = GPIO_STATUS[status] || GPIO_STATUS.available;
     return `<span class="badge ${info.cls}">${escapeHtml(info.label)}</span>`;
 }
 
+/** Cellule « Sur la carte » (uniquement si un profil de carte est actif). */
+function gpioBoardCell(pin) {
+    const board = pin.board;
+    if (!board) {
+        return "";
+    }
+    if (board.exposure === "onboard") {
+        return `<td><span class="badge gpio-onboard">${escapeHtml(
+            board.label || board.role || "Fonction carte")}</span></td>`;
+    }
+    if (board.exposure === "not_exposed") {
+        return '<td><span class="gpio-notexposed">Non exposée</span></td>';
+    }
+    return '<td><span class="gpio-header-pin">Exposée (connecteur)</span></td>';
+}
+
 /** Ligne de tableau pour une broche, avec attributs de filtrage. */
-function gpioRow(pin) {
+function gpioRow(pin, hasBoard) {
     const functions = (pin.functions || [])
         .map(f => `<span class="gpio-chip">${escapeHtml(f)}</span>`)
         .join(" ");
@@ -157,15 +217,19 @@ function gpioRow(pin) {
         ? `<div class="gpio-caveat">${escapeHtml(pin.boot_caveat)}</div>`
         : "";
 
+    const exposure = pin.board ? pin.board.exposure : "";
+
     return `
         <tr data-strapping="${pin.strapping}"
             data-flash="${pin.flash_psram}"
             data-special="${!!(pin.usb_jtag || pin.adc || pin.dac)}"
             data-input="${pin.input_only}"
+            data-exposure="${escapeHtml(exposure)}"
             data-status="${escapeHtml(pin.status)}">
             <td class="gpio-num">GPIO${pin.gpio}</td>
             <td>${escapeHtml(pin.classification)}</td>
             <td>${gpioStatusBadge(pin.status)}</td>
+            ${hasBoard ? gpioBoardCell(pin) : ""}
             <td>${functions || PLACEHOLDER}</td>
             <td>${note}${caveat}</td>
         </tr>
@@ -192,7 +256,57 @@ function gpioWarningSection(title, text, pins, predicate) {
     `;
 }
 
-function renderGpio(report) {
+/** Sélecteur de carte + contexte d'exposition. */
+function gpioBoardSelector(report, boards, selectedBoard) {
+    const options = ['<option value="">(carte non définie)</option>']
+        .concat((boards || []).map(board =>
+            `<option value="${escapeHtml(board.id)}"${
+                board.id === selectedBoard ? " selected" : ""
+            }>${escapeHtml(board.name)}</option>`))
+        .join("");
+
+    let context;
+    const exposure = report.board_exposure;
+    if (exposure && typeof exposure === "object") {
+        const source = exposure.source_url
+            ? ` &middot; <a href="${escapeHtml(exposure.source_url)}"
+                 target="_blank" rel="noopener">source</a>`
+            : "";
+        const revision = exposure.revision_note
+            ? `<div class="gpio-note">${escapeHtml(exposure.revision_note)}</div>`
+            : "";
+        const notes = exposure.notes
+            ? `<div class="gpio-note">${escapeHtml(exposure.notes)}</div>`
+            : "";
+        const warning = exposure.warning
+            ? `<div class="gpio-board-warning">⚠ ${escapeHtml(
+                exposure.warning)}</div>`
+            : "";
+        context = `<div class="gpio-board-context">
+            <strong>${escapeHtml(exposure.name)}</strong>${source}
+            ${revision}${notes}${warning}
+        </div>`;
+    } else {
+        context = `<div class="gpio-note">${escapeHtml(
+            report.board_exposure_note || "")}</div>`;
+    }
+
+    const filter = boards && boards.length
+        ? ""
+        : `<div class="gpio-note">Aucun profil de carte pour cette famille
+             dans la base.</div>`;
+
+    return `
+        <div class="gpio-board-select">
+            <label>Carte :
+                <select onchange="selectBoard(this.value)">${options}</select>
+            </label>
+            ${context}
+            ${filter}
+        </div>`;
+}
+
+function renderGpio(report, boards, selectedBoard) {
     const container = document.getElementById("gpio-content");
 
     if (report.family_supported === false) {
@@ -206,6 +320,8 @@ function renderGpio(report) {
     const pins = report.pins || [];
     const summary = report.summary || {};
     const warnings = report.warnings || {};
+    const hasBoard = report.board_exposure
+        && typeof report.board_exposure === "object";
 
     const summaryCards = [
         ["available", "Disponibles", summary.available || 0],
@@ -218,7 +334,7 @@ function renderGpio(report) {
         </div>
     `).join("");
 
-    const rows = pins.map(gpioRow).join("");
+    const rows = pins.map(pin => gpioRow(pin, hasBoard)).join("");
 
     const sections =
         gpioWarningSection(
@@ -249,6 +365,7 @@ function renderGpio(report) {
                 </div>
             </div>
             <div class="gpio-summary">${summaryCards}</div>
+            ${gpioBoardSelector(report, boards, selectedBoard)}
         </div>
 
         <div class="panel">
@@ -258,6 +375,7 @@ function renderGpio(report) {
                 <label><input type="checkbox" onchange="toggleGpioFilter('flash', this.checked)"> Flash / PSRAM</label>
                 <label><input type="checkbox" onchange="toggleGpioFilter('special', this.checked)"> Fonctions spéciales</label>
                 <label><input type="checkbox" onchange="toggleGpioFilter('input', this.checked)"> Entrée seule</label>
+                ${hasBoard ? '<label><input type="checkbox" onchange="toggleGpioFilter(\'exposed\', this.checked)"> Exposées sur la carte</label>' : ""}
             </div>
             <div class="table-container">
                 <table class="gpio-table">
@@ -266,6 +384,7 @@ function renderGpio(report) {
                             <th>GPIO</th>
                             <th>Classification</th>
                             <th>Statut</th>
+                            ${hasBoard ? "<th>Sur la carte</th>" : ""}
                             <th>Fonctions</th>
                             <th>Notes</th>
                         </tr>
@@ -291,12 +410,14 @@ function renderGpio(report) {
 function toggleGpioFilter(name, checked) {
     gpioFilters[name] = checked;
 
-    const anyActive = Object.values(gpioFilters).some(Boolean);
+    // Filtres d'union (catégories du niveau puce) et filtre restrictif (carte).
+    const unionNames = ["strapping", "flash", "special", "input"];
+    const anyUnion = unionNames.some(key => gpioFilters[key]);
     const rows = document.querySelectorAll("#gpio-tbody tr");
 
     rows.forEach(row => {
-        // Sans filtre actif : tout est visible.
-        let visible = !anyActive;
+        // Sans filtre d'union actif : tout est visible.
+        let visible = !anyUnion;
 
         if (gpioFilters.strapping && row.dataset.strapping === "true") {
             visible = true;
@@ -309,6 +430,11 @@ function toggleGpioFilter(name, checked) {
         }
         if (gpioFilters.input && row.dataset.input === "true") {
             visible = true;
+        }
+
+        // Restrictif : masque les broches non exposées sur la carte.
+        if (gpioFilters.exposed && row.dataset.exposure === "not_exposed") {
+            visible = false;
         }
 
         row.style.display = visible ? "" : "none";

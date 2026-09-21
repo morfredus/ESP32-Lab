@@ -1,8 +1,8 @@
 # Guide de l'interface
 
 L'interface s'organise autour d'une **barre d'outils globale** (toujours
-visible) et de **six onglets** : Général · Identité & Sécurité · Analyse NVS ·
-Partitions Flash · GPIO Inspector · Inventaire.
+visible) et de **sept onglets** : Général · Identité & Sécurité · Analyse NVS ·
+Partitions Flash · GPIO Inspector · Firmware & OTA · Inventaire.
 
 > Les captures d'écran de ce guide utilisent un **jeu de démonstration
 > anonymisé** (noms, adresses MAC et identifiants fictifs).
@@ -185,11 +185,62 @@ l'avertissement de boot pour les broches de strapping).
 Des **filtres** (Strapping, Flash/PSRAM, Fonctions spéciales, Entrée seule)
 permettent de n'afficher que les broches concernées.
 
+### Profils de cartes (exposition réelle)
+Sous le résumé, un menu **« Carte »** (filtré par la famille détectée) permet de
+choisir ton **modèle exact** (ESP32-DevKitC, ESP32-S3-DevKitC-1 v1.0/v1.1,
+ESP32-C3-DevKitM-1, Seeed XIAO ESP32-S3/C3, ESP32-C3 SuperMini, ESP32-S3
+SuperMini/Zero N4R2, uPesy ESP32-S3 N16R8). Le tableau gagne alors une colonne
+**« Sur la carte »** qui indique, pour chaque broche, si elle est :
+
+- **utilisée par une fonction embarquée** (bouton BOOT, LED, USB natif, pont
+  USB-UART) ;
+- **exposée sur un connecteur** (libre d'emploi côté carte) ;
+- **non exposée** (présente sur la puce mais pas sortie sur cette carte).
+
+Un filtre **« Exposées sur la carte »** masque les broches non accessibles. Le
+choix est **mémorisé sur la fiche de la carte** (par MAC) : il est rappelé au
+prochain scan et suit l'export/import vers un autre poste. La source officielle
+et une éventuelle **note de révision** (ex. LED sur GPIO48 en v1.0, GPIO38 en
+v1.1) sont affichées sous le menu.
+
+> Le modèle n'est pas détecté automatiquement (l'USB ne permet pas d'identifier
+> la carte de façon fiable) : c'est à toi de le choisir une fois. En revanche, le
+> scan **rattrape** un mauvais choix : si une **PSRAM Octal** est détectée alors
+> que le profil choisi suppose GPIO33-37 libres (config quad), un avertissement
+> rouge te prévient que ces broches sont en réalité réservées sur ta carte.
+
 ### Restrictions à connaître (sections repliables)
 Sous le tableau, des sections repliables regroupent, avec un avertissement
 explicite, les broches sensibles : **strapping** (lues au reset, fixent le mode
 de boot), **Flash/PSRAM** (à ne pas réaffecter sans connaître le matériel) et
 **interfaces système** (UART console, USB-JTAG).
+
+## Onglet Firmware & OTA
+
+Cet onglet lit, **en lecture seule**, le firmware réellement présent dans la
+Flash et l'état des mises à jour **OTA**. Fais d'abord un scan (ou sélectionne le
+port dans Général).
+
+![Onglet Firmware & OTA : état OTA et identité des applications](images/07-firmware-ota.png)
+
+Deux boutons : **« Lire le firmware »** (lecture sur la carte, quelques secondes,
+plusieurs zones Flash) et **« Charger depuis la base »** (réaffiche la dernière
+lecture enregistrée, sans la carte).
+
+### OTA
+Indique le **slot sélectionné au démarrage** (`factory`, `ota_0`, `ota_1`…) et,
+pour chacune des deux entrées `otadata`, sa séquence, son état et la validité du
+CRC.
+
+> C'est le slot que le **bootloader choisira au prochain démarrage**, pas
+> forcément le firmware **en cours d'exécution** (indéductible sans interroger la
+> carte en fonctionnement).
+
+### Applications
+Pour chaque partition applicative, l'identité lue dans `esp_app_desc` : **nom du
+projet**, **version**, **version ESP-IDF**, **date et heure de compilation**,
+compteur **anti-rollback** (`secure_version`) et **sha256 de l'ELF**. Un slot non
+programmé apparaît « vide », une partition chiffrée « illisible ».
 
 ## Onglet Inventaire
 

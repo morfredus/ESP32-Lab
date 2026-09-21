@@ -10,6 +10,9 @@
     "channel": "curated (ESP32-Lab)",
     "synced_at": null,
     "files": {
+        "boards": {
+            "sha256": "f30cffcbb8da706ed52723ad3495c61b7d6a8e9358bd55b965bce74b66fed7fc"
+        },
         "esp32-c3": {
             "sha256": "81a77fc9a9f2b60cf04fae7324e82a78969dc0b13232c071f5ba51e44f79786c"
         },

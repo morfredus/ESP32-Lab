@@ -32,6 +32,7 @@ src/
 │   ├── esp32_efuse.py            Lit + analyse les eFuses (espefuse), sécurité
 │   ├── esp32_flash_sfdp.py      Lit le SFDP (JESD216) + ID unique de la Flash
 │   ├── esp32_nvs.py             Lit + analyse la partition NVS (à la demande)
+│   ├── esp32_firmware.py        Identité firmware (esp_app_desc) + état OTA
 │   ├── esp32_gpio.py            Cartographie GPIO (niveau puce, par famille)
 │   ├── espressif_dataset.py     Base de références Espressif locale (offline)
 │   ├── database.py              Base SQLite : cartes + toutes les lectures
@@ -77,6 +78,7 @@ build. Chaque fichier a une responsabilité :
 | `nvs.js`        | Analyse NVS et décodage lisible. |
 | `db_compare.js` | Export/import de la base, comparaison de deux cartes, suivi des secrets. |
 | `gpio.js`       | GPIO Inspector : base Espressif locale, tableau, filtres, sections. |
+| `firmware.js`   | Firmware & OTA : identité des applications, état OTA. |
 | `tabs.js`       | Navigation par onglets. |
 | `main.js`       | Initialisation au chargement. |
 
@@ -133,6 +135,8 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 | `test_secret_changes.py`         | Détection de changement de secrets (empreintes). |
 | `test_database_import_delete.py` | Import (noms complétés) et suppression d'une carte. |
 | `test_gpio.py`                   | Cartographie GPIO (comptes, strapping, ADC, statuts). |
+| `test_boards.py`                 | Profils de cartes, exposition GPIO, garde-fou Octal. |
+| `test_firmware.py`               | Parsing esp_app_desc, otadata, slot de boot. |
 | `test_espressif_dataset.py`      | Base Espressif locale : seed, intégrité, refresh, sauvegarde. |
 | `test_morfbeacon.py`             | Annonce morfBeacon, endpoints /healthz + /status. |
 | `test_serial_connection.py`      | Connexion série. |
@@ -157,9 +161,10 @@ Le dossier `data/` contient les fichiers produits à l'usage :
 Deux tables :
 
 - `devices(mac, name, location, note, first_seen, last_seen, port,
-  identification)` - une carte par MAC (métadonnées + dernière identité) ;
+  board_profile, identification)` - une carte par MAC (métadonnées + modèle de
+  carte choisi + dernière identité) ;
 - `readings(id, mac, section, recorded_at, port, payload)` : chaque lecture
-  (section : `inventory`, `efuse`, `sfdp`, `partitions`, `nvs`) avec sa charge
+  (section : `inventory`, `efuse`, `sfdp`, `partitions`, `nvs`, `firmware`) avec sa charge
   utile JSON, **assainie des secrets** avant stockage (voir ci-dessous).
 
 Le schéma se crée à la première connexion (`database.connect`), donc une
@@ -221,9 +226,40 @@ cache inscriptible `data/espressif/`.
   la puce, elle est signalée `board_exposure: "unknown"` (profil de carte prévu
   pour une version ultérieure).
 
-Endpoints associés : `GET /api/gpio?chip=`, `GET /api/espressif/status`,
+Endpoints associés : `GET /api/gpio?chip=&board=`, `GET /api/espressif/status`,
 `POST /api/espressif/refresh`.
 
-Maintenir le jeu (ajouter/mettre à jour une famille) : voir le guide
+### Profils de cartes
+
+L'exposition reelle d'une broche sur une carte (bouton BOOT, LED, USB natif,
+broche non sortie) n'est pas deductible de la puce. Un **catalogue cure**
+`reference/espressif/boards.json` (charge via `espressif_dataset.load_boards` /
+`boards_for_family` / `get_board`) decrit, par carte, les fonctions embarquees
+(`onboard`) et l'ensemble des broches sorties (`exposed`) ou non (`not_exposed`).
+Il fait partie de `DATASET_FILES`, donc profite du meme seed, controle
+d'integrite et refresh que le jeu GPIO.
+
+`compute_gpio_map(chip, board=)` fusionne cette exposition dans chaque broche
+quand un profil valide de la bonne famille est fourni (sinon exposition
+« unknown »). Le modele choisi est **memorise par carte** (colonne
+`board_profile` sur `devices`) et suit l'export/import. Endpoints associes :
+`GET /api/boards?family=`, `POST /api/device/board`.
+
+Maintenir le jeu (ajouter/mettre à jour une famille ou une carte) : voir le guide
 `reference/espressif/README.md` (où trouver chaque champ chez Espressif), puis
 régénérer les empreintes avec `python tools/build_espressif_metadata.py`.
+
+## Identité firmware et OTA
+
+`esp32_firmware.read_firmware(port, chip)` (`POST /api/firmware`, section
+`firmware`) réutilise `read_partition_table` puis lit, en **lecture seule**, deux
+choses via le même patron `run_esptool ... read-flash` :
+
+- pour chaque partition **app**, la structure `esp_app_desc_t` à l'offset `0x20`
+  (magic `0xABCD5432`) : `parse_app_desc` en extrait nom du projet, version,
+  version ESP-IDF, date/heure de compilation, `secure_version`, sha256 de l'ELF ;
+- la partition **otadata** : `parse_ota_entry` décode les 2 entrées de 32 octets
+  (`ota_seq`, état, CRC, la formule CRC étant celle d'ESP-IDF), et
+  `select_boot_slot` reproduit la règle du bootloader pour donner le slot
+  sélectionné au démarrage. Ces parseurs sont testés sans matériel
+  (`test_firmware.py`).

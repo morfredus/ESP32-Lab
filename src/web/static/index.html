@@ -46,6 +46,7 @@
             <button data-tab="nvs">Analyse NVS</button>
             <button data-tab="partitions">Partitions Flash</button>
             <button data-tab="gpio">GPIO Inspector</button>
+            <button data-tab="firmware">Firmware &amp; OTA</button>
             <button data-tab="inventory">Inventaire</button>
         </nav>
 
@@ -195,6 +196,30 @@
             </div>
         </section>
 
+        <!-- ======================== FIRMWARE & OTA ======================= -->
+        <section class="tab-panel" data-panel="firmware">
+            <h2 class="section-title">Firmware &amp; OTA</h2>
+            <p class="note">
+                Lecture <strong>en lecture seule</strong> de l'identité du
+                firmware présent dans chaque partition applicative (nom du projet,
+                version, version ESP-IDF, date de compilation, anti-rollback,
+                sha256 de l'ELF) et de l'état <strong>OTA</strong> (slot
+                sélectionné au démarrage). Le port doit être sélectionné dans
+                l'onglet Général.
+            </p>
+
+            <button id="firmware-button" onclick="loadFirmware()">
+                Lire le firmware
+            </button>
+            <button id="firmware-db-button" onclick="loadFirmwareFromDb()">
+                Charger depuis la base
+            </button>
+
+            <div id="firmware-content" class="panel" style="margin-top:16px;">
+                <div class="empty">Aucune lecture firmware effectuée.</div>
+            </div>
+        </section>
+
         <!-- ========================== INVENTAIRE ========================= -->
         <!-- Regroupe le registre des cartes, l'historique et la comparaison -->
         <section class="tab-panel" data-panel="inventory">
@@ -334,6 +359,7 @@
     <script src="/js/efuse.js"></script>
     <script src="/js/nvs.js"></script>
     <script src="/js/gpio.js"></script>
+    <script src="/js/firmware.js"></script>
     <script src="/js/tabs.js"></script>
     <script src="/js/main.js"></script>
 </body>

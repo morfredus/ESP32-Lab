@@ -46,7 +46,7 @@ def family_files():
 
 
 def validate(path):
-    """Verifie un fichier de famille. Retourne la liste des problemes."""
+    """Verifie un fichier de donnees. Retourne la liste des problemes."""
 
     problems = []
 
@@ -60,6 +60,12 @@ def validate(path):
             f"schema_version = {data.get('schema_version')} "
             f"(attendu {SUPPORTED_SCHEMA})"
         )
+
+    # Le catalogue de cartes a un schema different des fichiers de familles.
+    if path.name == "boards.json":
+        if not isinstance(data.get("boards"), list):
+            problems.append("cle manquante ou invalide : boards (liste)")
+        return problems
 
     for key in REQUIRED_KEYS:
         if key not in data:

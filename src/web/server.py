@@ -19,6 +19,7 @@ from core.device_registry import (
 )
 from core import espressif_dataset
 from core.esp32_efuse import read_efuses
+from core.esp32_firmware import read_firmware
 from core.esp32_flash_sfdp import read_flash_details
 from core.esp32_gpio import compute_gpio_map
 from core.esp32_inventory import create_inventory, save_inventory
@@ -269,10 +270,20 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
 
         if path == "/api/gpio":
             chip = query.get("chip", [None])[0]
-            result = compute_gpio_map(chip)
+            board = query.get("board", [None])[0]
+            psram = query.get("psram", [None])[0]
+            result = compute_gpio_map(chip, board=board, psram_size=psram)
 
             status = 200 if result.get("status") == "ok" else 400
             self.send_json(result, status=status)
+            return
+
+        if path == "/api/boards":
+            family = query.get("family", [None])[0]
+            self.send_json({
+                "status": "ok",
+                "boards": espressif_dataset.boards_for_family(family),
+            })
             return
 
         if path == "/api/espressif/status":
@@ -319,12 +330,20 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             self.analyze_nvs(query)
             return
 
+        if path == "/api/firmware":
+            self.read_firmware_handler(query)
+            return
+
         if path == "/api/device/update":
             self.update_device()
             return
 
         if path == "/api/device/delete":
             self.delete_device_handler()
+            return
+
+        if path == "/api/device/board":
+            self.set_device_board()
             return
 
         if path == "/api/db/import":
@@ -375,6 +394,32 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
 
             result["message"] = "Carte supprimée."
             self.send_json(result)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
+
+    def set_device_board(self):
+        """Enregistre le profil de carte choisi pour une carte (par MAC)."""
+
+        try:
+            data = self.read_json_body()
+            mac = data.get("mac")
+
+            if not mac:
+                self.send_json({
+                    "status": "error",
+                    "message": "L'adresse MAC est obligatoire.",
+                }, status=400)
+                return
+
+            device = database.set_board_profile(mac, data.get("board"))
+            self.send_json({
+                "status": "ok",
+                "message": "Carte enregistrée.",
+                "device": device,
+            })
         except Exception as error:
             self.send_json({
                 "status": "error",
@@ -563,6 +608,10 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                      "summary": "export de la base"},
                     {"method": "GET", "path": "/api/gpio",
                      "summary": "cartographie GPIO calculée"},
+                    {"method": "GET", "path": "/api/boards",
+                     "summary": "profils de cartes par famille"},
+                    {"method": "POST", "path": "/api/device/board",
+                     "summary": "choix du profil de carte"},
                     {"method": "GET", "path": "/api/espressif/status",
                      "summary": "état de la base de références Espressif"},
                     {"method": "POST", "path": "/api/espressif/refresh",
@@ -575,6 +624,8 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                      "summary": "lecture SFDP + identifiant unique"},
                     {"method": "POST", "path": "/api/nvs/analyze",
                      "summary": "analyse NVS"},
+                    {"method": "POST", "path": "/api/firmware",
+                     "summary": "identité firmware + OTA"},
                 ],
             },
         }
@@ -688,6 +739,34 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             return
 
         self._persist_section(query, "nvs", result)
+
+        status = 200 if result.get("status") == "ok" else 502
+        self.send_json(result, status=status)
+
+    def read_firmware_handler(self, query):
+        """Lit l'identite firmware et l'etat OTA de la carte (lecture seule)."""
+
+        selected_port = query.get("port", [None])[0]
+
+        if not selected_port:
+            self.send_json({
+                "status": "error",
+                "message": "Le port série est obligatoire.",
+            }, status=400)
+            return
+
+        chip = query.get("chip", [None])[0]
+
+        try:
+            result = read_firmware(selected_port, chip=chip)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
+            return
+
+        self._persist_section(query, "firmware", result)
 
         status = 200 if result.get("status") == "ok" else 502
         self.send_json(result, status=status)

@@ -20,7 +20,7 @@ DATA_DIR = PROJECT_ROOT / "data"
 DB_PATH = DATA_DIR / "esp32lab.db"
 
 # Sections de lecture reconnues.
-SECTIONS = ("inventory", "efuse", "sfdp", "partitions", "nvs")
+SECTIONS = ("inventory", "efuse", "sfdp", "partitions", "nvs", "firmware")
 
 # Champs techniques d'identification conservés sur la fiche carte (compat).
 IDENTIFICATION_FIELDS = (
@@ -88,10 +88,26 @@ def connect():
 
     if not _schema_ready:
         connection.executescript(SCHEMA)
+        _ensure_columns(connection)
         connection.commit()
         _schema_ready = True
 
     return connection
+
+
+def _ensure_columns(connection):
+    """Migrations legeres de colonnes (idempotentes) sur une base existante."""
+
+    columns = {
+        row["name"]
+        for row in connection.execute("PRAGMA table_info(devices)")
+    }
+
+    # 0.8.0 : profil de carte choisi par l'utilisateur (exposition GPIO).
+    if "board_profile" not in columns:
+        connection.execute(
+            "ALTER TABLE devices ADD COLUMN board_profile TEXT"
+        )
 
 
 def get_meta(key):
@@ -273,6 +289,7 @@ def verify_database():
 def _row_to_device(row):
     """Convertit une ligne devices en dictionnaire (compat historique)."""
 
+    keys = row.keys()
     device = {
         "mac": row["mac"],
         "name": row["name"],
@@ -281,6 +298,7 @@ def _row_to_device(row):
         "first_seen": row["first_seen"],
         "last_seen": row["last_seen"],
         "port": row["port"],
+        "board_profile": row["board_profile"] if "board_profile" in keys else None,
     }
 
     if row["identification"]:
@@ -338,6 +356,30 @@ def update_device(mac, name="", note="", location=""):
                 location = excluded.location
             """,
             (mac, name.strip(), note.strip(), location.strip(), now),
+        )
+        connection.commit()
+
+    return get_device(mac)
+
+
+def set_board_profile(mac, board_id):
+    """Enregistre le profil de carte choisi pour une carte (vide = efface)."""
+
+    if not mac:
+        raise ValueError("L'adresse MAC est obligatoire.")
+
+    mac = mac.lower()
+    board_id = (board_id or "").strip() or None
+    now = _now()
+
+    with connect() as connection:
+        connection.execute(
+            "INSERT OR IGNORE INTO devices (mac, first_seen) VALUES (?, ?)",
+            (mac, now),
+        )
+        connection.execute(
+            "UPDATE devices SET board_profile = ? WHERE mac = ?",
+            (board_id, mac),
         )
         connection.commit()
 
@@ -576,6 +618,7 @@ def export_all():
 
     devices = []
     for row in device_rows:
+        keys = row.keys()
         devices.append({
             "mac": row["mac"],
             "name": row["name"],
@@ -584,6 +627,9 @@ def export_all():
             "first_seen": row["first_seen"],
             "last_seen": row["last_seen"],
             "port": row["port"],
+            "board_profile": (
+                row["board_profile"] if "board_profile" in keys else None
+            ),
             "identification": _parse(row["identification"]),
         })
 
@@ -630,7 +676,7 @@ def import_data(payload):
             )
 
             existing = connection.execute(
-                "SELECT name, location, note, identification "
+                "SELECT name, location, note, board_profile, identification "
                 "FROM devices WHERE mac = ?",
                 (mac,),
             ).fetchone()
@@ -640,8 +686,8 @@ def import_data(payload):
                     """
                     INSERT INTO devices
                         (mac, name, location, note, first_seen, last_seen, port,
-                         identification)
-                    VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                         board_profile, identification)
+                    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
                     """,
                     (
                         mac,
@@ -651,6 +697,7 @@ def import_data(payload):
                         device.get("first_seen"),
                         device.get("last_seen"),
                         device.get("port"),
+                        device.get("board_profile"),
                         identification_json,
                     ),
                 )
@@ -662,7 +709,7 @@ def import_data(payload):
             # l'identification si elle manque. C'est ce qui permet à une carte
             # créée vide par un scan de récupérer son nom lors de l'import.
             updates = {}
-            for field in ("name", "location", "note"):
+            for field in ("name", "location", "note", "board_profile"):
                 incoming = (device.get(field) or "").strip()
                 if incoming and not (existing[field] or "").strip():
                     updates[field] = incoming

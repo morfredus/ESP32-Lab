@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.7.0-blue)
+![Version](https://img.shields.io/badge/version-0.9.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-79%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-100%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -55,6 +55,13 @@ connecté, et conserver un historique des diagnostics.
   statut d'usage et avertissements de boot - appuyé sur une **base de références
   Espressif locale** disponible hors ligne (curée d'après les datasheets
   Espressif, mise à jour manuelle, contrôle d'intégrité)
+- **Profils de cartes** : choisis ton modèle de carte pour voir l'exposition
+  réelle de chaque broche (bouton BOOT, LED, USB natif, sortie sur connecteur ou
+  non) ; le choix est mémorisé par carte et suit l'export/import
+- **Firmware & OTA** (lecture seule) : identité de chaque application via
+  `esp_app_desc` (nom du projet, version, version ESP-IDF, date de compilation,
+  anti-rollback, sha256 de l'ELF) et état OTA via `otadata` (slot sélectionné au
+  démarrage, état de chaque entrée)
 - **Compatible morfSystem** : s'annonce via morfBeacon (heartbeat UDP) avec les
   endpoints `/healthz` et `/status` - découvrable par morfMonitor
 - Export CSV
@@ -125,7 +132,9 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 | GET     | `/api/db/reading?mac=…&section=…` | Dernière lecture d'une section pour une carte |
 | GET     | `/api/db/compare?mac_a=…&mac_b=…` | Comparaison de deux cartes         |
 | GET     | `/api/db/changes?mac=…`     | Détection de changement de secrets (empreintes HMAC) |
-| GET     | `/api/gpio?chip=…`          | Cartographie GPIO au niveau puce (par famille) |
+| GET     | `/api/gpio?chip=…&board=…`  | Cartographie GPIO (par famille, exposition carte optionnelle) |
+| GET     | `/api/boards?family=…`      | Profils de cartes pour une famille       |
+| POST    | `/api/device/board`         | Enregistre le modèle de carte choisi     |
 | GET     | `/api/espressif/status`     | État de la base de références Espressif locale |
 | POST    | `/api/espressif/refresh`    | Mise à jour de la base Espressif (canal projet) |
 | GET     | `/api/nvs`                  | Dernier rapport d'analyse NVS            |
@@ -134,6 +143,7 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 | POST    | `/api/efuse?port=…`         | Lit et analyse les eFuses (lecture seule) |
 | POST    | `/api/flash?port=…`         | Lit le SFDP et l'ID unique de la Flash (lecture seule) |
 | POST    | `/api/nvs/analyze?port=…`   | Lit et analyse la partition NVS (lecture seule) |
+| POST    | `/api/firmware?port=…`      | Identité firmware + état OTA (lecture seule) |
 | GET     | `/api/db/export`            | Exporte toute la base (JSON portable)    |
 | GET     | `/api/db/verify`            | Vérifie l'intégrité et les statistiques  |
 | POST    | `/api/db/import`            | Importe/fusionne un export de base       |

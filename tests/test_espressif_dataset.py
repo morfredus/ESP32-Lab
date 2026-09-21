@@ -57,6 +57,15 @@ def test_seed_depuis_reference(cache):
         assert (cache / name).exists()
 
 
+def test_catalogue_cartes_seede_et_integre(cache):
+    # boards.json fait partie du jeu : seede + integrite verifiee.
+    espressif_dataset.ensure_local_dataset()
+    assert (cache / "boards.json").exists()
+    boards = espressif_dataset.load_boards()
+    assert any(b["id"] == "esp32-s3-devkitc-1-v1.0" for b in boards)
+    assert espressif_dataset.dataset_status()["integrity_ok"] is True
+
+
 def test_load_family_valide(cache):
     data = espressif_dataset.load_family("esp32s3")
     assert data is not None

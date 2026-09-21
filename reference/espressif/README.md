@@ -63,6 +63,27 @@ Les URLs exactes deja utilisees sont conservees dans `metadata.json`
    - ajoutez `"esp32-c6.json"` dans `DATASET_FILES`.
 3. Regenerez le metadata puis lancez les tests (voir ci-dessus).
 
+### Ajouter un profil de carte
+
+Les profils de cartes vivent dans `boards.json` (exposition reelle des broches :
+BOOT, LED, USB, connecteurs). Ils ne sont pas deductibles de la puce : on les
+cure depuis la doc officielle de la carte.
+
+1. Trouver le brochage sur le **guide utilisateur** (ou le schema) de la carte :
+   quel GPIO pour le bouton BOOT, la LED, l'USB natif, le pont USB-UART, et
+   quelles broches sont sorties sur les connecteurs. Attention aux **revisions**
+   (ex. la LED de l'ESP32-S3-DevKitC-1 est sur GPIO48 en v1.0 et GPIO38 en v1.1
+   : deux entrees distinctes).
+2. Ajouter un objet dans `boards.json` (voir un existant comme modele) :
+   - `onboard` : `{ "<gpio>": {"role": "button|led|usb|uart", "label": "..."} }` ;
+   - une carte ou presque tout est sorti : lister seulement `not_exposed`
+     (broches internes, ex. Flash/PSRAM) ;
+   - une petite carte : lister `exposed` (les rares broches sorties) a la place ;
+   - `source_url`, `notes`, `revision_note`.
+3. `python tools/build_espressif_metadata.py` puis les tests.
+
+Ne pas ajouter une carte dont le brochage n'est pas sourcable avec certitude.
+
 ## Schema d'un fichier de famille
 
 ```json

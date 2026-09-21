@@ -1,0 +1,153 @@
+{
+    "schema_version": 1,
+    "boards": [
+        {
+            "id": "esp32-devkitc",
+            "name": "ESP32-DevKitC (WROOM-32)",
+            "vendor": "Espressif",
+            "chip_family": "esp32",
+            "source_url": "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/hw-reference/esp32/get-started-devkitc.html",
+            "onboard": {
+                "0": {"role": "button", "label": "Bouton BOOT"},
+                "1": {"role": "uart", "label": "Pont USB-UART TXD (console)"},
+                "3": {"role": "uart", "label": "Pont USB-UART RXD (console)"}
+            },
+            "not_exposed": [6, 7, 8, 9, 10, 11],
+            "notes": "La plupart des GPIO sont sortis sur deux rangees. Pas de LED utilisateur standard (seulement la LED d'alimentation).",
+            "revision_note": ""
+        },
+        {
+            "id": "esp32-s3-devkitc-1-v1.0",
+            "name": "ESP32-S3-DevKitC-1 (v1.0)",
+            "vendor": "Espressif",
+            "chip_family": "esp32s3",
+            "source_url": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.0.html",
+            "onboard": {
+                "0": {"role": "button", "label": "Bouton BOOT"},
+                "48": {"role": "led", "label": "LED RGB adressable (WS2812)"},
+                "19": {"role": "usb", "label": "USB natif D-"},
+                "20": {"role": "usb", "label": "USB natif D+"},
+                "43": {"role": "uart", "label": "Pont USB-UART TXD"},
+                "44": {"role": "uart", "label": "Pont USB-UART RXD"}
+            },
+            "not_exposed": [26, 27, 28, 29, 30, 31, 32],
+            "notes": "Deux ports USB-C : USB natif (19/20) et pont USB-UART (43/44).",
+            "revision_note": "LED RGB sur GPIO48 (v1.0). Les cartes v1.1 utilisent GPIO38."
+        },
+        {
+            "id": "esp32-s3-devkitc-1-v1.1",
+            "name": "ESP32-S3-DevKitC-1 (v1.1)",
+            "vendor": "Espressif",
+            "chip_family": "esp32s3",
+            "source_url": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32s3/esp32-s3-devkitc-1/user_guide_v1.1.html",
+            "onboard": {
+                "0": {"role": "button", "label": "Bouton BOOT"},
+                "38": {"role": "led", "label": "LED RGB adressable (WS2812)"},
+                "19": {"role": "usb", "label": "USB natif D-"},
+                "20": {"role": "usb", "label": "USB natif D+"},
+                "43": {"role": "uart", "label": "Pont USB-UART TXD"},
+                "44": {"role": "uart", "label": "Pont USB-UART RXD"}
+            },
+            "not_exposed": [26, 27, 28, 29, 30, 31, 32],
+            "notes": "Deux ports USB-C : USB natif (19/20) et pont USB-UART (43/44).",
+            "revision_note": "LED RGB sur GPIO38 (v1.1). Les cartes v1.0 utilisent GPIO48."
+        },
+        {
+            "id": "esp32-c3-devkitm-1",
+            "name": "ESP32-C3-DevKitM-1",
+            "vendor": "Espressif",
+            "chip_family": "esp32c3",
+            "source_url": "https://docs.espressif.com/projects/esp-dev-kits/en/latest/esp32c3/esp32-c3-devkitm-1/user_guide.html",
+            "onboard": {
+                "9": {"role": "button", "label": "Bouton BOOT"},
+                "8": {"role": "led", "label": "LED RGB adressable (WS2812)"},
+                "20": {"role": "uart", "label": "Pont USB-UART RXD (console)"},
+                "21": {"role": "uart", "label": "Pont USB-UART TXD (console)"}
+            },
+            "not_exposed": [12, 13, 14, 15, 16, 17],
+            "notes": "Cette carte n'expose pas de port USB natif : la liaison passe par le pont USB-UART. Les broches USB natives (18/19) restent disponibles sur les connecteurs.",
+            "revision_note": ""
+        },
+        {
+            "id": "seeed-xiao-esp32s3",
+            "name": "Seeed XIAO ESP32-S3",
+            "vendor": "Seeed Studio",
+            "chip_family": "esp32s3",
+            "source_url": "https://wiki.seeedstudio.com/xiao_esp32s3_getting_started/",
+            "onboard": {
+                "0": {"role": "button", "label": "Bouton BOOT"},
+                "21": {"role": "led", "label": "LED utilisateur"},
+                "19": {"role": "usb", "label": "USB natif D-"},
+                "20": {"role": "usb", "label": "USB natif D+"}
+            },
+            "exposed": [1, 2, 3, 4, 5, 6, 7, 8, 9, 43, 44],
+            "notes": "Petite carte : seules 11 broches (D0 a D10) sont sorties. La plupart des GPIO ne sont pas accessibles.",
+            "revision_note": ""
+        },
+        {
+            "id": "seeed-xiao-esp32c3",
+            "name": "Seeed XIAO ESP32-C3",
+            "vendor": "Seeed Studio",
+            "chip_family": "esp32c3",
+            "source_url": "https://wiki.seeedstudio.com/XIAO_ESP32C3_Getting_Started/",
+            "onboard": {
+                "9": {"role": "button", "label": "Bouton BOOT (broche D9)"},
+                "18": {"role": "usb", "label": "USB natif D-"},
+                "19": {"role": "usb", "label": "USB natif D+"}
+            },
+            "exposed": [2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 21],
+            "notes": "Petite carte : seules 11 broches (D0 a D10) sont sorties. Pas de LED utilisateur. La plupart des GPIO ne sont pas accessibles.",
+            "revision_note": ""
+        },
+        {
+            "id": "esp32-c3-supermini",
+            "name": "ESP32-C3 SuperMini",
+            "vendor": "Generique",
+            "chip_family": "esp32c3",
+            "source_url": "https://www.espboards.dev/esp32/esp32-c3-super-mini/",
+            "onboard": {
+                "8": {"role": "led", "label": "LED embarquee (indicateur, GPIO8)"},
+                "9": {"role": "button", "label": "Bouton BOOT (broche)"},
+                "18": {"role": "usb", "label": "USB natif D-"},
+                "19": {"role": "usb", "label": "USB natif D+"}
+            },
+            "exposed": [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 21],
+            "notes": "Petite carte : GPIO0 a GPIO10 plus GPIO20/21 sont sortis. USB natif (18/19) non sorti. GPIO8 porte la LED, GPIO9 le bouton BOOT (tous deux aussi sur des pads).",
+            "revision_note": ""
+        },
+        {
+            "id": "esp32-s3-supermini-n4r2",
+            "name": "ESP32-S3 SuperMini / Zero (N4R2)",
+            "vendor": "Generique",
+            "chip_family": "esp32s3",
+            "source_url": "",
+            "onboard": {
+                "0": {"role": "button", "label": "Bouton BOOT"},
+                "48": {"role": "led", "label": "LED RGB adressable (WS2812)"},
+                "19": {"role": "usb", "label": "USB natif D-"},
+                "20": {"role": "usb", "label": "USB natif D+"}
+            },
+            "exposed": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 21, 33, 34, 35, 36, 37, 38, 39, 40, 41, 43, 44, 45, 46, 47],
+            "notes": "Petite carte (Super Mini / Zero, N4R2 : PSRAM quad 2 Mo, donc GPIO33 a GPIO37 disponibles). LED RGB sur GPIO48. GPIO26 a GPIO32 (Flash/PSRAM) et GPIO42 non sortis. Brochage releve sur la carte.",
+            "revision_note": ""
+        },
+        {
+            "id": "upesy-esp32-s3-n16r8",
+            "name": "uPesy ESP32-S3 DevKit (N16R8)",
+            "vendor": "uPesy",
+            "chip_family": "esp32s3",
+            "source_url": "https://www.upesy.com/blogs/tutorials/upesy-esp32s3-devkit-documentation-version-latest",
+            "onboard": {
+                "0": {"role": "button", "label": "Bouton BOOT"},
+                "38": {"role": "led", "label": "LED RGB adressable (WS2812)"},
+                "19": {"role": "usb", "label": "USB natif D-"},
+                "20": {"role": "usb", "label": "USB natif D+"},
+                "43": {"role": "uart", "label": "Pont USB-UART TXD"},
+                "44": {"role": "uart", "label": "Pont USB-UART RXD"}
+            },
+            "not_exposed": [26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37],
+            "notes": "DevKit pleine taille (WROOM-1 N16R8). PSRAM Octal : GPIO26 a GPIO37 reserves et non disponibles. Deux ports USB-C : USB natif (19/20) et pont USB-UART (43/44).",
+            "revision_note": ""
+        }
+    ]
+}

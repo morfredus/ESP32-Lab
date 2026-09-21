@@ -38,9 +38,11 @@ CHANNEL_BASE = (
     "reference/espressif/"
 )
 
-# Fichiers du jeu de donnees (hors metadata).
-DATASET_FILES = ("esp32.json", "esp32-s3.json", "esp32-c3.json")
+# Fichiers du jeu de donnees (hors metadata). Inclut le catalogue de cartes,
+# qui beneficie ainsi du seed, du controle d'integrite et du refresh.
+DATASET_FILES = ("esp32.json", "esp32-s3.json", "esp32-c3.json", "boards.json")
 METADATA_FILE = "metadata.json"
+BOARDS_FILE = "boards.json"
 
 # Correspondance famille (valeur chip_family) -> nom de fichier (sans extension).
 _FAMILY_FILES = {
@@ -123,6 +125,45 @@ def load_family(chip):
         return None
 
     return data
+
+
+def load_boards():
+    """Liste des profils de cartes du catalogue local (ou [])."""
+
+    ensure_local_dataset()
+
+    data = _read_json(CACHE_DIR / BOARDS_FILE)
+    if not isinstance(data, dict) or data.get("schema_version") != SUPPORTED_SCHEMA:
+        return []
+
+    boards = data.get("boards")
+    return boards if isinstance(boards, list) else []
+
+
+def boards_for_family(chip):
+    """Profils de cartes correspondant a une famille de puce."""
+
+    family = normalize_family(chip)
+    if not family:
+        return []
+
+    return [
+        board for board in load_boards()
+        if normalize_family(board.get("chip_family")) == family
+    ]
+
+
+def get_board(board_id):
+    """Profil de carte par identifiant, ou None."""
+
+    if not board_id:
+        return None
+
+    for board in load_boards():
+        if board.get("id") == board_id:
+            return board
+
+    return None
 
 
 def dataset_status():

@@ -9,6 +9,53 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.9.0] - 2026-09-22
+
+Nouvelle fonctionnalite : identite du firmware et etat OTA (lecture seule).
+
+### Ajoute
+- **Onglet « Firmware & OTA »**. Lit dans la Flash (lecture seule) l'identite de
+  chaque partition applicative via `esp_app_desc_t` : nom du projet, version,
+  version ESP-IDF, date et heure de compilation, compteur anti-rollback
+  (`secure_version`) et sha256 de l'ELF. Les slots vides ou chiffres sont
+  signales comme tels.
+- **Etat OTA** via la partition `otadata` : slot **selectionne au demarrage**
+  (regle du bootloader), sequence, etat et CRC de chaque entree. Reserve honnete :
+  c'est le slot de boot, pas forcement le firmware en cours d'execution.
+- Endpoint `POST /api/firmware`, section de base de donnees `firmware`
+  (persistee et reaffichable via « Charger depuis la base »).
+
+## [0.8.0] - 2026-09-21
+
+Nouvelle fonctionnalite : profils de cartes (exposition GPIO reelle).
+
+### Ajoute
+- **Profils de cartes** dans le GPIO Inspector. On choisit son modele de carte
+  (menu filtre par la famille detectee) et le tableau indique, pour chaque
+  broche, si elle est utilisee par une fonction embarquee (bouton BOOT, LED, USB
+  natif, pont USB-UART), sortie sur connecteur, ou non exposee. Nouvelle colonne
+  « Sur la carte », filtre « Exposees sur la carte », et contexte (source
+  officielle + note de revision).
+- **Catalogue cure** `reference/espressif/boards.json` (9 cartes : ESP32-DevKitC,
+  ESP32-S3-DevKitC-1 v1.0 et v1.1, ESP32-C3-DevKitM-1, Seeed XIAO ESP32-S3 et
+  ESP32-C3, ESP32-C3 SuperMini, ESP32-S3 SuperMini/Zero N4R2, uPesy ESP32-S3
+  N16R8), source par carte. Il beneficie de la meme machinerie offline que le jeu
+  GPIO (seed, integrite sha256, mise a jour, sauvegarde). Exemple de finesse : sur
+  l'uPesy N16R8 (PSRAM Octal) GPIO33 a GPIO37 sont reserves, alors qu'ils sont
+  disponibles sur la SuperMini N4R2 (PSRAM quad).
+- **Memorisation par carte** : le modele choisi est enregistre sur la fiche (par
+  MAC, colonne `board_profile`) et suit l'export/import et le changement de poste.
+- **Garde-fou de compatibilite** : si le scan detecte une PSRAM Octal alors que
+  le profil choisi expose les broches reservees a l'Octal (GPIO33-37 sur S3), un
+  avertissement le signale. Le scan rattrape ainsi un mauvais choix de profil
+  (meme puce, memoire differente selon le module), sans jamais imposer de carte.
+- Endpoints : `GET /api/boards?family=`, `POST /api/device/board`, et parametre
+  `board=` sur `GET /api/gpio`.
+
+### Limites connues
+- Le modele de carte n'est pas detecte automatiquement (USB VID/PID ne l'identifie
+  pas de facon fiable) : la selection est manuelle.
+
 ## [0.7.0] - 2026-09-21
 
 Nouvelle fonctionnalité : GPIO Inspector (niveau puce) et base de références

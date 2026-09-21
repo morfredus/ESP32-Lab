@@ -83,3 +83,41 @@ def test_delete_device_removes_device_and_readings(db):
 
 def test_delete_missing_device_returns_none(db):
     assert db.delete_device("00:00:00:00:00:00") is None
+
+
+def test_board_profile_column_and_setter(db):
+    # La colonne est creee par la migration ; le champ existe sur la fiche.
+    db.save_reading("aa:bb:cc:dd:ee:ff", "inventory",
+                    {"identification": {"mac": "aa:bb:cc:dd:ee:ff"}})
+    assert db.get_device("aa:bb:cc:dd:ee:ff")["board_profile"] is None
+
+    db.set_board_profile("aa:bb:cc:dd:ee:ff", "esp32-s3-devkitc-1-v1.0")
+    assert db.get_device("aa:bb:cc:dd:ee:ff")["board_profile"] \
+        == "esp32-s3-devkitc-1-v1.0"
+
+    # Une valeur vide efface le choix.
+    db.set_board_profile("aa:bb:cc:dd:ee:ff", "")
+    assert db.get_device("aa:bb:cc:dd:ee:ff")["board_profile"] is None
+
+
+def test_board_profile_survives_export_import(db):
+    db.set_board_profile("11:22:33:44:55:66", "seeed-xiao-esp32s3")
+    export = db.export_all()
+    device = next(d for d in export["devices"]
+                  if d["mac"] == "11:22:33:44:55:66")
+    assert device["board_profile"] == "seeed-xiao-esp32s3"
+
+    # Import sur une base neuve : le choix est conserve.
+    db.reset_database()
+    db.import_data(export)
+    assert db.get_device("11:22:33:44:55:66")["board_profile"] \
+        == "seeed-xiao-esp32s3"
+
+
+def test_import_never_overwrites_local_board(db):
+    db.set_board_profile("aa:bb:cc:dd:ee:ff", "esp32-devkitc")
+    db.import_data(_export([
+        {"mac": "aa:bb:cc:dd:ee:ff", "name": "", "location": "", "note": "",
+         "board_profile": "seeed-xiao-esp32c3"},
+    ]))
+    assert db.get_device("aa:bb:cc:dd:ee:ff")["board_profile"] == "esp32-devkitc"

@@ -2,9 +2,9 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.7.0-blue)
+![Version](https://img.shields.io/badge/version-0.9.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-79%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-100%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/hardware-read%20only-success)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
@@ -55,6 +55,12 @@ connected ESP32, and keep a history of the diagnostics.
   (strapping, input-only, Flash/PSRAM, USB-JTAG, ADC, DAC), usage status and
   boot caveats - backed by a **local Espressif reference dataset** that works
   offline (curated from Espressif datasheets, manual refresh, integrity-checked)
+- **Board profiles**: pick your board model to see the real per-pin exposure
+  (BOOT button, LED, native USB, headers or not broken out); the choice is saved
+  per board and travels with export/import
+- **Firmware & OTA** (read-only): per-app identity from `esp_app_desc`
+  (project name, version, ESP-IDF version, build date, anti-rollback, ELF
+  sha256) and OTA state from `otadata` (boot-selected slot, per-entry state)
 - **morfSystem-ready**: announces itself via morfBeacon (UDP heartbeat) with
   `/healthz` and `/status` endpoints - discoverable by morfMonitor
 - CSV export
@@ -125,7 +131,9 @@ See [`docs/architecture.md`](docs/architecture.md) for details (in French).
 | GET    | `/api/db/reading?mac=…&section=…` | Latest reading of a section for a board |
 | GET    | `/api/db/compare?mac_a=…&mac_b=…` | Comparison of two boards           |
 | GET    | `/api/db/changes?mac=…`     | Secret change detection (HMAC fingerprints) |
-| GET    | `/api/gpio?chip=…`          | Chip-level GPIO map (family-aware)       |
+| GET    | `/api/gpio?chip=…&board=…`  | Chip-level GPIO map (family-aware, optional board exposure) |
+| GET    | `/api/boards?family=…`      | Board profiles for a chip family         |
+| POST   | `/api/device/board`         | Save a board's model choice              |
 | GET    | `/api/espressif/status`     | Local Espressif reference dataset status |
 | POST   | `/api/espressif/refresh`    | Update the Espressif dataset (project channel) |
 | GET    | `/api/nvs`                  | Last NVS analysis report                 |
@@ -134,6 +142,7 @@ See [`docs/architecture.md`](docs/architecture.md) for details (in French).
 | POST   | `/api/efuse?port=…`         | Read and analyse the eFuses (read-only)  |
 | POST   | `/api/flash?port=…`         | Read the SFDP and Flash unique ID (read-only) |
 | POST   | `/api/nvs/analyze?port=…`   | Read and analyse the NVS partition (read-only) |
+| POST   | `/api/firmware?port=…`      | Read firmware identity + OTA state (read-only) |
 | GET    | `/api/db/export`            | Export the whole database (portable JSON) |
 | GET    | `/api/db/verify`            | Check integrity and statistics           |
 | POST   | `/api/db/import`            | Import/merge a database export           |

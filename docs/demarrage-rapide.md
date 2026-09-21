@@ -66,7 +66,10 @@ Le scan est aussi **enregistré dans l'historique** et la carte est ajoutée au
 - **GPIO Inspector** : affiche les GPIO **au niveau de la puce** d'après la
   famille détectée (strapping, entrée seule, Flash/PSRAM, USB-JTAG, ADC…), avec
   filtres et avertissements de boot. Données Espressif locales, disponibles hors
-  ligne.
+  ligne. Choisis ton **modèle de carte** pour voir l'exposition réelle des broches.
+- **Firmware & OTA** : « Lire le firmware » affiche l'identité du firmware présent
+  (nom du projet, version, version ESP-IDF, date de compilation, sha256) et le
+  slot OTA sélectionné au démarrage.
 - **Inventaire** : retrouve toutes tes cartes, l'historique des scans, compare
   deux scans (ou deux cartes), et gère la base (export/import, suppression).
 

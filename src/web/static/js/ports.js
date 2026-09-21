@@ -14,6 +14,7 @@ function clearReadPanels() {
         "nvs-content": "Aucune analyse NVS chargée.",
         "flash-sfdp-content": "Aucune lecture SFDP effectuée.",
         "partitions-content": "Aucune table de partitions chargée.",
+        "firmware-content": "Aucune lecture firmware effectuée.",
     };
     for (const [id, message] of Object.entries(panels)) {
         const element = document.getElementById(id);

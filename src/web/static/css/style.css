@@ -804,3 +804,66 @@ input[type="checkbox"] {
 .gpio-pinlist {
     padding: 0 10px 10px;
 }
+
+.gpio-board-select {
+    margin-top: 14px;
+    padding-top: 12px;
+    border-top: 1px solid #e2e8f0;
+}
+
+.gpio-board-select label {
+    font-weight: 600;
+}
+
+.gpio-board-select select {
+    margin-left: 6px;
+    padding: 5px 8px;
+}
+
+.gpio-board-context {
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.gpio-board-warning {
+    margin-top: 8px;
+    padding: 8px 10px;
+    border-left: 4px solid #b42318;
+    background: #fee4e2;
+    color: #b42318;
+    border-radius: 6px;
+    font-weight: 600;
+}
+
+.gpio-onboard {
+    background: #e0e7ff;
+    color: #3730a3;
+}
+
+.gpio-notexposed {
+    color: #94a3b8;
+    font-size: 13px;
+}
+
+.gpio-header-pin {
+    color: #027a48;
+    font-size: 13px;
+}
+
+/* --- Firmware & OTA ------------------------------------------------------- */
+
+.firmware-sha {
+    margin-top: 10px;
+    font-size: 13px;
+    word-break: break-all;
+}
+
+.firmware-sha code {
+    display: block;
+    margin-top: 4px;
+}
+
+.firmware-app summary small {
+    color: #64748b;
+    font-weight: normal;
+}
