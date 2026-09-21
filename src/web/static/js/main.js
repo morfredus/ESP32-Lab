@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — initialisation
+   ESP32-Lab - initialisation
    ========================================================================== */
 
 async function loadVersion() {
@@ -24,6 +24,9 @@ async function loadVersion() {
 async function initialize() {
     initTabs();
     loadVersion();
+
+    // État de la base de références GPIO (local, aucun accès réseau).
+    loadEspressifStatus();
 
     setStatus("Initialisation...");
 

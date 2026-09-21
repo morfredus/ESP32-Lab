@@ -2,9 +2,9 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.6.5-blue)
+![Version](https://img.shields.io/badge/version-0.7.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-79%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/hardware-read%20only-success)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
@@ -51,6 +51,10 @@ connected ESP32, and keep a history of the diagnostics.
 - Inventory history, **two-scan comparison** and
   **full comparison between two different boards**
 - **On-demand NVS analysis** (reads the board's NVS partition)
+- **GPIO Inspector** (chip-level, family-aware): per-pin classification
+  (strapping, input-only, Flash/PSRAM, USB-JTAG, ADC, DAC), usage status and
+  boot caveats - backed by a **local Espressif reference dataset** that works
+  offline (curated from Espressif datasheets, manual refresh, integrity-checked)
 - **morfSystem-ready**: announces itself via morfBeacon (UDP heartbeat) with
   `/healthz` and `/status` endpoints - discoverable by morfMonitor
 - CSV export
@@ -93,7 +97,8 @@ ESP32-Lab/
 ├── CHANGELOG.md            Change log
 ├── requirements.txt        Python dependencies
 ├── docs/                   Documentation (beginner + architecture)
-├── data/                   Generated data (inventories, history, registry)
+├── reference/espressif/    Curated Espressif GPIO dataset (shipped, offline)
+├── data/                   Generated data + local dataset cache (git-ignored)
 ├── src/
 │   ├── core/               Business logic (identification, partitions, NVS…)
 │   ├── transport/          Serial access / port detection
@@ -120,6 +125,9 @@ See [`docs/architecture.md`](docs/architecture.md) for details (in French).
 | GET    | `/api/db/reading?mac=…&section=…` | Latest reading of a section for a board |
 | GET    | `/api/db/compare?mac_a=…&mac_b=…` | Comparison of two boards           |
 | GET    | `/api/db/changes?mac=…`     | Secret change detection (HMAC fingerprints) |
+| GET    | `/api/gpio?chip=…`          | Chip-level GPIO map (family-aware)       |
+| GET    | `/api/espressif/status`     | Local Espressif reference dataset status |
+| POST   | `/api/espressif/refresh`    | Update the Espressif dataset (project channel) |
 | GET    | `/api/nvs`                  | Last NVS analysis report                 |
 | POST   | `/api/inventory/refresh?port=…` | Scan the board and update            |
 | POST   | `/api/partitions?port=…`    | Read the partition table (read-only)     |

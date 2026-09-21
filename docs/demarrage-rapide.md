@@ -63,6 +63,10 @@ Le scan est aussi **enregistré dans l'historique** et la carte est ajoutée au
 - **Partitions Flash** : clique sur « Lire la table de partitions » pour lire
   **réellement** l'organisation de la Flash (et le SFDP de la puce). Là aussi,
   « Charger depuis la base » évite d'avoir la carte sous la main.
+- **GPIO Inspector** : affiche les GPIO **au niveau de la puce** d'après la
+  famille détectée (strapping, entrée seule, Flash/PSRAM, USB-JTAG, ADC…), avec
+  filtres et avertissements de boot. Données Espressif locales, disponibles hors
+  ligne.
 - **Inventaire** : retrouve toutes tes cartes, l'historique des scans, compare
   deux scans (ou deux cartes), et gère la base (export/import, suppression).
 

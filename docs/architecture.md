@@ -32,6 +32,8 @@ src/
 │   ├── esp32_efuse.py            Lit + analyse les eFuses (espefuse), sécurité
 │   ├── esp32_flash_sfdp.py      Lit le SFDP (JESD216) + ID unique de la Flash
 │   ├── esp32_nvs.py             Lit + analyse la partition NVS (à la demande)
+│   ├── esp32_gpio.py            Cartographie GPIO (niveau puce, par famille)
+│   ├── espressif_dataset.py     Base de références Espressif locale (offline)
 │   ├── database.py              Base SQLite : cartes + toutes les lectures
 │   ├── comparison.py            Comparaison riche entre deux cartes
 │   ├── secret_changes.py       Détection de changement de secrets (empreintes)
@@ -74,6 +76,7 @@ build. Chaque fichier a une responsabilité :
 | `efuse.js`      | eFuses : identité, sécurité, MAC dérivées, dump complet. |
 | `nvs.js`        | Analyse NVS et décodage lisible. |
 | `db_compare.js` | Export/import de la base, comparaison de deux cartes, suivi des secrets. |
+| `gpio.js`       | GPIO Inspector : base Espressif locale, tableau, filtres, sections. |
 | `tabs.js`       | Navigation par onglets. |
 | `main.js`       | Initialisation au chargement. |
 
@@ -129,6 +132,8 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 | `test_secret_redaction.py`       | Rédaction des secrets, empreintes HMAC. |
 | `test_secret_changes.py`         | Détection de changement de secrets (empreintes). |
 | `test_database_import_delete.py` | Import (noms complétés) et suppression d'une carte. |
+| `test_gpio.py`                   | Cartographie GPIO (comptes, strapping, ADC, statuts). |
+| `test_espressif_dataset.py`      | Base Espressif locale : seed, intégrité, refresh, sauvegarde. |
 | `test_morfbeacon.py`             | Annonce morfBeacon, endpoints /healthz + /status. |
 | `test_serial_connection.py`      | Connexion série. |
 
@@ -142,7 +147,10 @@ Le dossier `data/` contient les fichiers produits à l'usage :
 - `last_inventory.json` - dernier scan (compat) ;
 - `inventory_history.json`, `device_registry.json` - anciens fichiers migrés
   une fois dans la base au premier démarrage ;
-- `analysis/reports/nvs_structure_analysis.json` - dernier rapport NVS généré.
+- `analysis/reports/nvs_structure_analysis.json` - dernier rapport NVS généré ;
+- `espressif/` - cache local de la base de références GPIO (copié depuis
+  `reference/espressif/` au premier lancement, plus `.backup/` avant une mise à
+  jour). Voir « GPIO Inspector et base de références Espressif ».
 
 ### Base de données
 
@@ -185,3 +193,33 @@ carte) reste complet.
 La purge des secrets déjà présents (installations antérieures) est appliquée
 **une fois** au démarrage via des marqueurs `meta` (`readings_redacted`,
 `nvs_hex_purged`).
+
+## GPIO Inspector et base de références Espressif
+
+Le GPIO Inspector raisonne **au niveau de la puce** : à partir de la famille
+détectée, `esp32_gpio.compute_gpio_map(chip)` génère la liste des broches avec
+leur classification (strapping, entrée seule, Flash/PSRAM, USB-JTAG, ADC, DAC),
+un statut d'usage (`available` / `restricted` / `avoid`) et les avertissements de
+boot. Le calcul est **piloté par les données**, jamais générique.
+
+Ces données ne sont pas publiées par Espressif sous une forme exploitable :
+`espressif_dataset.py` gère un **jeu curé** (vérifié sur les datasheets et la
+référence GPIO d'ESP-IDF), livré dans `reference/espressif/` (suivi git, donc
+disponible **hors ligne** dès le clone) et copié au premier lancement dans un
+cache inscriptible `data/espressif/`.
+
+- **Source de vérité** : chaque famille est un fichier JSON versionné
+  (`schema_version`) décrivant les ensembles de broches ; `metadata.json` porte
+  la version du jeu, la source, la date de synchronisation et un **sha256 par
+  fichier**.
+- **Mise à jour manuelle** (`refresh_from_channel`, `POST /api/espressif/refresh`)
+  depuis le canal projet (raw GitHub) : téléchargement (stdlib `urllib`),
+  **validation du schéma + intégrité sha256**, **sauvegarde** de la base actuelle
+  dans `.backup/` avant remplacement, et **conservation de la base locale** en cas
+  d'échec (réseau, intégrité, schéma).
+- L'exposition réelle des broches sur une carte donnée n'étant pas déductible de
+  la puce, elle est signalée `board_exposure: "unknown"` (profil de carte prévu
+  pour une version ultérieure).
+
+Endpoints associés : `GET /api/gpio?chip=`, `GET /api/espressif/status`,
+`POST /api/espressif/refresh`.

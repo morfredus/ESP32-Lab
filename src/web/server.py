@@ -17,8 +17,10 @@ from core.device_registry import (
     update_device,
     update_device_from_inventory,
 )
+from core import espressif_dataset
 from core.esp32_efuse import read_efuses
 from core.esp32_flash_sfdp import read_flash_details
+from core.esp32_gpio import compute_gpio_map
 from core.esp32_inventory import create_inventory, save_inventory
 from core.esp32_nvs import read_and_analyze_nvs
 from core.esp32_partitions import read_partition_table
@@ -33,6 +35,10 @@ from transport.serial_detect import detect_serial_ports
 
 # Garantit l'existence de la base (schéma + migration) dès l'import.
 database.init_db()
+
+# Copie le jeu de references Espressif vers le cache local si absent (hors ligne,
+# aucun accès réseau : le jeu curé est livré avec l'application).
+espressif_dataset.ensure_local_dataset()
 
 
 HOST = "0.0.0.0"
@@ -261,6 +267,18 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             self.send_json(result, status=status)
             return
 
+        if path == "/api/gpio":
+            chip = query.get("chip", [None])[0]
+            result = compute_gpio_map(chip)
+
+            status = 200 if result.get("status") == "ok" else 400
+            self.send_json(result, status=status)
+            return
+
+        if path == "/api/espressif/status":
+            self.send_json(espressif_dataset.dataset_status())
+            return
+
         if path == "/api/db/export":
             self.send_json(database.export_all())
             return
@@ -311,6 +329,10 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
 
         if path == "/api/db/import":
             self.import_db()
+            return
+
+        if path == "/api/espressif/refresh":
+            self.refresh_espressif()
             return
 
         if path == "/api/db/reset":
@@ -380,6 +402,24 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "status": "error",
                 "message": str(error),
             }, status=500)
+
+    def refresh_espressif(self):
+        """Met à jour la base de références Espressif depuis le canal projet."""
+
+        try:
+            body = self.read_json_body()
+            force = bool(body.get("force")) if isinstance(body, dict) else False
+            result = espressif_dataset.refresh_from_channel(force=force)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
+            return
+
+        # Échec (réseau/intégrité/schéma) : la base locale reste intacte.
+        status = 200 if result.get("status") == "ok" else 502
+        self.send_json(result, status=status)
 
     def refresh_inventory(self, query):
         """Actualise l'inventaire d'un port."""
@@ -521,6 +561,12 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                      "summary": "détection de changement de secrets"},
                     {"method": "GET", "path": "/api/db/export",
                      "summary": "export de la base"},
+                    {"method": "GET", "path": "/api/gpio",
+                     "summary": "cartographie GPIO calculée"},
+                    {"method": "GET", "path": "/api/espressif/status",
+                     "summary": "état de la base de références Espressif"},
+                    {"method": "POST", "path": "/api/espressif/refresh",
+                     "summary": "mise à jour de la base Espressif"},
                     {"method": "POST", "path": "/api/inventory/refresh",
                      "summary": "scan d'une carte"},
                     {"method": "POST", "path": "/api/efuse",

@@ -45,6 +45,7 @@
             <button data-tab="efuse">Identité &amp; Sécurité</button>
             <button data-tab="nvs">Analyse NVS</button>
             <button data-tab="partitions">Partitions Flash</button>
+            <button data-tab="gpio">GPIO Inspector</button>
             <button data-tab="inventory">Inventaire</button>
         </nav>
 
@@ -163,6 +164,34 @@
 
             <div id="partitions-content" class="panel" style="margin-top:16px;">
                 <div class="empty">Aucune table de partitions chargée.</div>
+            </div>
+        </section>
+
+        <!-- ======================== GPIO INSPECTOR ======================= -->
+        <section class="tab-panel" data-panel="gpio">
+            <h2 class="section-title">GPIO Inspector</h2>
+            <p class="note">
+                Cartographie des GPIO <strong>au niveau de la puce</strong>,
+                calculée d'après la famille exacte détectée (le résultat dépend
+                de la famille : jamais de table générique). Lecture seule. Fais
+                d'abord un scan dans l'onglet Général.
+            </p>
+
+            <!-- Encart : base de références Espressif locale (offline-first) -->
+            <div id="espressif-status" class="espressif-status panel">
+                <div class="empty">Chargement de la base de références...</div>
+            </div>
+
+            <div class="note gpio-board-note">
+                <strong>Exposition sur la carte : à confirmer.</strong>
+                L'accessibilité réelle des broches sur les connecteurs (BOOT,
+                LED, écran, USB natif du fabricant) dépend du modèle de carte et
+                n'est pas déductible de la puce. Cette page décrit les capacités
+                et restrictions <em>du silicium</em>.
+            </div>
+
+            <div id="gpio-content" class="panel" style="margin-top:16px;">
+                <div class="empty">Aucune cartographie GPIO affichée.</div>
             </div>
         </section>
 
@@ -304,6 +333,7 @@
     <script src="/js/flash_sfdp.js"></script>
     <script src="/js/efuse.js"></script>
     <script src="/js/nvs.js"></script>
+    <script src="/js/gpio.js"></script>
     <script src="/js/tabs.js"></script>
     <script src="/js/main.js"></script>
 </body>

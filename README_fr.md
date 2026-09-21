@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.6.5-blue)
+![Version](https://img.shields.io/badge/version-0.7.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-79%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -50,6 +50,11 @@ connecté, et conserver un historique des diagnostics.
 - Historique des inventaires, **comparaison de deux scans** et
   **comparaison complète de deux cartes différentes**
 - **Analyse NVS à la demande** (lecture de la partition NVS de la carte)
+- **GPIO Inspector** (niveau puce, dépendant de la famille) : classification de
+  chaque broche (strapping, entrée seule, Flash/PSRAM, USB-JTAG, ADC, DAC),
+  statut d'usage et avertissements de boot - appuyé sur une **base de références
+  Espressif locale** disponible hors ligne (curée d'après les datasheets
+  Espressif, mise à jour manuelle, contrôle d'intégrité)
 - **Compatible morfSystem** : s'annonce via morfBeacon (heartbeat UDP) avec les
   endpoints `/healthz` et `/status` - découvrable par morfMonitor
 - Export CSV
@@ -92,7 +97,8 @@ ESP32-Lab/
 ├── CHANGELOG.md            Journal des modifications
 ├── requirements.txt        Dépendances Python
 ├── docs/                   Documentation (débutant + architecture)
-├── data/                   Données générées (inventaires, historique, registre)
+├── reference/espressif/    Jeu de références GPIO Espressif curé (livré, hors ligne)
+├── data/                   Données générées + cache local du jeu (git-ignoré)
 ├── src/
 │   ├── core/               Logique métier (identification, partitions, NVS…)
 │   ├── transport/          Accès série / détection des ports
@@ -119,6 +125,9 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 | GET     | `/api/db/reading?mac=…&section=…` | Dernière lecture d'une section pour une carte |
 | GET     | `/api/db/compare?mac_a=…&mac_b=…` | Comparaison de deux cartes         |
 | GET     | `/api/db/changes?mac=…`     | Détection de changement de secrets (empreintes HMAC) |
+| GET     | `/api/gpio?chip=…`          | Cartographie GPIO au niveau puce (par famille) |
+| GET     | `/api/espressif/status`     | État de la base de références Espressif locale |
+| POST    | `/api/espressif/refresh`    | Mise à jour de la base Espressif (canal projet) |
 | GET     | `/api/nvs`                  | Dernier rapport d'analyse NVS            |
 | POST    | `/api/inventory/refresh?port=…` | Scanne la carte et met à jour        |
 | POST    | `/api/partitions?port=…`    | Lit la table de partitions (lecture seule) |

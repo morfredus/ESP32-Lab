@@ -1,0 +1,50 @@
+{
+    "schema_version": 1,
+    "family": "esp32",
+    "label": "ESP32",
+    "pins_present": [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        21, 22, 23, 25, 26, 27, 32, 33, 34, 35, 36, 37, 38, 39
+    ],
+    "strapping": [0, 2, 5, 12, 15],
+    "input_only": [34, 35, 36, 37, 38, 39],
+    "flash_psram": [6, 7, 8, 9, 10, 11, 16, 17],
+    "flash_psram_octal": [],
+    "usb_jtag": [],
+    "adc1": {
+        "36": 0, "37": 1, "38": 2, "39": 3,
+        "32": 4, "33": 5, "34": 6, "35": 7
+    },
+    "adc2": {
+        "4": 0, "0": 1, "2": 2, "15": 3, "13": 4,
+        "12": 5, "14": 6, "27": 7, "25": 8, "26": 9
+    },
+    "dac": [25, 26],
+    "notes": {
+        "0": "Strapping (mode de boot) ; souvent relie au bouton BOOT.",
+        "1": "UART0 TX (console et flashage).",
+        "2": "Strapping ; souvent relie a la LED integree.",
+        "3": "UART0 RX (console et flashage).",
+        "5": "Strapping (timing de sortie SDIO).",
+        "6": "Reserve : Flash SPI integree au module.",
+        "7": "Reserve : Flash SPI integree au module.",
+        "8": "Reserve : Flash SPI integree au module.",
+        "9": "Reserve : Flash SPI integree au module.",
+        "10": "Reserve : Flash SPI integree au module.",
+        "11": "Reserve : Flash SPI integree au module.",
+        "12": "Strapping (tension de la Flash, MTDI) ; JTAG. Un niveau haut au boot peut empecher le demarrage.",
+        "13": "JTAG (MTCK).",
+        "14": "JTAG (MTMS).",
+        "15": "Strapping (affichage des logs de boot, MTDO) ; JTAG.",
+        "16": "Reserve : PSRAM (sur modules avec PSRAM).",
+        "17": "Reserve : PSRAM (sur modules avec PSRAM).",
+        "25": "DAC1 (sortie analogique).",
+        "26": "DAC2 (sortie analogique).",
+        "34": "Entree seule : pas de sortie ni de pull-up/pull-down logiciels.",
+        "35": "Entree seule : pas de sortie ni de pull-up/pull-down logiciels.",
+        "36": "Entree seule (SENSOR_VP).",
+        "37": "Entree seule.",
+        "38": "Entree seule.",
+        "39": "Entree seule (SENSOR_VN)."
+    }
+}

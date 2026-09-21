@@ -1,0 +1,36 @@
+{
+    "schema_version": 1,
+    "family": "esp32c3",
+    "label": "ESP32-C3",
+    "pins_present": [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21
+    ],
+    "strapping": [2, 8, 9],
+    "input_only": [],
+    "flash_psram": [12, 13, 14, 15, 16, 17],
+    "flash_psram_octal": [],
+    "usb_jtag": [18, 19],
+    "adc1": {
+        "0": 0, "1": 1, "2": 2, "3": 3, "4": 4
+    },
+    "adc2": {
+        "5": 0
+    },
+    "dac": [],
+    "notes": {
+        "2": "Strapping (mode de boot). A laisser flottant ou tire au niveau haut.",
+        "8": "Strapping ; souvent relie a la LED. Doit etre haut pour un boot serie fiable.",
+        "9": "Strapping ; souvent relie au bouton BOOT (niveau bas = bootloader serie).",
+        "12": "Reserve : Flash SPI.",
+        "13": "Reserve : Flash SPI.",
+        "14": "Reserve : Flash SPI.",
+        "15": "Reserve : Flash SPI.",
+        "16": "Reserve : Flash SPI.",
+        "17": "Reserve : Flash SPI.",
+        "18": "USB-JTAG / USB natif (D-) par defaut. Le reaffecter desactive l'USB-JTAG.",
+        "19": "USB-JTAG / USB natif (D+) par defaut. Le reaffecter desactive l'USB-JTAG.",
+        "20": "UART0 RX (console) par defaut.",
+        "21": "UART0 TX (console) par defaut."
+    }
+}

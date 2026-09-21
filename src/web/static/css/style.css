@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — feuille de style principale
+   ESP32-Lab - feuille de style principale
    ========================================================================== */
 
 :root {
@@ -665,4 +665,142 @@ input[type="checkbox"] {
     table {
         min-width: 560px;
     }
+}
+
+/* --- GPIO Inspector ------------------------------------------------------- */
+
+.gpio-available {
+    background: #d1fadf;
+    color: #027a48;
+}
+
+.gpio-restricted {
+    background: #fef0c7;
+    color: #b54708;
+}
+
+.gpio-avoid {
+    background: #fee4e2;
+    color: #b42318;
+}
+
+.espressif-status {
+    margin: 12px 0;
+}
+
+.espressif-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px 18px;
+    margin-top: 8px;
+    font-size: 14px;
+}
+
+.espressif-key {
+    display: block;
+    font-size: 12px;
+    color: #64748b;
+}
+
+.espressif-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 14px;
+}
+
+.gpio-board-note {
+    border-left: 4px solid #f59e0b;
+    background: #fffbeb;
+    padding: 10px 12px;
+    border-radius: 6px;
+    margin: 12px 0;
+}
+
+.gpio-header {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 8px;
+    align-items: baseline;
+}
+
+.gpio-source {
+    font-size: 12px;
+    color: #64748b;
+}
+
+.gpio-summary {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.gpio-summary-card {
+    flex: 1 1 140px;
+    border-radius: 8px;
+    padding: 12px;
+    text-align: center;
+}
+
+.gpio-summary-count {
+    font-size: 26px;
+    font-weight: 700;
+}
+
+.gpio-summary-label {
+    font-size: 13px;
+}
+
+.gpio-filters {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    font-size: 14px;
+}
+
+.gpio-filters-label {
+    font-weight: 600;
+}
+
+.gpio-table td {
+    vertical-align: top;
+}
+
+.gpio-num {
+    font-weight: 700;
+    white-space: nowrap;
+}
+
+.gpio-chip {
+    display: inline-block;
+    background: #eef2f7;
+    border-radius: 6px;
+    padding: 1px 8px;
+    margin: 2px 2px 0 0;
+    font-size: 12px;
+}
+
+.gpio-note {
+    font-size: 13px;
+    color: #475569;
+}
+
+.gpio-caveat {
+    font-size: 13px;
+    color: #b54708;
+    margin-top: 4px;
+}
+
+.gpio-section .gpio-warning {
+    padding: 10px;
+    font-size: 14px;
+    color: #475569;
+}
+
+.gpio-pinlist {
+    padding: 0 10px 10px;
 }

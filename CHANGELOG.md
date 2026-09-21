@@ -9,6 +9,36 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.7.0] - 2026-09-21
+
+Nouvelle fonctionnalité : GPIO Inspector (niveau puce) et base de références
+Espressif locale, disponible hors ligne.
+
+### Ajouté
+- **GPIO Inspector** (onglet dédié, lecture seule). À partir de la famille exacte
+  détectée (ESP32, ESP32-S3, ESP32-C3), affiche pour chaque broche sa
+  classification (strapping, entrée seule, réservé Flash/PSRAM, USB-JTAG, ADC,
+  DAC), un statut d'usage (disponible / avec restrictions / à éviter) et les
+  avertissements de boot. Les informations dépendent de la famille : jamais de
+  table générique. Filtres (strapping, Flash/PSRAM, fonctions spéciales, entrée
+  seule), résumé chiffré et sections repliables par catégorie de restriction.
+- **Base de références Espressif locale, offline-first.** Un jeu de données curé
+  (vérifié sur les datasheets Espressif et la référence GPIO d'ESP-IDF) est livré
+  avec l'application (`reference/espressif/`) et copié dans un cache inscriptible
+  (`data/espressif/`) au premier lancement. Fonctionne sans réseau.
+- **Mise à jour manuelle** de la base (bouton « Actualiser depuis Espressif »)
+  depuis le canal projet, avec schéma versionné, contrôle d'intégrité (sha256),
+  sauvegarde de la version précédente et conservation de la base locale en cas
+  d'échec.
+- Endpoints : `GET /api/gpio`, `GET /api/espressif/status`,
+  `POST /api/espressif/refresh`.
+
+### Limites connues
+- L'exposition réelle des broches sur une carte (BOOT, LED, écran, USB natif du
+  fabricant) dépend du profil de la carte et n'est pas déductible de la puce :
+  elle est signalée « à confirmer ». Un sélecteur de profil de carte est prévu
+  pour une version ultérieure.
+
 ## [0.6.5] - 2026-09-21
 
 Correctif de sécurité : suppression des copies résiduelles de secrets en base.

@@ -1,8 +1,8 @@
 # Guide de l'interface
 
 L'interface s'organise autour d'une **barre d'outils globale** (toujours
-visible) et de **cinq onglets** : Général · Identité & Sécurité · Analyse NVS ·
-Partitions Flash · Inventaire.
+visible) et de **six onglets** : Général · Identité & Sécurité · Analyse NVS ·
+Partitions Flash · GPIO Inspector · Inventaire.
 
 > Les captures d'écran de ce guide utilisent un **jeu de démonstration
 > anonymisé** (noms, adresses MAC et identifiants fictifs).
@@ -146,6 +146,48 @@ La lecture (en **lecture seule**, à l'adresse `0x8000`) affiche :
   chiffrée.
 
 > La lecture redémarre brièvement la carte (comportement normal d'esptool).
+
+## Onglet GPIO Inspector
+
+Cet onglet décrit les **GPIO au niveau de la puce**, calculés d'après la
+**famille exacte** détectée lors du scan (ESP32, ESP32-S3, ESP32-C3). Les
+informations dépendent de la famille : jamais de table générique. Lecture seule.
+Fais d'abord un **scan** dans l'onglet Général.
+
+> **Exposition sur la carte : à confirmer.** L'accessibilité réelle des broches
+> sur les connecteurs (bouton BOOT, LED, écran, USB natif du fabricant) dépend
+> du **modèle de carte** et n'est pas déductible de la puce. Cette page décrit
+> les capacités et restrictions **du silicium**, pas le brochage d'une carte
+> précise.
+
+### Base Espressif locale
+Un encart en haut de l'onglet indique la base de références utilisée :
+
+- **version du jeu**, **date de dernière synchronisation**, **source**
+  (datasheets Espressif, base curée ESP32-Lab), familles couvertes et statut
+  (disponible **hors ligne**, intègre) ;
+- **Utiliser les données locales** : affiche les GPIO à partir de la base locale
+  (aucun réseau) ;
+- **Actualiser depuis Espressif** : télécharge une version mise à jour du jeu
+  curé depuis le canal du projet, avec contrôle d'intégrité et sauvegarde de la
+  version précédente. En cas d'échec (réseau, intégrité), la base locale est
+  **conservée**.
+
+### Résumé et tableau
+Un résumé chiffré classe les broches en trois statuts : **Disponible**,
+**Disponible avec restrictions**, **À éviter / réservé**. Le tableau détaille
+chaque broche : numéro, classification, statut (badge coloré), fonctions
+(strapping, entrée seule, Flash/PSRAM, USB-JTAG, ADC, DAC) et notes (dont
+l'avertissement de boot pour les broches de strapping).
+
+Des **filtres** (Strapping, Flash/PSRAM, Fonctions spéciales, Entrée seule)
+permettent de n'afficher que les broches concernées.
+
+### Restrictions à connaître (sections repliables)
+Sous le tableau, des sections repliables regroupent, avec un avertissement
+explicite, les broches sensibles : **strapping** (lues au reset, fixent le mode
+de boot), **Flash/PSRAM** (à ne pas réaffecter sans connaître le matériel) et
+**interfaces système** (UART console, USB-JTAG).
 
 ## Onglet Inventaire
 

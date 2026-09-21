@@ -1,0 +1,46 @@
+{
+    "schema_version": 1,
+    "family": "esp32s3",
+    "label": "ESP32-S3",
+    "pins_present": [
+        0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19,
+        20, 21, 26, 27, 28, 29, 30, 31, 32, 33, 34, 35, 36, 37, 38, 39, 40, 41,
+        42, 43, 44, 45, 46, 47, 48
+    ],
+    "strapping": [0, 3, 45, 46],
+    "input_only": [],
+    "flash_psram": [26, 27, 28, 29, 30, 31, 32],
+    "flash_psram_octal": [33, 34, 35, 36, 37],
+    "usb_jtag": [19, 20],
+    "adc1": {
+        "1": 0, "2": 1, "3": 2, "4": 3, "5": 4,
+        "6": 5, "7": 6, "8": 7, "9": 8, "10": 9
+    },
+    "adc2": {
+        "11": 0, "12": 1, "13": 2, "14": 3, "15": 4,
+        "16": 5, "17": 6, "18": 7, "19": 8, "20": 9
+    },
+    "dac": [],
+    "notes": {
+        "0": "Strapping (mode de boot) ; souvent relie au bouton BOOT.",
+        "3": "Strapping (choix de la source des signaux JTAG au boot).",
+        "19": "USB-JTAG / USB natif (D-) par defaut. Le reaffecter desactive l'USB-JTAG.",
+        "20": "USB-JTAG / USB natif (D+) par defaut. Le reaffecter desactive l'USB-JTAG.",
+        "26": "Reserve : Flash SPI / PSRAM.",
+        "27": "Reserve : Flash SPI / PSRAM.",
+        "28": "Reserve : Flash SPI / PSRAM.",
+        "29": "Reserve : Flash SPI / PSRAM.",
+        "30": "Reserve : Flash SPI / PSRAM.",
+        "31": "Reserve : Flash SPI / PSRAM.",
+        "32": "Reserve : Flash SPI / PSRAM.",
+        "33": "Reserve uniquement si Flash ou PSRAM Octal (SPIIO4).",
+        "34": "Reserve uniquement si Flash ou PSRAM Octal (SPIIO5).",
+        "35": "Reserve uniquement si Flash ou PSRAM Octal (SPIIO6).",
+        "36": "Reserve uniquement si Flash ou PSRAM Octal (SPIIO7).",
+        "37": "Reserve uniquement si Flash ou PSRAM Octal (SPIDQS).",
+        "43": "UART0 TX (console) par defaut.",
+        "44": "UART0 RX (console) par defaut.",
+        "45": "Strapping (tension VDD_SPI).",
+        "46": "Strapping (mode de boot / affichage des logs)."
+    }
+}

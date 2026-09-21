@@ -1,0 +1,23 @@
+{
+    "schema_version": 1,
+    "dataset_version": "2026.09.21",
+    "source": "Espressif datasheets (Boot Configurations) + ESP-IDF GPIO reference",
+    "source_urls": [
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32/api-reference/peripherals/gpio.html",
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32s3/api-reference/peripherals/gpio.html",
+        "https://docs.espressif.com/projects/esp-idf/en/latest/esp32c3/api-reference/peripherals/gpio.html"
+    ],
+    "channel": "curated (ESP32-Lab)",
+    "synced_at": null,
+    "files": {
+        "esp32": {
+            "sha256": "a09a55f3b4b7d260308cb5aafbf567f52594faf0ce6f7469a60dd15f9e37ee5b"
+        },
+        "esp32-s3": {
+            "sha256": "1aa11ce60c14b65abbef30672cd6895d9719059271c3561342ed36c3a6ecd2e9"
+        },
+        "esp32-c3": {
+            "sha256": "81a77fc9a9f2b60cf04fae7324e82a78969dc0b13232c071f5ba51e44f79786c"
+        }
+    }
+}
