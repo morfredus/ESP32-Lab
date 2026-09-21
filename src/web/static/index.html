@@ -102,12 +102,18 @@
         <section class="tab-panel" data-panel="nvs">
             <h2 class="section-title">Analyse NVS</h2>
             <p class="note">
-                Analyse structurelle d'un dump NVS. Nécessite un rapport
-                généré au préalable (data/analysis/reports/).
+                Analyse structurelle de la partition NVS. « Charger » affiche le
+                dernier rapport ; s'il n'existe pas, l'analyse est lancée
+                automatiquement depuis la carte. « Analyser la NVS de la carte »
+                force une nouvelle lecture (lecture seule). Port requis (onglet
+                Général).
             </p>
 
             <button id="nvs-button" onclick="loadNvsAnalysis()">
                 Charger l'analyse NVS
+            </button>
+            <button id="nvs-analyze-button" onclick="triggerNvsAnalysis()">
+                Analyser la NVS de la carte
             </button>
 
             <div id="nvs-content" class="panel" style="margin-top:16px;">
@@ -199,14 +205,66 @@
                 <div id="history-content">Chargement de l'historique...</div>
             </div>
 
-            <!-- 3. Résultat de comparaison -->
-            <h2 class="section-title">Comparaison</h2>
+            <!-- 3. Résultat de comparaison de scans -->
+            <h2 class="section-title">Comparaison de scans</h2>
             <div class="comparison-container">
                 <div id="comparison-content" class="empty">
                     Sélectionne deux inventaires (ou « Comparer les scans »
                     d'une carte) pour afficher leurs différences.
                 </div>
             </div>
+
+            <!-- 4. Comparaison complète de deux cartes (base de données) -->
+            <h2 class="section-title">Comparaison complète de deux cartes</h2>
+            <p class="note">
+                Compare toutes les données enregistrées (identification, eFuses,
+                SFDP, partitions) de deux cartes différentes.
+            </p>
+            <div class="comparison-toolbar">
+                <select id="compare-card-a">
+                    <option value="">— choisir une carte —</option>
+                </select>
+                <select id="compare-card-b">
+                    <option value="">— choisir une carte —</option>
+                </select>
+                <button id="compare-cards-button" onclick="compareTwoCards()">
+                    Comparer les cartes
+                </button>
+            </div>
+            <div class="comparison-container">
+                <div id="compare-cards-content" class="empty">
+                    Choisis deux cartes à comparer.
+                </div>
+            </div>
+
+            <!-- 5. Maintenance de la base de données -->
+            <h2 class="section-title">Maintenance de la base de données</h2>
+            <p class="note">
+                L'export produit un fichier JSON portable (toutes les cartes et
+                lectures) — utile pour changer de poste ou sauvegarder. Tu peux
+                aussi simplement copier le fichier <code>data/esp32lab.db</code>,
+                qui contient tout. « Vérifier » contrôle l'intégrité ;
+                « Remettre à zéro » efface définitivement toutes les données.
+            </p>
+            <div class="comparison-toolbar">
+                <button id="export-db-button" onclick="exportDatabase()">
+                    Exporter la base
+                </button>
+                <button id="import-db-button"
+                        onclick="document.getElementById('import-db-input').click()">
+                    Importer une base
+                </button>
+                <input type="file" id="import-db-input" accept="application/json"
+                       style="display:none" onchange="importDatabase(this)">
+                <button id="verify-db-button" onclick="verifyDatabase()">
+                    Vérifier la base
+                </button>
+                <button id="reset-db-button" class="danger-button"
+                        onclick="resetDatabase()">
+                    Remettre à zéro
+                </button>
+            </div>
+            <div id="db-maintenance-content"></div>
         </section>
     </main>
 
@@ -229,6 +287,7 @@
     <script src="/js/inventory.js"></script>
     <script src="/js/devices.js"></script>
     <script src="/js/history.js"></script>
+    <script src="/js/db_compare.js"></script>
     <script src="/js/partitions.js"></script>
     <script src="/js/flash_sfdp.js"></script>
     <script src="/js/efuse.js"></script>

@@ -70,7 +70,15 @@ valeur brute.
 La **NVS** est un petit espace mémoire où l'ESP32 range des réglages
 (identifiants Wi-Fi, compteurs de démarrage, calibration…).
 
-Clique sur **Charger l'analyse NVS** pour afficher :
+Deux boutons :
+
+- **Charger l'analyse NVS** — affiche le dernier rapport enregistré ; s'il
+  n'existe pas encore, l'analyse est **déclenchée automatiquement** en lisant
+  la carte.
+- **Analyser la NVS de la carte** — force une nouvelle lecture de la partition
+  NVS (lecture seule) et régénère le rapport.
+
+L'analyse affiche :
 
 - un **Résumé des données détectées** avec trois colonnes :
   - *Paramètre* (ex. « Compteur de démarrages ») ;
@@ -136,10 +144,18 @@ Tous les scans réalisés, la dernière détection par carte. Ici tu peux :
 - **Exporter en CSV** l'historique complet ;
 - afficher **uniquement les différences** dans la comparaison.
 
-### 3. Comparaison
+### 3. Comparaison de scans
 Affiche le résultat côte à côte de deux scans : chaque caractéristique est
 marquée **Identique** (vert) ou **Différent** (rouge). Pratique pour repérer un
 changement de mémoire, de firmware détecté, etc.
+
+### 4. Comparaison complète de deux cartes
+Choisis **deux cartes différentes** dans les listes déroulantes puis
+**Comparer les cartes**. ESP32-Lab confronte toutes les données enregistrées en
+base (identification, eFuses/sécurité, SFDP, partitions), groupe par groupe.
+Des badges indiquent quelles sections ont déjà été capturées pour chaque carte
+(scanne et lis les eFuses/SFDP/partitions/NVS d'une carte pour enrichir la
+comparaison).
 
 ## Astuce
 

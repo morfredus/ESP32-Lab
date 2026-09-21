@@ -52,6 +52,11 @@ async function loadPartitions() {
         if (chip) {
             url += "&chip=" + encodeURIComponent(chip);
         }
+        const mac = currentInventory && currentInventory.identification
+            && currentInventory.identification.mac;
+        if (mac) {
+            url += "&mac=" + encodeURIComponent(mac);
+        }
 
         const result = await apiPost(url);
         renderPartitions(result.partitions, currentInventory);

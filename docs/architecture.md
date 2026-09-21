@@ -31,6 +31,9 @@ src/
 │   ├── esp32_partitions.py       Lit + analyse la table de partitions (0x8000)
 │   ├── esp32_efuse.py            Lit + analyse les eFuses (espefuse), sécurité
 │   ├── esp32_flash_sfdp.py      Lit le SFDP (JESD216) + ID unique de la Flash
+│   ├── esp32_nvs.py             Lit + analyse la partition NVS (à la demande)
+│   ├── database.py              Base SQLite : cartes + toutes les lectures
+│   ├── comparison.py            Comparaison riche entre deux cartes
 │   ├── flash_catalog.py          Correspondance des identifiants Flash JEDEC
 │   ├── esptool_runner.py         Résolution portable d'esptool
 │   ├── device_registry.py        Registre persistant des cartes (par MAC)
@@ -124,6 +127,23 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 
 Le dossier `data/` contient les fichiers produits à l'usage :
 
-- `last_inventory.json` — dernier scan ;
-- `inventory_history.json` — tous les scans ;
-- `device_registry.json` — registre des cartes (noms, notes…).
+- `esp32lab.db` — **base SQLite**, source de vérité (cartes + toutes les
+  lectures). Créée automatiquement au premier lancement, avec migration des
+  anciens JSON ;
+- `last_inventory.json` — dernier scan (compat) ;
+- `inventory_history.json`, `device_registry.json` — anciens fichiers migrés
+  une fois dans la base au premier démarrage ;
+- `analysis/reports/nvs_structure_analysis.json` — dernier rapport NVS généré.
+
+### Base de données
+
+Deux tables :
+
+- `devices(mac, name, location, note, first_seen, last_seen, port,
+  identification)` — une carte par MAC (métadonnées + dernière identité) ;
+- `readings(id, mac, section, recorded_at, port, payload)` — chaque lecture
+  (section : `inventory`, `efuse`, `sfdp`, `partitions`, `nvs`) avec sa charge
+  utile JSON complète.
+
+Le schéma se crée à la première connexion (`database.connect`), donc une
+installation neuve fonctionne sans aucune préparation.

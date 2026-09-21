@@ -6,7 +6,46 @@ Le format s'inspire de [Keep a Changelog](https://keepachangelog.com/fr/1.1.0/),
 et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 (`MAJEUR.MINEUR.CORRECTIF`).
 
-## [1.2.0] - 2026-09-20
+Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
+lorsqu'ESP32-Lab sera considéré comme abouti.
+
+## [0.4.0] - 2026-09-21
+
+Base de données SQLite, comparaison inter-cartes et analyse NVS à la demande.
+
+### Ajouté
+- **Base de données SQLite** (`data/esp32lab.db`) comme source de vérité :
+  registre des cartes + historique complet de toutes les lectures
+  (identification, eFuses, SFDP, partitions, NVS). Création automatique et
+  propre au premier lancement (schéma créé à la première connexion, même sur
+  une installation neuve), avec **migration** des anciens fichiers JSON.
+- **Persistance de toutes les lectures** : chaque analyse (eFuses, SFDP,
+  partitions, NVS) est enregistrée par carte.
+- **Comparaison complète de deux cartes** (onglet Inventaire) : identification,
+  eFuses/sécurité, SFDP et partitions côte à côte, avec repérage des
+  différences. Endpoints `/api/db/device` et `/api/db/compare`.
+- **Analyse NVS à la demande** : si aucun rapport n'existe, l'analyse est
+  déclenchée automatiquement en lisant la partition NVS de la carte (lecture
+  seule). Nouveau module `esp32_nvs.py` avec **CRC ESP-IDF correct** (les
+  vraies entrées sont désormais validées), bouton « Analyser la NVS de la
+  carte », endpoint `/api/nvs/analyze`.
+- **Section « Maintenance de la base »** (onglet Inventaire) : Export / Import
+  JSON portable (fusion additive, sans doublon ni écrasement des noms),
+  **vérification d'intégrité** et **remise à zéro** propre (sans réimporter les
+  anciens JSON, grâce à un marqueur de migration). Endpoints `/api/db/export`,
+  `/api/db/import`, `/api/db/verify`, `/api/db/reset`. (Copier le fichier
+  `data/esp32lab.db` transfère aussi tout.)
+- Migration des anciens JSON **idempotente et additive** (rattrape les scans
+  manquants sans dupliquer).
+- Modules `database.py`, `comparison.py`, `esp32_nvs.py`.
+- Tests `test_database.py`, `test_nvs.py`.
+
+### Modifié
+- `device_registry.py`, `inventory_history.py`, `inventory_store.py` délèguent
+  désormais à la base SQLite (signatures inchangées).
+- `VERSION` → 0.4.0.
+
+## [0.3.0] - 2026-09-20
 
 Lecture bas niveau de la puce Flash : SFDP et identifiant unique.
 
@@ -24,9 +63,9 @@ Lecture bas niveau de la puce Flash : SFDP et identifiant unique.
 ### Modifié
 - Onglet Partitions Flash enrichi d'une section « Puce Flash (SFDP) » au-dessus
   de la table de partitions.
-- `VERSION` → 1.2.0.
+- `VERSION` → 0.3.0.
 
-## [1.1.0] - 2026-09-20
+## [0.2.0] - 2026-09-20
 
 Ajout de la lecture des **eFuses** : la source d'information la plus profonde
 d'une puce Espressif.
@@ -49,9 +88,9 @@ d'une puce Espressif.
 ### Modifié
 - Onglets réorganisés : Général · **Identité & Sécurité** · Analyse NVS ·
   Partitions Flash · Inventaire.
-- `VERSION` → 1.1.0.
+- `VERSION` → 0.2.0.
 
-## [1.0.0] - 2026-09-20
+## [0.1.0] - 2026-09-20
 
 Première version structurée : refonte de l'interface web, lecture réelle des
 données matérielles et modularisation du code.
@@ -98,4 +137,4 @@ données matérielles et modularisation du code.
 - Aucune écriture ni modification de la carte : toutes les opérations
   matérielles restent en lecture seule (conforme aux principes du projet).
 
-[1.0.0]: https://example.invalid/ESP32-Lab/releases/tag/v1.0.0
+[0.1.0]: https://example.invalid/ESP32-Lab/releases/tag/v0.1.0

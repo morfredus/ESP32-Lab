@@ -103,7 +103,7 @@ curl http://localhost:8765/api/health
 Réponse attendue :
 
 ```json
-{ "status": "ok", "service": "ESP32-Lab", "version": "1.0.0" }
+{ "status": "ok", "service": "ESP32-Lab", "version": "0.4.0" }
 ```
 
 ## Toujours bloqué ?

@@ -388,6 +388,14 @@ input[type="checkbox"] {
     background: var(--color-primary);
 }
 
+.danger-button {
+    background: #dc2626;
+}
+
+.danger-button:hover {
+    background: #b91c1c;
+}
+
 /* --- Modale historique ---------------------------------------------------- */
 
 .history-modal {

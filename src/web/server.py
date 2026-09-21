@@ -8,6 +8,8 @@ from http.server import BaseHTTPRequestHandler, HTTPServer
 from pathlib import Path
 from urllib.parse import parse_qs, urlparse
 
+from core import database
+from core.comparison import compare_devices
 from core.device_registry import (
     get_device,
     get_devices,
@@ -17,10 +19,15 @@ from core.device_registry import (
 from core.esp32_efuse import read_efuses
 from core.esp32_flash_sfdp import read_flash_details
 from core.esp32_inventory import create_inventory, save_inventory
+from core.esp32_nvs import read_and_analyze_nvs
 from core.esp32_partitions import read_partition_table
 from core.inventory_history import get_history, save_history
 from core.inventory_store import load_last_inventory
 from transport.serial_detect import detect_serial_ports
+
+
+# Garantit l'existence de la base (schéma + migration) dès l'import.
+database.init_db()
 
 
 HOST = "0.0.0.0"
@@ -183,6 +190,40 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             })
             return
 
+        if path == "/api/db/device":
+            mac = query.get("mac", [None])[0]
+            dossier = database.get_device_dossier(mac) if mac else None
+
+            if dossier is None:
+                self.send_json({
+                    "status": "error",
+                    "message": "Carte introuvable.",
+                }, status=404)
+                return
+
+            self.send_json({
+                "status": "ok",
+                "dossier": dossier,
+            })
+            return
+
+        if path == "/api/db/compare":
+            mac_a = query.get("mac_a", [None])[0]
+            mac_b = query.get("mac_b", [None])[0]
+            result = compare_devices(mac_a, mac_b)
+
+            status = 200 if result.get("status") == "ok" else 400
+            self.send_json(result, status=status)
+            return
+
+        if path == "/api/db/export":
+            self.send_json(database.export_all())
+            return
+
+        if path == "/api/db/verify":
+            self.send_json(database.verify_database())
+            return
+
         self.send_json({
             "status": "error",
             "message": "Route inconnue.",
@@ -211,14 +252,54 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             self.read_flash(query)
             return
 
+        if path == "/api/nvs/analyze":
+            self.analyze_nvs(query)
+            return
+
         if path == "/api/device/update":
             self.update_device()
+            return
+
+        if path == "/api/db/import":
+            self.import_db()
+            return
+
+        if path == "/api/db/reset":
+            try:
+                self.send_json(database.reset_database())
+            except Exception as error:
+                self.send_json({
+                    "status": "error",
+                    "message": str(error),
+                }, status=500)
             return
 
         self.send_json({
             "status": "error",
             "message": "Route inconnue.",
         }, status=404)
+
+    def import_db(self):
+        """Importe un export de base (fusion additive)."""
+
+        try:
+            payload = self.read_json_body()
+            summary = database.import_data(payload)
+            self.send_json({
+                "status": "ok",
+                "message": "Import terminé.",
+                "summary": summary,
+            })
+        except ValueError as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=400)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
 
     def refresh_inventory(self, query):
         """Actualise l'inventaire d'un port."""
@@ -303,6 +384,26 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "message": str(error),
             }, status=500)
 
+    def _persist_section(self, query, section, result, fallback_mac=None):
+        """Enregistre une lecture en base si elle a réussi et qu'une MAC existe."""
+
+        if not isinstance(result, dict) or result.get("status") != "ok":
+            return
+
+        raw_mac = query.get("mac", [None])[0] or fallback_mac or ""
+        mac = raw_mac.split("(")[0].strip()
+
+        if not mac:
+            return
+
+        port = query.get("port", [None])[0]
+
+        try:
+            database.save_reading(mac, section, result, port=port)
+        except Exception:
+            # La persistance ne doit jamais faire échouer la lecture matérielle.
+            pass
+
     def read_partitions(self, query):
         """Lit la table de partitions réelle de la carte (lecture seule)."""
 
@@ -325,6 +426,8 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "message": str(error),
             }, status=500)
             return
+
+        self._persist_section(query, "partitions", result)
 
         status = 200 if result.get("status") == "ok" else 502
         self.send_json(result, status=status)
@@ -352,6 +455,9 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             }, status=500)
             return
 
+        fallback_mac = (result.get("identity") or {}).get("mac")
+        self._persist_section(query, "efuse", result, fallback_mac=fallback_mac)
+
         status = 200 if result.get("status") == "ok" else 502
         self.send_json(result, status=status)
 
@@ -377,6 +483,36 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "message": str(error),
             }, status=500)
             return
+
+        self._persist_section(query, "sfdp", result)
+
+        status = 200 if result.get("status") == "ok" else 502
+        self.send_json(result, status=status)
+
+    def analyze_nvs(self, query):
+        """Lit la partition NVS de la carte et génère le rapport (lecture seule)."""
+
+        selected_port = query.get("port", [None])[0]
+
+        if not selected_port:
+            self.send_json({
+                "status": "error",
+                "message": "Le port série est obligatoire.",
+            }, status=400)
+            return
+
+        chip = query.get("chip", [None])[0]
+
+        try:
+            result = read_and_analyze_nvs(selected_port, chip=chip)
+        except Exception as error:
+            self.send_json({
+                "status": "error",
+                "message": str(error),
+            }, status=500)
+            return
+
+        self._persist_section(query, "nvs", result)
 
         status = 200 if result.get("status") == "ok" else 502
         self.send_json(result, status=status)

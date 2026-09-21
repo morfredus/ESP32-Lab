@@ -28,6 +28,11 @@ async function loadFlashDetails() {
         if (chip) {
             url += "&chip=" + encodeURIComponent(chip);
         }
+        const mac = currentInventory && currentInventory.identification
+            && currentInventory.identification.mac;
+        if (mac) {
+            url += "&mac=" + encodeURIComponent(mac);
+        }
 
         const report = await apiPost(url);
         renderFlashDetails(report);

@@ -56,6 +56,11 @@ CREATE TABLE IF NOT EXISTS readings (
 
 CREATE INDEX IF NOT EXISTS idx_readings_lookup
     ON readings(mac, section, recorded_at);
+
+CREATE TABLE IF NOT EXISTS meta (
+    key TEXT PRIMARY KEY,
+    value TEXT
+);
 """
 
 
@@ -63,27 +68,114 @@ def _now():
     return datetime.now(timezone.utc).isoformat()
 
 
+# Le schéma n'est créé qu'une fois par processus (idempotent et peu coûteux).
+_schema_ready = False
+
+
 def connect():
-    """Ouvre une connexion SQLite (dossier data/ créé au besoin)."""
+    """
+    Ouvre une connexion SQLite. Crée le dossier ``data/`` et le schéma au
+    besoin : la base se crée donc proprement dès la première utilisation,
+    y compris après une installation neuve (aucun fichier au départ).
+    """
+
+    global _schema_ready
 
     DATA_DIR.mkdir(parents=True, exist_ok=True)
     connection = sqlite3.connect(DB_PATH)
     connection.row_factory = sqlite3.Row
     connection.execute("PRAGMA foreign_keys = ON")
+
+    if not _schema_ready:
+        connection.executescript(SCHEMA)
+        connection.commit()
+        _schema_ready = True
+
     return connection
 
 
-def init_db():
-    """Crée le schéma et migre les anciens JSON si nécessaire."""
+def get_meta(key):
+    """Retourne une valeur méta, ou None."""
 
     with connect() as connection:
-        connection.executescript(SCHEMA)
-        count = connection.execute(
+        row = connection.execute(
+            "SELECT value FROM meta WHERE key = ?", (key,)
+        ).fetchone()
+    return row["value"] if row else None
+
+
+def set_meta(key, value):
+    """Enregistre une valeur méta."""
+
+    with connect() as connection:
+        connection.execute(
+            "INSERT OR REPLACE INTO meta (key, value) VALUES (?, ?)",
+            (key, value),
+        )
+        connection.commit()
+
+
+def init_db():
+    """
+    Initialise la base : garantit le schéma (créé à la première connexion)
+    et migre les anciens fichiers JSON **une seule fois** (marqueur ``meta``).
+
+    La migration est idempotente et additive : elle n'ajoute que ce qui
+    manque (déduplication par MAC et par date), sans écraser les métadonnées
+    déjà présentes. Le marqueur évite qu'une remise à zéro ne réimporte les
+    anciens JSON.
+    """
+
+    # La connexion crée le schéma.
+    with connect():
+        pass
+
+    if get_meta("json_migrated") != "1":
+        migrate_from_json()
+        set_meta("json_migrated", "1")
+
+
+def reset_database():
+    """
+    Vide entièrement la base (cartes + lectures), sans réimporter les anciens
+    JSON. Le schéma et le marqueur de migration sont conservés.
+    """
+
+    with connect() as connection:
+        connection.execute("DELETE FROM readings")
+        connection.execute("DELETE FROM devices")
+        connection.commit()
+
+    return {"status": "ok", "message": "Base remise à zéro."}
+
+
+def verify_database():
+    """Vérifie l'intégrité de la base et retourne des statistiques."""
+
+    with connect() as connection:
+        integrity = connection.execute(
+            "PRAGMA integrity_check"
+        ).fetchone()[0]
+        devices = connection.execute(
             "SELECT COUNT(*) FROM devices"
         ).fetchone()[0]
+        rows = connection.execute(
+            "SELECT section, COUNT(*) AS n FROM readings GROUP BY section"
+        ).fetchall()
 
-    if count == 0:
-        migrate_from_json()
+    by_section = {row["section"]: row["n"] for row in rows}
+    size = DB_PATH.stat().st_size if DB_PATH.exists() else 0
+
+    return {
+        "status": "ok",
+        "integrity": integrity,
+        "healthy": integrity == "ok",
+        "devices": devices,
+        "readings_by_section": by_section,
+        "readings_total": sum(by_section.values()),
+        "db_path": str(DB_PATH),
+        "db_size_bytes": size,
+    }
 
 
 # --- Cartes ---------------------------------------------------------------
@@ -374,8 +466,131 @@ def get_device_dossier(mac):
 
 # --- Migration ------------------------------------------------------------
 
+def export_all():
+    """
+    Exporte l'intégralité de la base (cartes + lectures) en dictionnaire
+    JSON lisible et portable, pour changer de poste ou sauvegarder.
+    """
+
+    with connect() as connection:
+        device_rows = connection.execute("SELECT * FROM devices").fetchall()
+        reading_rows = connection.execute(
+            "SELECT mac, section, recorded_at, port, payload FROM readings"
+        ).fetchall()
+
+    def _parse(text):
+        try:
+            return json.loads(text) if text else None
+        except (TypeError, json.JSONDecodeError):
+            return None
+
+    devices = []
+    for row in device_rows:
+        devices.append({
+            "mac": row["mac"],
+            "name": row["name"],
+            "location": row["location"],
+            "note": row["note"],
+            "first_seen": row["first_seen"],
+            "last_seen": row["last_seen"],
+            "port": row["port"],
+            "identification": _parse(row["identification"]),
+        })
+
+    readings = []
+    for row in reading_rows:
+        readings.append({
+            "mac": row["mac"],
+            "section": row["section"],
+            "recorded_at": row["recorded_at"],
+            "port": row["port"],
+            "payload": _parse(row["payload"]),
+        })
+
+    return {
+        "format": "esp32lab-export",
+        "version": 1,
+        "exported_at": _now(),
+        "devices": devices,
+        "readings": readings,
+    }
+
+
+def import_data(payload):
+    """
+    Importe un export (fusion additive, sans écraser les métadonnées ni
+    dupliquer les lectures). Retourne le nombre d'éléments ajoutés.
+    """
+
+    if not isinstance(payload, dict) or payload.get("format") != "esp32lab-export":
+        raise ValueError("Fichier d'import invalide (format inattendu).")
+
+    devices_added = 0
+    with connect() as connection:
+        for device in payload.get("devices", []):
+            mac = (device.get("mac") or "").lower()
+            if not mac:
+                continue
+            identification = device.get("identification")
+            cursor = connection.execute(
+                """
+                INSERT OR IGNORE INTO devices
+                    (mac, name, location, note, first_seen, last_seen, port,
+                     identification)
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+                """,
+                (
+                    mac,
+                    device.get("name", ""),
+                    device.get("location", ""),
+                    device.get("note", ""),
+                    device.get("first_seen"),
+                    device.get("last_seen"),
+                    device.get("port"),
+                    json.dumps(identification, ensure_ascii=False)
+                    if identification is not None else None,
+                ),
+            )
+            devices_added += cursor.rowcount
+        connection.commit()
+
+    readings_added = 0
+    for reading in payload.get("readings", []):
+        mac = (reading.get("mac") or "").lower()
+        section = reading.get("section")
+        recorded_at = reading.get("recorded_at")
+        if not mac or not section or not recorded_at:
+            continue
+        if _reading_exists(mac, section, recorded_at):
+            continue
+        save_reading(
+            mac, section, reading.get("payload"),
+            port=reading.get("port"), recorded_at=recorded_at,
+        )
+        readings_added += 1
+
+    return {"devices_added": devices_added, "readings_added": readings_added}
+
+
+def _reading_exists(mac, section, recorded_at):
+    """Indique si une lecture identique existe déjà (déduplication)."""
+
+    with connect() as connection:
+        row = connection.execute(
+            """
+            SELECT 1 FROM readings
+            WHERE mac = ? AND section = ? AND recorded_at = ? LIMIT 1
+            """,
+            (mac.lower(), section, recorded_at),
+        ).fetchone()
+    return row is not None
+
+
 def migrate_from_json():
-    """Importe les anciens fichiers JSON dans la base (une seule fois)."""
+    """
+    Importe les anciens fichiers JSON dans la base, de façon idempotente :
+    on n'ajoute que ce qui manque, sans écraser les métadonnées existantes.
+    """
 
     registry_file = DATA_DIR / "device_registry.json"
     history_file = DATA_DIR / "inventory_history.json"
@@ -394,9 +609,10 @@ def migrate_from_json():
                 if field in entry
             }
             with connect() as connection:
+                # INSERT OR IGNORE : ne pas écraser un nom/une note déjà édités.
                 connection.execute(
                     """
-                    INSERT OR REPLACE INTO devices
+                    INSERT OR IGNORE INTO devices
                         (mac, name, location, note, last_seen, identification)
                     VALUES (?, ?, ?, ?, ?, ?)
                     """,
@@ -421,12 +637,15 @@ def migrate_from_json():
             inventory = entry.get("inventory", {})
             identification = inventory.get("identification", {})
             mac = (identification.get("mac") or "").lower()
-            if not mac:
+            recorded_at = entry.get("recorded_at")
+            if not mac or not recorded_at:
+                continue
+            if _reading_exists(mac, "inventory", recorded_at):
                 continue
             save_reading(
                 mac,
                 "inventory",
                 inventory,
                 port=inventory.get("port"),
-                recorded_at=entry.get("recorded_at"),
+                recorded_at=recorded_at,
             )

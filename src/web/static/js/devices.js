@@ -75,6 +75,10 @@ async function loadDevices() {
         button.disabled = false;
         button.textContent = "Actualiser les cartes";
     }
+
+    if (typeof populateCompareSelectors === "function") {
+        populateCompareSelectors();
+    }
 }
 
 /* Ouvre la modale de comparaison des scans d'une même carte. Réutilise la

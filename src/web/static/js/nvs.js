@@ -22,40 +22,102 @@ async function loadNvsAnalysis() {
 
     try {
         const result = await apiGet("/api/nvs");
-        const report = result.report || {};
-        const pages = report.pages || [];
-
-        const writtenEntries = pages.flatMap(page =>
-            (page.entries || [])
-                .filter(entry => entry.state
-                    && entry.state.name === "written" && entry.decoded)
-                .map(entry => entry.decoded)
-        );
-
-        // Liste ordonnée de tous les slots décodés (avec raw_hex), nécessaire
-        // pour reconstituer les valeurs multi-slots (SSID stockés en blob).
-        const orderedDecoded = pages.flatMap(page =>
-            (page.entries || []).map(entry => entry.decoded || {})
-        );
-
-        container.innerHTML =
-            renderNvsSummary(writtenEntries, orderedDecoded) +
-            renderNvsMeta(report) +
-            renderNvsPages(pages) +
-            "<h3>Détail des entrées NVS</h3>" +
-            renderNvsDetails(pages) +
-            renderNvsLimitations(report);
-
-        container.querySelectorAll("details").forEach(detail => {
-            detail.open = false;
-        });
+        renderNvsReport(result.report || {});
     } catch (error) {
-        container.innerHTML =
-            `<div class="empty">${escapeHtml(error.message)}</div>`;
+        // Rapport indisponible : on déclenche une analyse live si un port
+        // est sélectionné, sinon on l'indique.
+        if (portSelect.value) {
+            container.innerHTML =
+                '<div class="empty">Aucun rapport enregistré — analyse de ' +
+                'la carte en cours...</div>';
+            await triggerNvsAnalysis();
+        } else {
+            container.innerHTML =
+                `<div class="empty">${escapeHtml(error.message)} ` +
+                'Sélectionne un port (onglet Général) puis « Analyser la NVS ' +
+                'de la carte ».</div>';
+        }
     } finally {
         button.disabled = false;
         button.textContent = "Actualiser l'analyse NVS";
     }
+}
+
+/** Lit la NVS de la carte connectée et affiche le rapport (lecture seule). */
+async function triggerNvsAnalysis() {
+    const button = document.getElementById("nvs-analyze-button");
+    const container = document.getElementById("nvs-content");
+
+    const selectedPort = portSelect.value;
+    if (!selectedPort) {
+        setStatus("Sélectionne un port série (onglet Général).", true);
+        return;
+    }
+
+    const chip = currentInventory && currentInventory.identification
+        && currentInventory.identification.chip_family;
+    const mac = currentInventory && currentInventory.identification
+        && currentInventory.identification.mac;
+
+    if (button) {
+        button.disabled = true;
+        button.textContent = "Analyse en cours...";
+    }
+    container.innerHTML =
+        '<div class="empty">Lecture de la partition NVS sur la carte ' +
+        '(lecture seule)...</div>';
+
+    try {
+        let url = "/api/nvs/analyze?port=" + encodeURIComponent(selectedPort);
+        if (chip) {
+            url += "&chip=" + encodeURIComponent(chip);
+        }
+        if (mac) {
+            url += "&mac=" + encodeURIComponent(mac);
+        }
+
+        const result = await apiPost(url);
+        renderNvsReport(result.report || {});
+        setStatus("Analyse NVS générée depuis la carte.");
+    } catch (error) {
+        container.innerHTML =
+            `<div class="empty">${escapeHtml(error.message)}</div>`;
+        setStatus("Analyse NVS impossible : " + error.message, true);
+    } finally {
+        if (button) {
+            button.disabled = false;
+            button.textContent = "Analyser la NVS de la carte";
+        }
+    }
+}
+
+/** Rend un rapport NVS complet dans le conteneur dédié. */
+function renderNvsReport(report) {
+    const container = document.getElementById("nvs-content");
+    const pages = report.pages || [];
+
+    const writtenEntries = pages.flatMap(page =>
+        (page.entries || [])
+            .filter(entry => entry.state
+                && entry.state.name === "written" && entry.decoded)
+            .map(entry => entry.decoded)
+    );
+
+    const orderedDecoded = pages.flatMap(page =>
+        (page.entries || []).map(entry => entry.decoded || {})
+    );
+
+    container.innerHTML =
+        renderNvsSummary(writtenEntries, orderedDecoded) +
+        renderNvsMeta(report) +
+        renderNvsPages(pages) +
+        "<h3>Détail des entrées NVS</h3>" +
+        renderNvsDetails(pages) +
+        renderNvsLimitations(report);
+
+    container.querySelectorAll("details").forEach(detail => {
+        detail.open = false;
+    });
 }
 
 /**
