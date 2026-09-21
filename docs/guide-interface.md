@@ -66,6 +66,13 @@ Un tableau de bord de l'état de sécurité, avec un badge Activé/Désactivé :
 - **Version sécurisée** - compteur anti-rollback ;
 - **Clés provisionnées** - emplacements de clés utilisés.
 
+### Bilan de sécurité
+Sous le tableau de bord, un **bilan** transforme ces indicateurs en checklist
+lisible : une **posture globale** (Développement / Durcissement partiel / Durcie),
+et pour chaque protection son état, une explication et un **conseil « en
+production »**. Le ton est volontairement **non alarmiste** : sur une carte de
+développement, une protection désactivée est normale, pas une erreur.
+
 ### Identité du silicium
 Révision exacte, version de package, capacités PSRAM/Flash gravées, calibration
 de température, et surtout l'**identifiant unique 128 bits** de la puce.
@@ -261,6 +268,9 @@ emplacement, dernière détection, **nombre de scans**, et actions :
   seulement à partir de 2 scans).
 - **Supprimer** - retire **définitivement** la carte et toutes ses lectures de
   la base (une confirmation est demandée).
+- **Rapport** - ouvre un **rapport HTML autonome** de la carte (identité, bilan
+  de sécurité, Flash/SFDP, partitions, structure NVS, GPIO, firmware). Hors
+  ligne, **sans aucun secret**, à enregistrer et partager.
 
 #### Suivi des secrets (détection de changement)
 Dans la fenêtre **Détails**, le bouton **Suivi des secrets** compare, entre les

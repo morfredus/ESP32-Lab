@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.10.0-blue)
+![Version](https://img.shields.io/badge/version-0.11.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-102%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-111%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -62,6 +62,10 @@ connecté, et conserver un historique des diagnostics.
   `esp_app_desc` (nom du projet, version, version ESP-IDF, date de compilation,
   anti-rollback, sha256 de l'ELF) et état OTA via `otadata` (slot sélectionné au
   démarrage, état de chaque entrée)
+- **Bilan de sécurité** : les indicateurs eFuse deviennent une checklist honnête
+  et non alarmiste (posture, conseil par item)
+- **Rapport exportable par carte** : une page HTML autonome, hors ligne, sans
+  secret, regroupant tout le dossier, prête à partager
 - **Compatible morfSystem** : s'annonce via morfBeacon (heartbeat UDP) avec les
   endpoints `/healthz` et `/status` - découvrable par morfMonitor
 - Export CSV
@@ -144,6 +148,7 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 | POST    | `/api/flash?port=…`         | Lit le SFDP et l'ID unique de la Flash (lecture seule) |
 | POST    | `/api/nvs/analyze?port=…`   | Lit et analyse la partition NVS (lecture seule) |
 | POST    | `/api/firmware?port=…`      | Identité firmware + état OTA (lecture seule) |
+| GET     | `/api/report?mac=…`         | Rapport HTML autonome d'une carte        |
 | GET     | `/api/db/export`            | Exporte toute la base (JSON portable)    |
 | GET     | `/api/db/verify`            | Vérifie l'intégrité et les statistiques  |
 | POST    | `/api/db/import`            | Importe/fusionne un export de base       |

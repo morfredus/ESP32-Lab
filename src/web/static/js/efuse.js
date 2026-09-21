@@ -232,12 +232,48 @@ function renderEfuseCategories(report) {
     }).join("");
 }
 
+function renderEfuseAssessment(assessment) {
+    if (!assessment) {
+        return `<p class="note">Relancez une lecture des eFuses pour afficher
+            le bilan de sécurité.</p>`;
+    }
+
+    const rows = assessment.items.map(item => `
+        <tr>
+            <td>${escapeHtml(item.label)}</td>
+            <td>${securityBadge(item.status, "Activé", "Non activé")}</td>
+            <td>${escapeHtml(item.summary)}</td>
+            <td class="assessment-advice">${escapeHtml(item.advice)}</td>
+        </tr>
+    `).join("");
+
+    return `
+        <h3>Bilan de sécurité</h3>
+        <p class="assessment-posture assessment-${escapeHtml(assessment.posture)}">
+            Posture : <strong>${escapeHtml(assessment.posture_label)}</strong>
+            (${assessment.activated}/${assessment.total} protections actives)
+        </p>
+        <div class="table-container">
+            <table>
+                <thead><tr>
+                    <th>Protection</th><th>État</th><th>Description</th>
+                    <th>Conseil</th>
+                </tr></thead>
+                <tbody>${rows}</tbody>
+            </table>
+        </div>
+    `;
+}
+
 function renderEfuses(report) {
     const container = document.getElementById("efuse-content");
 
     container.innerHTML = `
         <div class="panel">
             ${renderEfuseSecurity(report.security || {})}
+        </div>
+        <div class="panel">
+            ${renderEfuseAssessment(report.assessment)}
         </div>
         <div class="panel">
             ${renderEfuseIdentity(report.identity || {})}

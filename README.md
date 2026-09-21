@@ -2,9 +2,9 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.10.0-blue)
+![Version](https://img.shields.io/badge/version-0.11.0-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-102%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-111%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/hardware-read%20only-success)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
@@ -62,6 +62,10 @@ connected ESP32, and keep a history of the diagnostics.
 - **Firmware & OTA** (read-only): per-app identity from `esp_app_desc`
   (project name, version, ESP-IDF version, build date, anti-rollback, ELF
   sha256) and OTA state from `otadata` (boot-selected slot, per-entry state)
+- **Security assessment**: eFuse security flags turned into an honest,
+  non-alarmist checklist (posture, per-item advice)
+- **Exportable per-board report**: a standalone, offline, secret-free HTML page
+  bundling the whole dossier, ready to share
 - **morfSystem-ready**: announces itself via morfBeacon (UDP heartbeat) with
   `/healthz` and `/status` endpoints - discoverable by morfMonitor
 - CSV export
@@ -144,6 +148,7 @@ See [`docs/architecture.md`](docs/architecture.md) for details (in French).
 | POST   | `/api/flash?port=…`         | Read the SFDP and Flash unique ID (read-only) |
 | POST   | `/api/nvs/analyze?port=…`   | Read and analyse the NVS partition (read-only) |
 | POST   | `/api/firmware?port=…`      | Read firmware identity + OTA state (read-only) |
+| GET    | `/api/report?mac=…`         | Standalone HTML report for a board       |
 | GET    | `/api/db/export`            | Export the whole database (portable JSON) |
 | GET    | `/api/db/verify`            | Check integrity and statistics           |
 | POST   | `/api/db/import`            | Import/merge a database export           |

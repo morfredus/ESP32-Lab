@@ -867,3 +867,28 @@ input[type="checkbox"] {
     color: #64748b;
     font-weight: normal;
 }
+
+/* --- Bilan de sécurité --------------------------------------------------- */
+
+.assessment-posture {
+    display: inline-block;
+    padding: 8px 12px;
+    border-radius: 8px;
+    background: #eef2f7;
+    margin: 8px 0 12px;
+}
+
+.assessment-hardened {
+    background: #d1fadf;
+    color: #027a48;
+}
+
+.assessment-partial {
+    background: #fef0c7;
+    color: #b54708;
+}
+
+.assessment-advice {
+    color: #64748b;
+    font-size: 13px;
+}

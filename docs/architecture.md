@@ -33,6 +33,8 @@ src/
 │   ├── esp32_flash_sfdp.py      Lit le SFDP (JESD216) + ID unique de la Flash
 │   ├── esp32_nvs.py             Lit + analyse la partition NVS (à la demande)
 │   ├── esp32_firmware.py        Identité firmware (esp_app_desc) + état OTA
+│   ├── security_posture.py      Bilan de sécurité (posture eFuse -> checklist)
+│   ├── report.py                Rapport HTML autonome par carte
 │   ├── esp32_gpio.py            Cartographie GPIO (niveau puce, par famille)
 │   ├── espressif_dataset.py     Base de références Espressif locale (offline)
 │   ├── database.py              Base SQLite : cartes + toutes les lectures
@@ -137,6 +139,8 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 | `test_gpio.py`                   | Cartographie GPIO (comptes, strapping, ADC, statuts). |
 | `test_boards.py`                 | Profils de cartes, exposition GPIO, garde-fou Octal. |
 | `test_firmware.py`               | Parsing esp_app_desc, otadata, slot de boot. |
+| `test_security_posture.py`       | Bilan de sécurité (posture, ton non alarmiste). |
+| `test_report.py`                 | Rapport (assemblage, HTML, aucun secret). |
 | `test_espressif_dataset.py`      | Base Espressif locale : seed, intégrité, refresh, sauvegarde. |
 | `test_morfbeacon.py`             | Annonce morfBeacon, endpoints /healthz + /status. |
 | `test_serial_connection.py`      | Connexion série. |
@@ -228,6 +232,19 @@ cache inscriptible `data/espressif/`.
 
 Endpoints associés : `GET /api/gpio?chip=&board=`, `GET /api/espressif/status`,
 `POST /api/espressif/refresh`.
+
+## Bilan de sécurité et rapport
+
+`security_posture.assess_security(security)` transforme la posture eFuse (dict
+produit par `esp32_efuse.build_security_posture`) en checklist notée + posture
+globale. Le résultat est inclus dans la lecture eFuse (`assessment`) et affiché
+dans l'onglet Identité & Sécurité.
+
+`report.build_report(mac)` réassemble le dossier (`database.get_device_dossier`),
+recalcule le bilan, calcule la carte GPIO et récupère le firmware ;
+`render_report_html` produit une page HTML **autonome, hors ligne et sans
+secret** (`GET /api/report?mac=`, servie en `text/html`). Aucune nouvelle table :
+le rapport dérive des lectures déjà assainies.
 
 ### Profils de cartes
 

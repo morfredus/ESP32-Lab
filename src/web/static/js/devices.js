@@ -47,6 +47,10 @@ async function loadDevices() {
                             ${scanCount < 2 ? "disabled title='Au moins 2 scans nécessaires'" : ""}>
                         Comparer les scans
                     </button>
+                    <button class="history-details-button"
+                            onclick="openDeviceReport('${escapeHtml(device.mac)}')">
+                        Rapport
+                    </button>
                     <button class="history-details-button danger-button"
                             onclick="deleteDevice('${escapeHtml(device.mac)}', '${escapeHtml((device.name || "").replace(/'/g, "\\'"))}')">
                         Supprimer
@@ -101,6 +105,11 @@ function compareDeviceScans(mac) {
 
     historyModalSelectedIndexes = new Set();
     showDeviceHistory(mac);
+}
+
+/** Ouvre le rapport HTML autonome d'une carte dans un nouvel onglet. */
+function openDeviceReport(mac) {
+    window.open("/api/report?mac=" + encodeURIComponent(mac), "_blank");
 }
 
 async function deleteDevice(mac, name) {

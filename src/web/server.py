@@ -25,6 +25,7 @@ from core.esp32_gpio import compute_gpio_map
 from core.esp32_inventory import create_inventory, save_inventory
 from core.esp32_nvs import read_and_analyze_nvs
 from core.esp32_partitions import read_partition_table
+from core.report import build_report, render_report_html
 from core.secret_redaction import (
     sanitize_efuse_for_storage,
     sanitize_nvs_for_storage,
@@ -288,6 +289,20 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
 
         if path == "/api/espressif/status":
             self.send_json(espressif_dataset.dataset_status())
+            return
+
+        if path == "/api/report":
+            mac = query.get("mac", [None])[0]
+            report = build_report(mac) if mac else None
+            html_page = render_report_html(report)
+            payload = html_page.encode("utf-8")
+
+            self.send_response(200 if report else 404)
+            self.send_header("Content-Type", "text/html; charset=utf-8")
+            self.send_header("Content-Length", str(len(payload)))
+            self.send_header("Cache-Control", "no-store")
+            self.end_headers()
+            self.wfile.write(payload)
             return
 
         if path == "/api/db/export":
@@ -606,6 +621,8 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                      "summary": "détection de changement de secrets"},
                     {"method": "GET", "path": "/api/db/export",
                      "summary": "export de la base"},
+                    {"method": "GET", "path": "/api/report",
+                     "summary": "rapport HTML d'une carte"},
                     {"method": "GET", "path": "/api/gpio",
                      "summary": "cartographie GPIO calculée"},
                     {"method": "GET", "path": "/api/boards",

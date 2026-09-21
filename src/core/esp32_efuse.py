@@ -206,11 +206,16 @@ def group_by_category(efuses):
 def build_efuse_report(efuses):
     """Construit le rapport eFuse complet destiné à l'interface."""
 
+    from core.security_posture import assess_security
+
+    security = build_security_posture(efuses)
+
     return {
         "status": "ok",
         "count": len(efuses),
         "identity": build_identity(efuses),
-        "security": build_security_posture(efuses),
+        "security": security,
+        "assessment": assess_security(security),
         "category_labels": CATEGORY_LABELS,
         "categories": group_by_category(efuses),
     }

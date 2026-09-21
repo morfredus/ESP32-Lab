@@ -9,6 +9,30 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.11.0] - 2026-09-22
+
+Bilan de securite et rapport exportable par carte.
+
+### Ajoute
+- **Bilan de securite** (onglet Identite & Securite). Les indicateurs eFuse
+  (Secure Boot, chiffrement Flash, USB-JTAG, mode download, telechargement
+  securise, anti-rollback, cles) deviennent une checklist notee, avec une
+  posture globale (developpement / partielle / durcie), une explication et un
+  conseil « en production » par item. Ton **non alarmiste** : sur une carte de
+  developpement, une protection desactivee est normale (niveau info).
+- **Rapport exportable** par carte (bouton « Rapport » dans l'Inventaire,
+  `GET /api/report?mac=`). Page HTML **autonome, hors ligne, sans secret**
+  regroupant identite, bilan de securite, Flash/SFDP, partitions, structure NVS,
+  cartographie GPIO et firmware. A ouvrir, enregistrer et partager.
+- **Export PDF** du rapport : bouton « Telecharger en PDF » (impression
+  navigateur) et feuille de style d'impression dediee (mise en page soignee,
+  couleurs conservees, en-tetes de tableaux repetes). Aucune dependance ajoutee.
+
+### Modules
+- `security_posture.py` (logique du bilan, testee) et `report.py` (assemblage +
+  rendu HTML), reutilisant `get_device_dossier`, `assess_security` et
+  `compute_gpio_map`.
+
 ## [0.10.0] - 2026-09-22
 
 Familles GPIO supplementaires, variante PSRAM Octal et vouvoiement de l'interface.
