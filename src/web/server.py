@@ -10,6 +10,7 @@ from urllib.parse import parse_qs, urlparse
 
 from core import database, morfbeacon
 from core.comparison import compare_devices
+from core.secret_changes import detect_changes
 from core.device_registry import (
     get_device,
     get_devices,
@@ -252,6 +253,14 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             self.send_json(result, status=status)
             return
 
+        if path == "/api/db/changes":
+            mac = query.get("mac", [None])[0]
+            result = detect_changes(mac)
+
+            status = 200 if result.get("status") == "ok" else 404
+            self.send_json(result, status=status)
+            return
+
         if path == "/api/db/export":
             self.send_json(database.export_all())
             return
@@ -473,6 +482,8 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                      "summary": "registre des cartes"},
                     {"method": "GET", "path": "/api/db/compare",
                      "summary": "comparaison de deux cartes"},
+                    {"method": "GET", "path": "/api/db/changes",
+                     "summary": "détection de changement de secrets"},
                     {"method": "GET", "path": "/api/db/export",
                      "summary": "export de la base"},
                     {"method": "POST", "path": "/api/inventory/refresh",

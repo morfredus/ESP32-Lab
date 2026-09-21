@@ -2,9 +2,9 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.6.0-blue)
+![Version](https://img.shields.io/badge/version-0.6.1-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-46%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-54%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/hardware-read%20only-success)
 ![Status](https://img.shields.io/badge/status-in%20development-yellow)
@@ -42,6 +42,8 @@ connected ESP32, and keep a history of the diagnostics.
 - **SQLite database** storing every reading per board
 - **No secrets stored**: Wi-Fi passwords and eFuse keys are never written to the
   database (an HMAC-SHA-256 fingerprint tracks changes without keeping the secret)
+- **Secret change detection**: compares the HMAC fingerprints of a same key
+  between two scans to flag a changed secret — without ever storing it
 - Registry of known boards (name, location, note per MAC address)
 - Inventory history, **two-scan comparison** and
   **full comparison between two different boards**
@@ -114,6 +116,7 @@ See [`docs/architecture.md`](docs/architecture.md) for details (in French).
 | GET    | `/api/db/device?mac=…`      | A board's full dossier (database)        |
 | GET    | `/api/db/reading?mac=…&section=…` | Latest reading of a section for a board |
 | GET    | `/api/db/compare?mac_a=…&mac_b=…` | Comparison of two boards           |
+| GET    | `/api/db/changes?mac=…`     | Secret change detection (HMAC fingerprints) |
 | GET    | `/api/nvs`                  | Last NVS analysis report                 |
 | POST   | `/api/inventory/refresh?port=…` | Scan the board and update            |
 | POST   | `/api/partitions?port=…`    | Read the partition table (read-only)     |

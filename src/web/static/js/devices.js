@@ -171,7 +171,12 @@ function showDeviceDetails(mac) {
                     ${entries.length < 2 ? "disabled title='Au moins 2 scans nécessaires'" : ""}>
                 Comparer les scans
             </button>
+            <button class="history-details-button"
+                    onclick="detectSecretChanges('${escapeHtml(mac)}')">
+                Suivi des secrets
+            </button>
         </p>
+        <div id="secret-changes-content"></div>
     `;
 
     modal.style.display = "block";

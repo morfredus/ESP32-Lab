@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.6.0-blue)
+![Version](https://img.shields.io/badge/version-0.6.1-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-46%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-54%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -41,6 +41,8 @@ connecté, et conserver un historique des diagnostics.
 - **Base de données SQLite** conservant toutes les lectures par carte
 - **Aucun secret en base** : mots de passe Wi-Fi et clés eFuse jamais stockés
   (une empreinte HMAC-SHA-256 détecte les changements sans garder le secret)
+- **Détection de changement de secrets** : compare les empreintes HMAC d'une
+  même clé entre deux scans pour signaler un secret modifié — sans jamais le stocker
 - Registre des cartes connues (nom, emplacement, note par adresse MAC)
 - Historique des inventaires, **comparaison de deux scans** et
   **comparaison complète de deux cartes différentes**
@@ -113,6 +115,7 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 | GET     | `/api/db/device?mac=…`      | Dossier complet d'une carte (base)       |
 | GET     | `/api/db/reading?mac=…&section=…` | Dernière lecture d'une section pour une carte |
 | GET     | `/api/db/compare?mac_a=…&mac_b=…` | Comparaison de deux cartes         |
+| GET     | `/api/db/changes?mac=…`     | Détection de changement de secrets (empreintes HMAC) |
 | GET     | `/api/nvs`                  | Dernier rapport d'analyse NVS            |
 | POST    | `/api/inventory/refresh?port=…` | Scanne la carte et met à jour        |
 | POST    | `/api/partitions?port=…`    | Lit la table de partitions (lecture seule) |

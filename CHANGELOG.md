@@ -9,6 +9,25 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.6.1] - 2026-09-21
+
+Détection de changement de secrets, par empreinte HMAC, entre deux scans.
+
+### Ajouté
+- **Suivi des secrets** : comparaison des empreintes HMAC d'une même clé
+  (entrée NVS sensible ou bloc eFuse provisionné) entre les **deux dernières
+  analyses** d'une carte, pour signaler qu'un secret a **changé** sans jamais
+  le stocker. Verdicts : inchangé, changé, nouveau, disparu, et
+  **indéterminable** lorsque les deux empreintes proviennent de clés
+  d'installation différentes (scans faits sur deux postes). Module
+  `core/secret_changes.py`, endpoint `GET /api/db/changes?mac=…`.
+- Bouton **« Suivi des secrets »** dans la fiche détaillée d'une carte.
+- Tests `test_secret_changes.py` (inchangé / changé / nouveau / disparu /
+  indéterminable, extraction des empreintes NVS et eFuse).
+
+### Modifié
+- `VERSION` → 0.6.1.
+
 ## [0.6.0] - 2026-09-21
 
 ESP32-Lab rejoint le langage commun morfSystem (morfBeacon).

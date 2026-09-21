@@ -213,6 +213,89 @@ function capturedBadges(captured) {
     }).join(" ");
 }
 
+/* --- Détection de changement de secrets (empreintes HMAC) ----------------- */
+
+const SECRET_STATUS = {
+    changed: { label: "Changé", cls: "different" },
+    added: { label: "Nouveau", cls: "different" },
+    removed: { label: "Disparu", cls: "different" },
+    indeterminable: { label: "Indéterminable", cls: "" },
+    unchanged: { label: "Inchangé", cls: "same" }
+};
+
+async function detectSecretChanges(mac) {
+    const container = document.getElementById("secret-changes-content");
+    if (!container) {
+        return;
+    }
+    container.innerHTML = '<div class="empty">Analyse des empreintes...</div>';
+
+    try {
+        const result = await apiGet(
+            "/api/db/changes?mac=" + encodeURIComponent(mac));
+        renderSecretChanges(result, container);
+    } catch (error) {
+        container.innerHTML =
+            `<div class="empty">${escapeHtml(error.message)}</div>`;
+    }
+}
+
+function renderSecretChanges(result, container) {
+    const sections = (result.sections || []).map(section => {
+        if (!section.available) {
+            return `
+                <h3>${escapeHtml(section.label)}</h3>
+                <div class="empty">${escapeHtml(section.message)}</div>`;
+        }
+
+        if (section.changes.length === 0) {
+            return `
+                <h3>${escapeHtml(section.label)}</h3>
+                <div class="empty">Aucun secret suivi sur cette carte.</div>`;
+        }
+
+        const rows = section.changes.map(change => {
+            const meta = SECRET_STATUS[change.status]
+                || { label: change.status, cls: "" };
+            return `
+                <tr class="${meta.cls ? "row-" + meta.cls : ""}">
+                    <td>${escapeHtml(change.key)}</td>
+                    <td class="${meta.cls}">${escapeHtml(meta.label)}</td>
+                </tr>`;
+        }).join("");
+
+        return `
+            <h3>${escapeHtml(section.label)}
+                <small>${escapeHtml(formatDateTime(section.old.recorded_at))}
+                → ${escapeHtml(formatDateTime(section.new.recorded_at))}</small>
+            </h3>
+            <table class="comparison-table">
+                <thead><tr><th>Secret (clé)</th><th>État</th></tr></thead>
+                <tbody>${rows}</tbody>
+            </table>`;
+    }).join("");
+
+    const totals = result.totals || {};
+    const alert = (totals.changed || 0) + (totals.added || 0)
+        + (totals.removed || 0);
+    const banner = alert > 0
+        ? `<span class="comparison-count-different">${alert} changement(s) détecté(s)</span>`
+        : `<span class="comparison-count-same">Aucun changement de secret</span>`;
+
+    container.innerHTML = `
+        <div class="comparison-summary" style="margin-top:12px;">
+            <strong>Suivi des secrets — ${escapeHtml(result.name)}</strong>
+            <div class="comparison-counts">${banner}</div>
+            <p class="selection-info" style="margin-top:8px;">
+                Comparaison des deux dernières analyses, par empreinte HMAC.
+                Les secrets ne sont jamais stockés ; seule l'empreinte permet
+                de repérer un changement.
+            </p>
+        </div>
+        ${sections}
+    `;
+}
+
 function renderCardComparison(result) {
     const container = document.getElementById("compare-cards-content");
 

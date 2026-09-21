@@ -34,6 +34,7 @@ src/
 │   ├── esp32_nvs.py             Lit + analyse la partition NVS (à la demande)
 │   ├── database.py              Base SQLite : cartes + toutes les lectures
 │   ├── comparison.py            Comparaison riche entre deux cartes
+│   ├── secret_changes.py       Détection de changement de secrets (empreintes)
 │   ├── morfbeacon.py           Annonce morfBeacon (heartbeat UDP 45454)
 │   ├── secret_redaction.py     Caviarde les secrets avant stockage (empreinte)
 │   ├── install_key.py          Clé d'installation + empreintes HMAC-SHA-256
@@ -125,6 +126,8 @@ PYTHONPATH=src .venv/bin/python -m pytest tests/ -q
 | `test_efuse.py`                  | Analyse eFuse, sécurité, MAC dérivées. |
 | `test_flash_sfdp.py`             | Analyse SFDP (JESD216), ID unique Flash. |
 | `test_secret_redaction.py`       | Rédaction des secrets, empreintes HMAC. |
+| `test_secret_changes.py`         | Détection de changement de secrets (empreintes). |
+| `test_morfbeacon.py`             | Annonce morfBeacon, endpoints /healthz + /status. |
 | `test_serial_connection.py`      | Connexion série. |
 
 ## Données générées
