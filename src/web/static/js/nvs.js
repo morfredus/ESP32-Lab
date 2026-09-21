@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESP32-Lab — analyse de la structure NVS
+   ESP32-Lab - analyse de la structure NVS
 
    Toutes les valeurs affichées proviennent du rapport d'analyse réel
    (data/analysis/reports/nvs_structure_analysis.json). Aucune donnée n'est
@@ -45,7 +45,7 @@ async function loadNvsAnalysis() {
             if (portSelect.value) {
                 container.innerHTML =
                     '<div class="empty">Aucune analyse NVS en base pour cette ' +
-                    'carte — lecture de la carte en cours...</div>';
+                    'carte - lecture de la carte en cours...</div>';
                 await triggerNvsAnalysis();
             } else {
                 container.innerHTML =
@@ -62,7 +62,7 @@ async function loadNvsAnalysis() {
     } catch (error) {
         if (portSelect.value) {
             container.innerHTML =
-                '<div class="empty">Aucun rapport enregistré — analyse de ' +
+                '<div class="empty">Aucun rapport enregistré - analyse de ' +
                 'la carte en cours...</div>';
             await triggerNvsAnalysis();
         } else {
@@ -158,13 +158,26 @@ function renderNvsReport(report) {
  * répartie sur plusieurs slots (ex. un SSID Wi-Fi). Retourne null si rien
  * d'exploitable. Le premier slot (32 octets) est l'en-tête : on l'ignore.
  */
+const NVS_REDACTED = "<redacted>";
+const NVS_NOT_STORED = "(non stocké en base)";
+
+/** Une entrée dont le hex a été caviardé (secret non stocké). */
+function nvsIsRedacted(entry) {
+    return Boolean(entry) &&
+        (entry.data_hex === NVS_REDACTED || entry.raw_hex === NVS_REDACTED);
+}
+
 function extractNvsString(ordered, index) {
     const descriptor = ordered[index] || {};
     const span = descriptor.span || 1;
 
     let hex = "";
     for (let j = index; j < index + span && j < ordered.length; j++) {
-        hex += ordered[j].raw_hex || "";
+        const slotHex = ordered[j].raw_hex || "";
+        if (slotHex === NVS_REDACTED) {
+            return null;   // hex non stocké : rien à reconstituer
+        }
+        hex += slotHex;
     }
 
     const bytes = hex.match(/../g) || [];
@@ -200,13 +213,22 @@ function renderNvsSummary(entries, ordered = []) {
         if (!entry) {
             return "Non détecté";
         }
+        if (nvsIsRedacted(entry)) {
+            return NVS_NOT_STORED;
+        }
         return entry.data_hex ? entry.data_hex : "Présent";
     };
 
     /* Valeur lisible décodée selon le type de l'entrée. */
     const human = key => {
         const entry = byKey(key);
-        return entry ? decodeNvsHuman(entry) : "Non détecté";
+        if (!entry) {
+            return "Non détecté";
+        }
+        if (nvsIsRedacted(entry)) {
+            return NVS_NOT_STORED;   // hex caviardé : pas de décodage inventé
+        }
+        return decodeNvsHuman(entry);
     };
 
     /* SSID : reconstitution du texte depuis le blob multi-slots. */

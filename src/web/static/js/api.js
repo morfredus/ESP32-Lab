@@ -1,6 +1,31 @@
 /* ==========================================================================
-   ESP32-Lab — accès à l'API HTTP
+   ESP32-Lab - accès à l'API HTTP
    ========================================================================== */
+
+/**
+ * Charge, depuis la base (par MAC de la carte affichée), la dernière lecture
+ * d'une section (efuse, sfdp, partitions, nvs, inventory). Renvoie l'objet
+ * reading, ou null si rien en base. Lève une erreur explicite si aucune carte
+ * n'est identifiée. Permet de réafficher ces données sur un autre poste, sans
+ * la carte branchée.
+ */
+async function loadStoredReading(section) {
+    const mac = currentInventory && currentInventory.identification
+        && currentInventory.identification.mac;
+
+    if (!mac) {
+        throw new Error(
+            "Aucune carte identifiée. Affiche d'abord une carte (onglet " +
+            "Général : « Actualiser les ports » ou « Scanner la carte »)."
+        );
+    }
+
+    const result = await apiGet(
+        "/api/db/reading?mac=" + encodeURIComponent(mac) +
+        "&section=" + encodeURIComponent(section)
+    );
+    return result.reading || null;
+}
 
 /** GET JSON. Lève une erreur si la réponse n'est pas OK. */
 async function apiGet(path) {

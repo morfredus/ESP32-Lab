@@ -233,7 +233,13 @@ async function saveDeviceProfile() {
     try {
         await apiPost("/api/device/update", { mac, name, location, note });
         setStatus("Fiche de la carte enregistrée.");
+        // Mise à jour en direct (sans recharger la page) : registre des cartes,
+        // historique, et fiche affichée dans Général.
         await loadDevices();
+        await loadHistory();
+        if (currentInventory) {
+            await renderInventoryCards(currentInventory);
+        }
     } catch (error) {
         setStatus(error.message, true);
     } finally {

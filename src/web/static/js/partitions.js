@@ -1,6 +1,38 @@
 /* ==========================================================================
-   ESP32-Lab — table de partitions Flash (lecture réelle sur la carte)
+   ESP32-Lab - table de partitions Flash (lecture réelle sur la carte)
    ========================================================================== */
+
+/** Recharge la table de partitions depuis la base, par MAC affichée. */
+async function loadPartitionsFromDb() {
+    const button = document.getElementById("partitions-db-button");
+    const container = document.getElementById("partitions-content");
+
+    button.disabled = true;
+    button.textContent = "Chargement...";
+
+    try {
+        const reading = await loadStoredReading("partitions");
+        if (reading && reading.payload && reading.payload.partitions) {
+            renderPartitions(reading.payload.partitions, currentInventory);
+            setStatus(
+                "Table de partitions chargée depuis la base (lecture du " +
+                formatDateTime(reading.recorded_at) + ")."
+            );
+        } else {
+            container.innerHTML =
+                '<div class="empty">Aucune table de partitions en base pour ' +
+                'cette carte. Branche-la puis clique « Lire la table de ' +
+                'partitions ».</div>';
+        }
+    } catch (error) {
+        container.innerHTML =
+            `<div class="empty">${escapeHtml(error.message)}</div>`;
+        setStatus(error.message, true);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Charger depuis la base";
+    }
+}
 
 /* Couleurs par sous-type de partition. */
 const PARTITION_COLORS = {
@@ -97,7 +129,7 @@ function renderPartitions(partitions, inventory) {
         return `
             <div class="flash-partition-segment"
                  style="width:${width}%;background:${color}"
-                 title="${escapeHtml(part.label)} — ${formatHex(part.offset)} — ${escapeHtml(formatBytes(part.size))}">
+                 title="${escapeHtml(part.label)} - ${formatHex(part.offset)} - ${escapeHtml(formatBytes(part.size))}">
                 <span>${escapeHtml(part.label)}</span>
             </div>
         `;
@@ -122,7 +154,7 @@ function renderPartitions(partitions, inventory) {
 
     container.innerHTML = `
         <p>
-            ${chip ? escapeHtml(chip) + " — " : ""}
+            ${chip ? escapeHtml(chip) + " - " : ""}
             Flash détectée : <strong>${flashMb ? flashMb + " Mo" : "inconnue"}</strong>.
             Table réellement lue sur la carte à l'adresse <code>0x8000</code>.
         </p>

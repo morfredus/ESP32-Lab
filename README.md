@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.6.2-blue)
+![Version](https://img.shields.io/badge/version-0.6.5-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)
@@ -40,17 +40,19 @@ connected ESP32, and keep a history of the diagnostics.
   fast-read modes, and 64-bit unique ID
 - **Real partition table reading** (read-only, at `0x8000`)
 - **Structural NVS analysis** with human-readable value decoding
-- **SQLite database** storing every reading per board
+- **SQLite database** storing every reading per board, with **redisplay from
+  the database** (no board attached) on every section, so an export/import
+  restores and shows everything on another workstation
 - **No secrets stored**: Wi-Fi passwords and eFuse keys are never written to the
   database (an HMAC-SHA-256 fingerprint tracks changes without keeping the secret)
 - **Secret change detection**: compares the HMAC fingerprints of a same key
-  between two scans to flag a changed secret — without ever storing it
+  between two scans to flag a changed secret - without ever storing it
 - Registry of known boards (name, location, note per MAC address)
 - Inventory history, **two-scan comparison** and
   **full comparison between two different boards**
 - **On-demand NVS analysis** (reads the board's NVS partition)
 - **morfSystem-ready**: announces itself via morfBeacon (UDP heartbeat) with
-  `/healthz` and `/status` endpoints — discoverable by morfMonitor
+  `/healthz` and `/status` endpoints - discoverable by morfMonitor
 - CSV export
 - Tab-based web interface
 

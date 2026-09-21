@@ -27,13 +27,13 @@ def _nvs_report():
                 {"entries": [
                     {"index": 0, "decoded": {
                         "key": "sta.ssid", "data_hex": "aa",
-                        "raw_hex": "1111", "span": 1}},
+                        "raw_hex": "1111", "span": 1, "crc_match": True}},
                     {"index": 1, "decoded": {
                         "key": "sta.pswd", "data_hex": "2400ffff",
-                        "raw_hex": "dead", "span": 2}},
+                        "raw_hex": "dead", "span": 2, "crc_match": True}},
                     {"index": 2, "decoded": {
-                        "key": "", "data_hex": "cafe",
-                        "raw_hex": "beef"}},
+                        "key": "un1frgrv", "data_hex": "cafe",
+                        "raw_hex": "beef", "crc_match": False}},
                 ]},
             ],
         },
@@ -54,8 +54,12 @@ def test_nvs_redaction_and_fingerprint():
 
     entries = clone["report"]["pages"][0]["entries"]
 
-    # Le SSID (non sensible) reste intact.
-    assert entries[0]["decoded"]["raw_hex"] == "1111"
+    # Aucun octet brut NVS n'est conservé : tout dump hex est caviardé, même
+    # pour les entrées non sensibles (élimine les copies résiduelles de secrets).
+    assert entries[0]["decoded"]["raw_hex"] == REDACTED
+    assert entries[0]["decoded"]["data_hex"] == REDACTED
+    # La clé d'une entrée valide (CRC OK) reste lisible : c'est de la structure.
+    assert entries[0]["decoded"]["key"] == "sta.ssid"
 
     # Le mot de passe est caviardé, avec empreinte et key_id.
     pswd = entries[1]["decoded"]
@@ -65,8 +69,10 @@ def test_nvs_redaction_and_fingerprint():
     assert len(pswd["fingerprint"]) == 64        # HMAC-SHA-256 hex
     assert "fingerprint_key_id" in pswd
 
-    # Le slot de données du blob (span 2) est aussi caviardé.
+    # Le slot de données (CRC invalide) est caviardé, et sa « clé » (des octets
+    # de secret lus comme une clé) est neutralisée.
     assert entries[2]["decoded"]["raw_hex"] == REDACTED
+    assert entries[2]["decoded"]["key"] == REDACTED
 
 
 def test_original_not_mutated():

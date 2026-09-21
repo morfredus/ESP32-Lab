@@ -4,16 +4,21 @@ L'interface s'organise autour d'une **barre d'outils globale** (toujours
 visible) et de **cinq onglets** : Général · Identité & Sécurité · Analyse NVS ·
 Partitions Flash · Inventaire.
 
+> Les captures d'écran de ce guide utilisent un **jeu de démonstration
+> anonymisé** (noms, adresses MAC et identifiants fictifs).
+
 ## La barre d'outils (toujours visible)
 
 En haut de la page, quel que soit l'onglet :
 
-- **Menu des ports** — sélectionne la carte à interroger.
-- **Actualiser les ports** — relance la détection des ports USB.
-- **Scanner la carte** — interroge la carte sélectionnée et met à jour tout.
-- **Bandeau de statut** — messages de succès (vert) ou d'erreur (rouge).
+- **Menu des ports** - sélectionne la carte à interroger.
+- **Actualiser les ports** - relance la détection des ports USB.
+- **Scanner la carte** - interroge la carte sélectionnée et met à jour tout.
+- **Bandeau de statut** - messages de succès (vert) ou d'erreur (rouge).
 
 ## Onglet Général
+
+![Onglet Général : inventaire matériel en 8 cartes et fiche de la carte](images/01-general.png)
 
 C'est la vue d'ensemble de la carte actuellement connectée.
 
@@ -34,23 +39,32 @@ conservées même après un redémarrage.
 ## Onglet Identité & Sécurité (eFuses)
 
 Les **eFuses** sont des fusibles programmables une seule fois, gravés dans le
-silicium. Ils contiennent les informations les plus profondes de la puce —
+silicium. Ils contiennent les informations les plus profondes de la puce,
 rarement visibles ailleurs. La lecture est **en lecture seule** : aucune eFuse
 n'est modifiée.
 
-Clique sur **Lire les eFuses** (le port doit être sélectionné dans Général).
-La lecture prend une dizaine de secondes. S'affichent :
+![Onglet Identité & Sécurité : posture de sécurité, identité du silicium, MAC universelles](images/02-identite-securite.png)
+
+Deux boutons :
+
+- **Lire les eFuses** (le port doit être sélectionné dans Général) : lecture sur
+  la carte, une dizaine de secondes.
+- **Charger depuis la base** : réaffiche la **dernière lecture enregistrée** de
+  cette carte, **sans la carte branchée** (pratique après un changement de
+  poste).
+
+S'affichent :
 
 ### Sécurité
 Un tableau de bord de l'état de sécurité, avec un badge Activé/Désactivé :
 
-- **Secure Boot** — vérification de signature du firmware au démarrage ;
-- **Chiffrement Flash** — chiffrement du contenu de la Flash ;
-- **USB-JTAG désactivé** — blocage du débogage matériel ;
-- **Mode téléchargement désactivé** — blocage du reflashage ;
+- **Secure Boot** - vérification de signature du firmware au démarrage ;
+- **Chiffrement Flash** - chiffrement du contenu de la Flash ;
+- **USB-JTAG désactivé** - blocage du débogage matériel ;
+- **Mode téléchargement désactivé** - blocage du reflashage ;
 - **Téléchargement sécurisé** ;
-- **Version sécurisée** — compteur anti-rollback ;
-- **Clés provisionnées** — emplacements de clés utilisés.
+- **Version sécurisée** - compteur anti-rollback ;
+- **Clés provisionnées** - emplacements de clés utilisés.
 
 ### Identité du silicium
 Révision exacte, version de package, capacités PSRAM/Flash gravées, calibration
@@ -70,12 +84,14 @@ valeur brute.
 La **NVS** est un petit espace mémoire où l'ESP32 range des réglages
 (identifiants Wi-Fi, compteurs de démarrage, calibration…).
 
+![Onglet Analyse NVS : résumé des données détectées et structure des pages](images/03-analyse-nvs.png)
+
 Deux boutons :
 
-- **Charger l'analyse NVS** — affiche la dernière analyse NVS **de la carte
+- **Charger l'analyse NVS** - affiche la dernière analyse NVS **de la carte
   scannée** (récupérée en base par son adresse MAC) ; si aucune n'existe pour
   cette carte, l'analyse est **déclenchée automatiquement** en lisant la carte.
-- **Analyser la NVS de la carte** — force une nouvelle lecture de la partition
+- **Analyser la NVS de la carte** - force une nouvelle lecture de la partition
   NVS (lecture seule) et régénère le rapport.
 
 L'analyse affiche :
@@ -87,13 +103,18 @@ L'analyse affiche :
 - des informations sur le fichier analysé et ses pages ;
 - le **détail des entrées** (repliable), avec la valeur lisible de chacune.
 
-> ⚠️ L'analyse NVS nécessite un **rapport** préalablement généré
-> (`data/analysis/reports/nvs_structure_analysis.json`). Sans ce fichier, un
-> message « Rapport NVS indisponible » s'affiche : c'est normal.
+> 🔒 **Secrets non stockés.** Pour ne jamais conserver de secret (ni de copie
+> résiduelle), ESP32-Lab n'enregistre **aucun octet brut NVS** en base : seule
+> la structure est gardée. Quand tu **charges depuis la base**, les valeurs
+> décodées (SSID, canal…) apparaissent donc « (non stocké en base) », et les
+> mots de passe « Présent (masqué) ». Une **lecture live** sur la carte
+> (« Analyser la NVS de la carte ») affiche, elle, toutes les valeurs décodées.
 
 ## Onglet Partitions Flash
 
 Cet onglet regroupe deux lectures **réelles** de la puce Flash (lecture seule).
+
+![Onglet Partitions Flash : SFDP, identifiant unique et table de partitions](images/04-partitions-flash.png)
 
 ### Puce Flash (SFDP & identifiant unique)
 Clique sur **Lire les détails de la Flash (SFDP)**. Le SFDP (JESD216) est une
@@ -114,6 +135,10 @@ fichiers…). Cette section lit **réellement** cette organisation sur la carte.
 1. Sélectionne le port (onglet Général).
 2. Clique sur **Lire la table de partitions**.
 
+> Comme pour les eFuses, un bouton **Charger depuis la base** réaffiche la
+> dernière lecture SFDP et la dernière table de partitions enregistrées, **sans
+> la carte branchée**.
+
 La lecture (en **lecture seule**, à l'adresse `0x8000`) affiche :
 
 - une **barre colorée** proportionnelle à la taille de chaque partition ;
@@ -126,14 +151,18 @@ La lecture (en **lecture seule**, à l'adresse `0x8000`) affiche :
 
 Regroupe tout l'historique de tes cartes, en trois sections.
 
+![Onglet Inventaire : registre des cartes, historique et maintenance de la base](images/05-inventaire.png)
+
 ### 1. Cartes enregistrées
 Le **registre** de toutes les cartes déjà vues. Colonnes : nom, MAC, modèle,
 emplacement, dernière détection, **nombre de scans**, et actions :
 
-- **Modifier** — édite la fiche de la carte.
-- **Détails** — ouvre une fenêtre avec toutes les caractéristiques connues.
-- **Comparer les scans** — compare deux scans de **cette même carte** (actif
+- **Modifier** - édite la fiche de la carte.
+- **Détails** - ouvre une fenêtre avec toutes les caractéristiques connues.
+- **Comparer les scans** - compare deux scans de **cette même carte** (actif
   seulement à partir de 2 scans).
+- **Supprimer** - retire **définitivement** la carte et toutes ses lectures de
+  la base (une confirmation est demandée).
 
 Un champ de recherche filtre la liste.
 
@@ -160,23 +189,29 @@ comparaison).
 ### 5. Maintenance de la base de données
 Quatre outils :
 
-- **Exporter la base** — télécharge un fichier JSON portable contenant toutes
+- **Exporter la base** - télécharge un fichier JSON portable contenant toutes
   les cartes et toutes les lectures. Idéal pour sauvegarder ou **changer de
   poste** (l'échange fonctionne y compris entre Windows et Raspberry Pi).
-- **Importer une base** — fusionne un export dans la base actuelle, sans
+- **Importer une base** - fusionne un export dans la base actuelle, sans
   doublon ni écrasement des noms. Le résultat s'affiche dans la section.
-- **Vérifier la base** — contrôle d'intégrité + statistiques (nombre de cartes,
+- **Vérifier la base** - contrôle d'intégrité + statistiques (nombre de cartes,
   de lectures, taille du fichier).
-- **Remettre à zéro** — efface **définitivement** toutes les données (une
+- **Remettre à zéro** - efface **définitivement** toutes les données (une
   confirmation est demandée ; pense à exporter avant).
 
 > **Changer de poste** : l'export/import **et** la copie du fichier
 > `data/esp32lab.db` fonctionnent tous les deux. Aucun des deux ne contient de
-> secret (mots de passe, clés) — ils ne sont **jamais stockés**, seulement une
+> secret (mots de passe, clés) : ils ne sont **jamais stockés**, seulement une
 > empreinte pour détecter un changement. Cette empreinte est calculée avec une
 > **clé propre à chaque installation** (hors base) : après un transfert vers un
 > autre poste, la détection de changement se rebase simplement au prochain scan.
 > Rien à faire de spécial, et aucun secret ne circule.
+>
+> Tout le contenu des sections (identification, eFuses, SFDP, partitions,
+> structure NVS) est transféré à l'identique et se réaffiche depuis la base sur
+> le nouveau poste. Seuls les **octets bruts NVS** ne sont pas conservés (pour
+> ne laisser passer aucun secret) : leurs valeurs décodées ne réapparaissent
+> qu'en **relisant la carte**.
 
 ## Astuce
 

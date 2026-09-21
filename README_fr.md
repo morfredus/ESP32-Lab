@@ -2,7 +2,7 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.6.2-blue)
+![Version](https://img.shields.io/badge/version-0.6.5-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-59%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
@@ -39,17 +39,19 @@ connecté, et conserver un historique des diagnostics.
   d'effacement, modes de lecture rapide, et identifiant unique 64 bits
 - **Lecture réelle de la table de partitions** (lecture seule, à `0x8000`)
 - **Analyse structurelle NVS** avec décodage lisible des valeurs
-- **Base de données SQLite** conservant toutes les lectures par carte
+- **Base de données SQLite** conservant toutes les lectures par carte, avec
+  **réaffichage depuis la base** (sans carte branchée) sur toutes les sections :
+  un export/import restaure et affiche l'intégralité sur un autre poste
 - **Aucun secret en base** : mots de passe Wi-Fi et clés eFuse jamais stockés
   (une empreinte HMAC-SHA-256 détecte les changements sans garder le secret)
 - **Détection de changement de secrets** : compare les empreintes HMAC d'une
-  même clé entre deux scans pour signaler un secret modifié — sans jamais le stocker
+  même clé entre deux scans pour signaler un secret modifié - sans jamais le stocker
 - Registre des cartes connues (nom, emplacement, note par adresse MAC)
 - Historique des inventaires, **comparaison de deux scans** et
   **comparaison complète de deux cartes différentes**
 - **Analyse NVS à la demande** (lecture de la partition NVS de la carte)
 - **Compatible morfSystem** : s'annonce via morfBeacon (heartbeat UDP) avec les
-  endpoints `/healthz` et `/status` — découvrable par morfMonitor
+  endpoints `/healthz` et `/status` - découvrable par morfMonitor
 - Export CSV
 - Interface web organisée en onglets
 

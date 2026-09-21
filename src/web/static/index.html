@@ -93,6 +93,9 @@
             <button id="efuse-button" onclick="loadEfuses()">
                 Lire les eFuses
             </button>
+            <button id="efuse-db-button" onclick="loadEfusesFromDb()">
+                Charger depuis la base
+            </button>
 
             <div id="efuse-content" style="margin-top:16px;">
                 <div class="empty">Aucune lecture d'eFuse effectuée.</div>
@@ -128,13 +131,16 @@
             <h2 class="section-title">Puce Flash (SFDP &amp; identifiant unique)</h2>
             <p class="note">
                 Lecture des paramètres gravés par le fabricant (SFDP, JESD216) et
-                de l'identifiant unique 64 bits de la puce Flash — des
+                de l'identifiant unique 64 bits de la puce Flash, des
                 informations rarement exposées. Lecture seule. Le port doit être
                 sélectionné dans l'onglet Général.
             </p>
 
             <button id="flash-sfdp-button" onclick="loadFlashDetails()">
                 Lire les détails de la Flash (SFDP)
+            </button>
+            <button id="flash-sfdp-db-button" onclick="loadFlashDetailsFromDb()">
+                Charger depuis la base
             </button>
 
             <div id="flash-sfdp-content" style="margin:16px 0 8px;">
@@ -150,6 +156,9 @@
 
             <button id="partitions-button" onclick="loadPartitions()">
                 Lire la table de partitions
+            </button>
+            <button id="partitions-db-button" onclick="loadPartitionsFromDb()">
+                Charger depuis la base
             </button>
 
             <div id="partitions-content" class="panel" style="margin-top:16px;">
@@ -224,10 +233,10 @@
             </p>
             <div class="comparison-toolbar">
                 <select id="compare-card-a">
-                    <option value="">— choisir une carte —</option>
+                    <option value="">- choisir une carte -</option>
                 </select>
                 <select id="compare-card-b">
-                    <option value="">— choisir une carte —</option>
+                    <option value="">- choisir une carte -</option>
                 </select>
                 <button id="compare-cards-button" onclick="compareTwoCards()">
                     Comparer les cartes
@@ -243,7 +252,7 @@
             <h2 class="section-title">Maintenance de la base de données</h2>
             <p class="note">
                 L'export produit un fichier JSON portable (toutes les cartes et
-                lectures) — utile pour changer de poste ou sauvegarder. Tu peux
+                lectures) - utile pour changer de poste ou sauvegarder. Tu peux
                 aussi simplement copier le fichier <code>data/esp32lab.db</code>,
                 qui contient tout. « Vérifier » contrôle l'intégrité ;
                 « Remettre à zéro » efface définitivement toutes les données.

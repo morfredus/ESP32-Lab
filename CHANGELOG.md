@@ -9,6 +9,65 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.6.5] - 2026-09-21
+
+Correctif de sécurité : suppression des copies résiduelles de secrets en base.
+
+### Sécurité
+- **Mot de passe Wi-Fi en clair supprimé de la base.** Le caviardage 0.5.0
+  masquait l'entrée « live » du secret (par clé + `span`), mais la NVS est un
+  journal : d'anciennes copies (mot de passe, SSID) subsistaient dans des slots
+  effacés/orphelins, à la clé illisible, non rattachés à la clé sensible. Ces
+  copies étaient donc stockées **et exportées** vers d'autres postes.
+- Correctif : **aucun octet brut NVS n'est plus conservé en base**. Tout dump
+  hexadécimal (`raw_hex`/`data_hex`/`key_hex`) est caviardé pour **toutes** les
+  entrées, et la « clé » des slots à CRC invalide (fragments de secret) est
+  neutralisée. Les empreintes HMAC des secrets et la structure (pages, entrées,
+  CRC, types, clés valides) sont conservées.
+- **Purge rétroactive** de la base existante au démarrage (marqueur
+  `nvs_hex_purged`). Vérifié : plus aucun mot de passe ni SSID dans la base ni
+  dans les exports.
+
+### Conséquence
+- La lecture **live** sur la carte reste complète (le caviardage ne touche que
+  la copie stockée). En revanche, la vue **NVS « depuis la base »** ne
+  reconstruit plus les valeurs décodées (SSID, canal, dump hex) : elle affiche
+  la structure. Les autres sections (eFuses, SFDP, partitions) sont inchangées.
+
+## [0.6.4] - 2026-09-21
+
+Réaffichage complet depuis la base, sans la carte (portabilité inter-postes).
+
+### Ajouté
+- **« Charger depuis la base »** sur les onglets eFuses, SFDP et Partitions :
+  les dernières lectures enregistrées d'une carte se réaffichent **sans la
+  carte branchée** (par MAC), au même titre que Général et NVS le faisaient
+  déjà. Après un export/import sur un autre poste, on retrouve donc et on
+  visualise l'intégralité des sections. Helper `loadStoredReading(section)`
+  (endpoint existant `GET /api/db/reading`).
+
+### Modifié
+- Le vidage des panneaux au changement de carte (0.6.3) couvre maintenant aussi
+  SFDP et Partitions, en plus d'eFuses et NVS.
+- `VERSION` -> 0.6.4.
+
+## [0.6.3] - 2026-09-21
+
+Retouches d'ergonomie de l'interface (cohérence d'affichage).
+
+### Corrigé
+- **Panneaux eFuse et NVS vidés au changement de carte** : les onglets
+  « Identité & Sécurité » et « Analyse NVS » se lisent en direct sur la carte.
+  Après « Actualiser les ports » ou un changement de port, ils ne conservent
+  plus les données de la carte précédente et repartent vides.
+- **Mise à jour en direct après édition d'une fiche** : enregistrer le nom,
+  l'emplacement ou la note d'une carte rafraîchit immédiatement le registre des
+  cartes, l'historique et la fiche affichée dans « Général », sans recharger
+  la page.
+
+### Modifié
+- `VERSION` -> 0.6.3.
+
 ## [0.6.2] - 2026-09-21
 
 Correctif d'import (noms de cartes) et suppression d'une carte.
@@ -105,7 +164,7 @@ Affichage de l'inventaire piloté par la carte connectée, et fin du cache JS.
 
 ### Modifié
 - **Plus d'inventaire « par défaut » au lancement.** La vue Général part vide,
-  puis affiche **la carte connectée si elle a déjà été scannée** — la
+  puis affiche **la carte connectée si elle a déjà été scannée** - la
   correspondance se fait via le **numéro de série USB** (qui, sur les ESP32 à
   USB natif, est la MAC). Sinon la vue reste vide, avec un message d'invite.
   L'inventaire se remplit aussi après « Scanner la carte » et « Actualiser les

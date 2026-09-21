@@ -98,6 +98,26 @@ def sanitize_nvs_for_storage(result):
         decoded["fingerprint"] = empreinte
         decoded["fingerprint_key_id"] = key_id()
 
+    # Aucun octet brut NVS n'est conserve en base. On supprime tout dump
+    # hexadecimal de TOUTES les entrees (apres calcul des empreintes ci-dessus).
+    # C'est la seule facon fiable d'eliminer, en plus du mot de passe "live",
+    # ses COPIES RESIDUELLES : la NVS est un journal, et d'anciennes valeurs
+    # (mots de passe, SSID) subsistent dans des slots effaces/orphelins dont la
+    # cle est illisible (octets de donnees lus comme une cle). La lecture live
+    # sur la carte, elle, reste complete (ce caviardage ne touche que la copie
+    # stockee). Perte cote base : plus de reconstruction des valeurs/SSID.
+    for entry in flat:
+        decoded = entry.get("decoded")
+        if not isinstance(decoded, dict):
+            continue
+        for field in ("raw_hex", "data_hex", "key_hex"):
+            if decoded.get(field) and decoded[field] != REDACTED:
+                decoded[field] = REDACTED
+        # Slot efface/invalide (CRC non valide) : sa "cle" est en realite des
+        # octets de donnees pouvant contenir un fragment de secret -> neutralise.
+        if not decoded.get("crc_match") and decoded.get("key"):
+            decoded["key"] = REDACTED
+
     return clone
 
 

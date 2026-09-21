@@ -1,6 +1,37 @@
 /* ==========================================================================
-   ESP32-Lab — eFuses : identité du silicium et état de sécurité
+   ESP32-Lab - eFuses : identité du silicium et état de sécurité
    ========================================================================== */
+
+/** Recharge les eFuses depuis la base (sans la carte), par MAC affichée. */
+async function loadEfusesFromDb() {
+    const button = document.getElementById("efuse-db-button");
+    const container = document.getElementById("efuse-content");
+
+    button.disabled = true;
+    button.textContent = "Chargement...";
+
+    try {
+        const reading = await loadStoredReading("efuse");
+        if (reading && reading.payload) {
+            renderEfuses(reading.payload);
+            setStatus(
+                "eFuses chargées depuis la base (lecture du " +
+                formatDateTime(reading.recorded_at) + ")."
+            );
+        } else {
+            container.innerHTML =
+                '<div class="empty">Aucune lecture eFuse en base pour cette ' +
+                'carte. Branche-la puis clique « Lire les eFuses ».</div>';
+        }
+    } catch (error) {
+        container.innerHTML =
+            `<div class="empty">${escapeHtml(error.message)}</div>`;
+        setStatus(error.message, true);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Charger depuis la base";
+    }
+}
 
 const MAC_LABELS = {
     wifi_sta: "Wi-Fi station",
@@ -182,7 +213,7 @@ function renderEfuseCategories(report) {
 
         return `
             <details class="efuse-category">
-                <summary>${escapeHtml(label)} — ${fields.length} champs</summary>
+                <summary>${escapeHtml(label)} - ${fields.length} champs</summary>
                 <div class="table-container">
                     <table>
                         <thead>

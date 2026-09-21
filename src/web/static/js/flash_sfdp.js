@@ -1,6 +1,38 @@
 /* ==========================================================================
-   ESP32-Lab — Puce Flash : SFDP et identifiant unique
+   ESP32-Lab - Puce Flash : SFDP et identifiant unique
    ========================================================================== */
+
+/** Recharge les détails SFDP depuis la base (sans la carte), par MAC affichée. */
+async function loadFlashDetailsFromDb() {
+    const button = document.getElementById("flash-sfdp-db-button");
+    const container = document.getElementById("flash-sfdp-content");
+
+    button.disabled = true;
+    button.textContent = "Chargement...";
+
+    try {
+        const reading = await loadStoredReading("sfdp");
+        if (reading && reading.payload) {
+            renderFlashDetails(reading.payload);
+            setStatus(
+                "Détails SFDP chargés depuis la base (lecture du " +
+                formatDateTime(reading.recorded_at) + ")."
+            );
+        } else {
+            container.innerHTML =
+                '<div class="empty">Aucune lecture SFDP en base pour cette ' +
+                'carte. Branche-la puis clique « Lire les détails de la ' +
+                'Flash (SFDP) ».</div>';
+        }
+    } catch (error) {
+        container.innerHTML =
+            `<div class="empty">${escapeHtml(error.message)}</div>`;
+        setStatus(error.message, true);
+    } finally {
+        button.disabled = false;
+        button.textContent = "Charger depuis la base";
+    }
+}
 
 async function loadFlashDetails() {
     const button = document.getElementById("flash-sfdp-button");

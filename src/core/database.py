@@ -140,6 +140,13 @@ def init_db():
         redact_existing_readings()
         set_meta("readings_redacted", "1")
 
+    # Purge unique renforcée (0.6.5) : suppression de TOUT dump hexadécimal NVS,
+    # pour éliminer les copies résiduelles de secrets (mot de passe, SSID) que
+    # la rédaction par clé laissait dans les slots effacés/orphelins.
+    if get_meta("nvs_hex_purged") != "1":
+        redact_existing_readings()
+        set_meta("nvs_hex_purged", "1")
+
 
 def redact_existing_readings():
     """Caviarde les secrets des lectures NVS/eFuse déjà en base (rétroactif)."""
