@@ -2,7 +2,7 @@
 
 🇬🇧 **English** | [🇫🇷 Français](README_fr.md)
 
-![Version](https://img.shields.io/badge/version-0.5.2-blue)
+![Version](https://img.shields.io/badge/version-0.5.3-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
 ![Tests](https://img.shields.io/badge/tests-43%20passing-brightgreen)
 ![Targets](https://img.shields.io/badge/targets-ESP32--S3%20%7C%20ESP32--C3-orange)

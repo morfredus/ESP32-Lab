@@ -36,8 +36,12 @@ database.init_db()
 
 HOST = "0.0.0.0"
 PORT = 8765
+PORT_ATTEMPTS = 20   # 8765..8784 si le port par défaut est occupé
 STATIC_DIRECTORY = Path(__file__).resolve().parent / "static"
 VERSION_FILE = Path(__file__).resolve().parents[2] / "VERSION"
+
+# Port réellement utilisé (résolu au démarrage). Par défaut, le port préféré.
+ACTIVE_PORT = PORT
 
 
 def read_version():
@@ -115,6 +119,7 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
                 "status": "ok",
                 "service": "ESP32-Lab",
                 "version": APP_VERSION,
+                "port": ACTIVE_PORT,
             })
             return
 
@@ -590,12 +595,62 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
         print(f"[WEB] {self.address_string()} - {format % args}")
 
 
+def _port_in_use(port):
+    """
+    Indique si un serveur écoute déjà sur ce port (détection par connexion,
+    fiable sous Linux comme Windows, contrairement à un simple bind qui, avec
+    SO_REUSEADDR, peut réussir même si le port est déjà pris sous Windows).
+    """
+
+    import socket
+
+    target = "127.0.0.1" if HOST == "0.0.0.0" else HOST
+    with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as probe:
+        probe.settimeout(0.3)
+        return probe.connect_ex((target, port)) == 0
+
+
+def _bind_server():
+    """
+    Crée le serveur sur le port préféré, ou le premier port libre suivant si
+    celui-ci est déjà occupé. Met à jour ACTIVE_PORT.
+    """
+
+    global ACTIVE_PORT
+
+    for candidate in range(PORT, PORT + PORT_ATTEMPTS):
+        if _port_in_use(candidate):
+            continue
+        try:
+            server = HTTPServer((HOST, candidate), ESP32LabHandler)
+        except OSError:
+            continue
+        ACTIVE_PORT = candidate
+        return server
+
+    raise RuntimeError(
+        f"Aucun port libre entre {PORT} et {PORT + PORT_ATTEMPTS - 1}."
+    )
+
+
 def main():
     """Démarre le serveur."""
 
-    server = HTTPServer((HOST, PORT), ESP32LabHandler)
+    try:
+        server = _bind_server()
+    except RuntimeError as error:
+        print(f"Erreur : {error}")
+        return
 
-    print(f"ESP32-Lab v{APP_VERSION} — Web disponible sur http://0.0.0.0:{PORT}")
+    if ACTIVE_PORT != PORT:
+        print(f"Port {PORT} occupé — bascule sur le port {ACTIVE_PORT}.")
+
+    import socket
+    host_name = socket.gethostname()
+
+    print(f"ESP32-Lab v{APP_VERSION} — Web disponible sur :")
+    print(f"  http://0.0.0.0:{ACTIVE_PORT}")
+    print(f"  http://{host_name}.local:{ACTIVE_PORT}   (si mDNS/Bonjour actif)")
     print("Ctrl+C pour arrêter le serveur.")
 
     try:

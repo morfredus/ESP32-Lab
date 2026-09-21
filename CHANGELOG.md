@@ -9,6 +9,27 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.5.3] - 2026-09-21
+
+Sélection automatique du port, et affichage du port dans l'interface.
+
+### Ajouté
+- **Port automatique** : au démarrage, si le port 8765 est déjà utilisé, le
+  serveur bascule sur le premier port libre suivant (8766, 8767…). Détection
+  fiable par test de connexion (fonctionne sous Linux comme Windows, malgré
+  `SO_REUSEADDR`). Le port réel est indiqué au démarrage (console) et exposé
+  par `/api/health`.
+- **Port affiché dans l'interface**, à côté de la version.
+- Le message de démarrage rappelle l'adresse mDNS `<hôte>.local:<port>`.
+
+### Modifié
+- `VERSION` → 0.5.3.
+
+### Note (indépendance des postes)
+- Toutes les requêtes de l'interface sont **relatives** : chaque UI dialogue
+  avec le serveur qui l'a servie. Lancer ESP32-Lab simultanément sur le Pi et
+  sous Windows reste donc totalement indépendant (bases et actions séparées).
+
 ## [0.5.2] - 2026-09-21
 
 Affichage de l'inventaire piloté par la carte connectée, et fin du cache JS.

@@ -9,6 +9,13 @@ async function loadVersion() {
         if (label && health.version) {
             label.textContent = "v" + health.version;
         }
+        const portLabel = document.getElementById("app-port");
+        // Port réellement utilisé par le serveur (peut différer de 8765 s'il
+        // était occupé). Sinon, le port de la page.
+        const port = health.port || window.location.port;
+        if (portLabel && port) {
+            portLabel.textContent = "port " + port;
+        }
     } catch (error) {
         /* La version est purement informative : on ignore l'échec. */
     }
