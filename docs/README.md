@@ -1,6 +1,6 @@
 # Documentation ESP32-Lab
 
-![Version](https://img.shields.io/badge/version-0.5.0-blue)
+![Version](https://img.shields.io/badge/version-0.5.2-blue)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 

@@ -20,12 +20,19 @@ async function initialize() {
 
     setStatus("Initialisation...");
 
-    await loadPorts();
-    await loadInventory();
-    // L'historique doit être chargé avant les cartes : le tableau des cartes
-    // affiche le nombre de scans par MAC (issu de l'historique).
-    await loadHistory();
+    // Registre (noms) et historique d'abord : ils alimentent les noms de
+    // cartes affichés partout.
     await loadDevices();
+    await loadHistory();
+    await loadDevices();   // ré-affiche avec le nombre de scans
+
+    // Vide par défaut...
+    await loadInventory(null);
+
+    // ...puis détection des ports : si une carte est connectée ET déjà
+    // scannée (n° de série USB = MAC connue en base), on affiche ses infos ;
+    // sinon la vue reste vide.
+    await loadPorts();
 
     if (statusElement.textContent === "Initialisation...") {
         setStatus("Prêt.");

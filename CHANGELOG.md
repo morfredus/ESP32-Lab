@@ -9,6 +9,40 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.5.2] - 2026-09-21
+
+Affichage de l'inventaire piloté par la carte connectée, et fin du cache JS.
+
+### Modifié
+- **Plus d'inventaire « par défaut » au lancement.** La vue Général part vide,
+  puis affiche **la carte connectée si elle a déjà été scannée** — la
+  correspondance se fait via le **numéro de série USB** (qui, sur les ESP32 à
+  USB natif, est la MAC). Sinon la vue reste vide, avec un message d'invite.
+  L'inventaire se remplit aussi après « Scanner la carte » et « Actualiser les
+  ports ». `loadInventory(mac)` lit désormais la base par MAC.
+- **`Cache-Control: no-store`** sur les fichiers statiques : le navigateur ne
+  ressert plus un ancien HTML/CSS/JS après une mise à jour (outil local).
+- `VERSION` → 0.5.2.
+
+## [0.5.1] - 2026-09-21
+
+Le nom de la carte est visible partout, et la vue Général passe à 8 cartes.
+
+### Ajouté
+- **Nom enregistré de la carte affiché partout** : nouvelle carte « Carte »
+  (nom + emplacement + note) en tête de l'onglet Général, colonne « Nom » dans
+  l'historique, et **noms de cartes** (au lieu de « Inventaire 1/2 ») dans le
+  comparatif de scans et le titre de la modale d'historique. Helpers
+  `deviceName` / `deviceLabel` / `registeredDevice`.
+
+### Modifié
+- **Onglet Général réorganisé en 8 cartes** (deux rangées de 4 sur écran large),
+  dans un ordre de lecture logique : Carte · Microcontrôleur · Processeur ·
+  Mémoire Flash // PSRAM · Connectivité · Adresse MAC · Connexion.
+- Ordre de chargement ajusté (registre chargé en premier) pour que les noms
+  soient disponibles dès l'affichage de l'inventaire et de l'historique.
+- `VERSION` → 0.5.1.
+
 ## [0.5.0] - 2026-09-21
 
 Les secrets ne sont plus jamais stockés en base (piste 1).

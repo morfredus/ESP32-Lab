@@ -2,7 +2,12 @@
    ESP32-Lab — détection et sélection des ports série
    ========================================================================== */
 
-async function loadPorts() {
+/**
+ * Détecte les ports. `showInventory` (défaut vrai, cas du bouton « Actualiser
+ * les ports ») affiche l'inventaire de la carte connectée si elle a déjà été
+ * scannée. Au démarrage on passe `false` : la vue reste vide.
+ */
+async function loadPorts(showInventory = true) {
     refreshPortsButton.disabled = true;
     refreshPortsButton.textContent = "Recherche...";
 
@@ -36,7 +41,11 @@ async function loadPorts() {
         }
 
         portSelect.value = detectedPorts[0].device;
-        updatePortDetails();
+        renderPortDetails();
+
+        if (showInventory && typeof showInventoryForSelectedPort === "function") {
+            await showInventoryForSelectedPort();
+        }
 
         setStatus(`${detectedPorts.length} port(s) USB détecté(s).`);
     } catch (error) {
@@ -47,9 +56,9 @@ async function loadPorts() {
     }
 }
 
-function updatePortDetails() {
-    const selectedPort = portSelect.value;
-    const port = detectedPorts.find(item => item.device === selectedPort);
+/** Affiche les détails du port sélectionné (texte uniquement). */
+function renderPortDetails() {
+    const port = detectedPorts.find(item => item.device === portSelect.value);
 
     if (!port) {
         portDetailsElement.textContent = "Aucun port sélectionné";
@@ -63,4 +72,15 @@ function updatePortDetails() {
         VID : ${escapeHtml(port.vid ?? "Inconnu")} -
         PID : ${escapeHtml(port.pid ?? "Inconnu")}
     `;
+}
+
+/**
+ * Changement manuel de port (onchange du menu) : met à jour les détails ET
+ * l'inventaire affiché (uniquement sur action de l'utilisateur).
+ */
+function updatePortDetails() {
+    renderPortDetails();
+    if (typeof showInventoryForSelectedPort === "function") {
+        showInventoryForSelectedPort();
+    }
 }

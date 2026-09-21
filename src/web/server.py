@@ -578,6 +578,9 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
         self.send_response(200)
         self.send_header("Content-Type", content_type)
         self.send_header("Content-Length", str(len(content)))
+        # Outil local : on désactive le cache pour éviter de servir un ancien
+        # HTML/CSS/JS après une mise à jour (fichiers petits, réseau local).
+        self.send_header("Cache-Control", "no-store, must-revalidate")
         self.end_headers()
         self.wfile.write(content)
 

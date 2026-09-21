@@ -2,38 +2,96 @@
    ESP32-Lab — inventaire matériel et fiche de la carte
    ========================================================================== */
 
-async function loadInventory() {
-    try {
-        const response = await fetch("/api/inventory");
+/** Vide la vue d'inventaire et la fiche (aucune carte affichée). */
+function showEmptyInventory(message) {
+    currentInventory = null;
+    contentElement.innerHTML = `<div class="empty">${escapeHtml(message)}</div>`;
+    loadDeviceProfile(null);   // réinitialise la fiche (chemin synchrone)
+}
 
-        if (response.status === 404) {
-            contentElement.innerHTML =
-                '<div class="empty">Aucun inventaire. ' +
-                'Sélectionne un port puis « Scanner la carte ».</div>';
+/** Déduit la MAC d'un port depuis son numéro de série (USB natif ESP32 = MAC). */
+function macFromPort(port) {
+    const serial = (port && port.serial_number || "").trim().toLowerCase();
+    return /^([0-9a-f]{2}:){5}[0-9a-f]{2}$/.test(serial) ? serial : null;
+}
+
+/**
+ * Affiche l'inventaire correspondant au port sélectionné, si cette carte a
+ * déjà été scannée (base). Sinon, laisse la vue vide.
+ */
+async function showInventoryForSelectedPort() {
+    const port = detectedPorts.find(item => item.device === portSelect.value);
+    const mac = port ? macFromPort(port) : null;
+    await loadInventory(mac);
+}
+
+/**
+ * Charge l'inventaire d'une carte depuis la base (par MAC). Sans MAC connue,
+ * ou si la carte n'a jamais été scannée, la vue reste vide.
+ */
+async function loadInventory(mac) {
+    if (!mac) {
+        showEmptyInventory(
+            "Aucune carte affichée. Clique « Actualiser les ports » " +
+            "(la dernière analyse s'affiche si la carte a déjà été scannée) " +
+            "ou « Scanner la carte »."
+        );
+        return;
+    }
+
+    try {
+        const result = await apiGet(
+            "/api/db/reading?mac=" + encodeURIComponent(mac) + "&section=inventory"
+        );
+        const reading = result.reading;
+
+        if (!reading || !reading.payload) {
+            showEmptyInventory(
+                "Cette carte n'a pas encore été scannée. Clique « Scanner la carte »."
+            );
             return;
         }
 
-        if (!response.ok) {
-            throw new Error("Impossible de charger l'inventaire.");
-        }
+        renderInventoryCards(reading.payload);
+    } catch (error) {
+        setStatus(error.message, true);
+    }
+}
 
-        const inventory = await response.json();
-        currentInventory = inventory;
-        const info = inventory.identification || {};
+/** Rend les 8 cartes matériel à partir d'un inventaire. */
+async function renderInventoryCards(inventory) {
+    currentInventory = inventory;
+    const info = inventory.identification || {};
 
-        await loadDeviceProfile(info.mac);
+    await loadDeviceProfile(info.mac);
 
-        const flashManufacturer = info.flash_manufacturer_name
-            || info.flash_manufacturer || PLACEHOLDER;
-        const flashDevice = info.flash_device_name
-            || info.flash_device || PLACEHOLDER;
+    const flashManufacturer = info.flash_manufacturer_name
+        || info.flash_manufacturer || PLACEHOLDER;
+    const flashDevice = info.flash_device_name
+        || info.flash_device || PLACEHOLDER;
 
-        contentElement.innerHTML = `
+    const device = registeredDevice(info.mac) || {};
+
+    // 8 cartes, ordre de lecture : identité -> silicium -> calcul ->
+    // stockage // mémoire vive -> radios -> identifiant réseau -> lien.
+    contentElement.innerHTML = `
+            <div class="card">
+                <h2>Carte</h2>
+                <div class="value">${escapeHtml(device.name || "Sans nom")}</div>
+                <div class="detail">Emplacement : ${escapeHtml(device.location || PLACEHOLDER)}</div>
+                <div class="detail">Note : ${escapeHtml(device.note || PLACEHOLDER)}</div>
+            </div>
+
             <div class="card">
                 <h2>Microcontrôleur</h2>
                 <div class="value">${escapeHtml(orPlaceholder(info.chip))}</div>
                 <div class="detail">Révision : ${escapeHtml(orPlaceholder(info.revision))}</div>
-                <div class="detail">CPU : ${escapeHtml(formatUnit(info.cpu_frequency_mhz, "MHz"))}</div>
+                <div class="detail">Famille : ${escapeHtml(orPlaceholder(info.chip_family))}</div>
+            </div>
+
+            <div class="card">
+                <h2>Processeur</h2>
+                <div class="value">${escapeHtml(formatUnit(info.cpu_frequency_mhz, "MHz"))}</div>
                 <div class="detail">Quartz : ${escapeHtml(formatUnit(info.crystal_frequency_mhz, "MHz"))}</div>
             </div>
 
@@ -55,8 +113,13 @@ async function loadInventory() {
             <div class="card">
                 <h2>Connectivité</h2>
                 <div class="value">Wi-Fi / Bluetooth</div>
-                <div class="detail">MAC : ${escapeHtml(orPlaceholder(info.mac))}</div>
                 <div class="detail">${escapeHtml(orPlaceholder(info.features))}</div>
+            </div>
+
+            <div class="card">
+                <h2>Adresse MAC</h2>
+                <div class="value" style="font-size:19px;word-break:break-all">${escapeHtml(orPlaceholder(info.mac))}</div>
+                <div class="detail">Identifiant matériel de base</div>
             </div>
 
             <div class="card">
@@ -65,9 +128,6 @@ async function loadInventory() {
                 <div class="detail">Dernier inventaire : ${escapeHtml(formatDateTime(inventory.timestamp))}</div>
             </div>
         `;
-    } catch (error) {
-        setStatus(error.message, true);
-    }
 }
 
 async function refreshInventory() {
@@ -83,13 +143,24 @@ async function refreshInventory() {
     setStatus(`Interrogation de ${selectedPort}...`);
 
     try {
-        await apiPost(
+        const result = await apiPost(
             "/api/inventory/refresh?port=" + encodeURIComponent(selectedPort)
         );
 
         setStatus("Inventaire actualisé avec succès.");
 
-        await loadInventory();
+        const scannedMac = result.inventory
+            && result.inventory.identification
+            && result.inventory.identification.mac;
+
+        // Registre d'abord (noms à jour), puis affichage de la carte scannée
+        // et historique, puis registre à nouveau pour le compte de scans.
+        await loadDevices();
+        if (result.inventory) {
+            await renderInventoryCards(result.inventory);
+        } else if (scannedMac) {
+            await loadInventory(scannedMac);
+        }
         await loadHistory();
         await loadDevices();
     } catch (error) {

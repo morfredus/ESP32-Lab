@@ -43,6 +43,7 @@ async function loadHistory() {
                                data-history-index="${historyIndex}" ${isChecked}
                                onchange="handleHistorySelection(Number(this.dataset.historyIndex), this.checked)">
                     </td>
+                    <td><strong>${escapeHtml(deviceName(info.mac || device.mac) || "Sans nom")}</strong></td>
                     <td>${escapeHtml(formatDateTime(device.latest.recorded_at))}</td>
                     <td>${escapeHtml(info.chip || PLACEHOLDER)}</td>
                     <td>${escapeHtml(info.mac || device.mac)}</td>
@@ -64,6 +65,7 @@ async function loadHistory() {
                 <thead>
                     <tr>
                         <th class="checkbox-cell">Choix</th>
+                        <th>Nom</th>
                         <th>Dernière détection</th>
                         <th>ESP32</th>
                         <th>MAC</th>
@@ -117,7 +119,10 @@ function showDeviceHistory(mac) {
     const title = document.getElementById("history-modal-title");
     const content = document.getElementById("history-modal-content");
 
-    title.textContent = "Historique - " + mac;
+    const label = deviceName(mac);
+    title.textContent = label
+        ? `Historique - ${label} (${mac})`
+        : "Historique - " + mac;
 
     const rows = entries.map(entry => {
         const inventory = entry.inventory || {};
@@ -226,6 +231,8 @@ function compareInventories() {
     const secondInfo = secondInventory.identification || {};
     const firstDate = formatDateTime(firstEntry.recorded_at);
     const secondDate = formatDateTime(secondEntry.recorded_at);
+    const firstName = deviceLabel(firstInfo.mac);
+    const secondName = deviceLabel(secondInfo.mac);
 
     function comparisonValue(info, inventory, key, formatter) {
         let value = key === null ? inventory.port : info[key];
@@ -295,8 +302,8 @@ function compareInventories() {
         <div class="comparison-summary">
             <strong>Comparaison de deux inventaires</strong>
             <p>
-                Inventaire 1 : ${escapeHtml(firstDate)}<br>
-                Inventaire 2 : ${escapeHtml(secondDate)}
+                <strong>${escapeHtml(firstName)}</strong> : ${escapeHtml(firstDate)}<br>
+                <strong>${escapeHtml(secondName)}</strong> : ${escapeHtml(secondDate)}
             </p>
             <div class="comparison-counts">
                 <span class="comparison-count-different">${differentCount} différence(s)</span>
@@ -307,8 +314,8 @@ function compareInventories() {
             <thead>
                 <tr>
                     <th>Caractéristique</th>
-                    <th>Inventaire 1<br><small>${escapeHtml(firstDate)}</small></th>
-                    <th>Inventaire 2<br><small>${escapeHtml(secondDate)}</small></th>
+                    <th>${escapeHtml(firstName)}<br><small>${escapeHtml(firstDate)}</small></th>
+                    <th>${escapeHtml(secondName)}<br><small>${escapeHtml(secondDate)}</small></th>
                     <th>Résultat</th>
                 </tr>
             </thead>

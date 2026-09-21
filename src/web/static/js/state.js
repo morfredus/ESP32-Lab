@@ -30,3 +30,26 @@ function setStatus(message, isError = false) {
     statusElement.className = isError ? "error" : "status";
     statusElement.textContent = message;
 }
+
+/** Retourne la fiche enregistrée d'une carte (depuis le registre chargé). */
+function registeredDevice(mac) {
+    if (!mac) {
+        return null;
+    }
+    const target = mac.toLowerCase();
+    const list = Array.isArray(devicesData)
+        ? devicesData
+        : Object.values(devicesData || {});
+    return list.find(item => (item.mac || "").toLowerCase() === target) || null;
+}
+
+/** Nom enregistré d'une carte, ou "" si aucun. */
+function deviceName(mac) {
+    const device = registeredDevice(mac);
+    return device && device.name ? device.name : "";
+}
+
+/** Nom enregistré ou, à défaut, l'adresse MAC (pour toujours identifier la carte). */
+function deviceLabel(mac) {
+    return deviceName(mac) || (mac || PLACEHOLDER);
+}
