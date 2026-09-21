@@ -223,3 +223,7 @@ cache inscriptible `data/espressif/`.
 
 Endpoints associés : `GET /api/gpio?chip=`, `GET /api/espressif/status`,
 `POST /api/espressif/refresh`.
+
+Maintenir le jeu (ajouter/mettre à jour une famille) : voir le guide
+`reference/espressif/README.md` (où trouver chaque champ chez Espressif), puis
+régénérer les empreintes avec `python tools/build_espressif_metadata.py`.

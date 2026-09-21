@@ -32,6 +32,10 @@ Espressif locale, disponible hors ligne.
   d'échec.
 - Endpoints : `GET /api/gpio`, `GET /api/espressif/status`,
   `POST /api/espressif/refresh`.
+- **Outillage de maintenance** : `tools/build_espressif_metadata.py` régénère
+  `metadata.json` (validation du schéma + recalcul des sha256), et un guide
+  `reference/espressif/README.md` explique où récupérer chaque donnée chez
+  Espressif avant d'utiliser le script.
 
 ### Limites connues
 - L'exposition réelle des broches sur une carte (BOOT, LED, écran, USB natif du

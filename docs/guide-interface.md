@@ -154,6 +154,8 @@ Cet onglet décrit les **GPIO au niveau de la puce**, calculés d'après la
 informations dépendent de la famille : jamais de table générique. Lecture seule.
 Fais d'abord un **scan** dans l'onglet Général.
 
+![Onglet GPIO Inspector : base Espressif locale, résumé, tableau des broches et sections repliables](images/06-gpio-inspector.png)
+
 > **Exposition sur la carte : à confirmer.** L'accessibilité réelle des broches
 > sur les connecteurs (bouton BOOT, LED, écran, USB natif du fabricant) dépend
 > du **modèle de carte** et n'est pas déductible de la puce. Cette page décrit
