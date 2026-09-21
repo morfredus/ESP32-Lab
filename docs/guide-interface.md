@@ -157,6 +157,22 @@ Des badges indiquent quelles sections ont déjà été capturées pour chaque ca
 (scanne et lis les eFuses/SFDP/partitions/NVS d'une carte pour enrichir la
 comparaison).
 
+### 5. Maintenance de la base de données
+Quatre outils :
+
+- **Exporter la base** — télécharge un fichier JSON portable contenant toutes
+  les cartes et toutes les lectures. Idéal pour sauvegarder ou **changer de
+  poste** (l'échange fonctionne y compris entre Windows et Raspberry Pi).
+- **Importer une base** — fusionne un export dans la base actuelle, sans
+  doublon ni écrasement des noms. Le résultat s'affiche dans la section.
+- **Vérifier la base** — contrôle d'intégrité + statistiques (nombre de cartes,
+  de lectures, taille du fichier).
+- **Remettre à zéro** — efface **définitivement** toutes les données (une
+  confirmation est demandée ; pense à exporter avant).
+
+> Pour transférer une installation d'un poste à l'autre, tu peux aussi
+> simplement copier le fichier `data/esp32lab.db` : il contient tout.
+
 ## Astuce
 
 Pour comparer l'évolution d'une carte dans le temps : scanne-la aujourd'hui,
