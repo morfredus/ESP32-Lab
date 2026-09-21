@@ -17,15 +17,49 @@ async function loadNvsAnalysis() {
     const button = document.getElementById("nvs-button");
     const container = document.getElementById("nvs-content");
 
+    const mac = currentInventory && currentInventory.identification
+        && currentInventory.identification.mac;
+
     button.disabled = true;
     button.textContent = "Chargement...";
 
     try {
+        // Carte identifiée : on privilégie le dernier rapport NVS DE CETTE
+        // carte, stocké en base (cohérent, par MAC).
+        if (mac) {
+            const result = await apiGet(
+                "/api/db/reading?mac=" + encodeURIComponent(mac) + "&section=nvs"
+            );
+            const reading = result.reading;
+
+            if (reading && reading.payload && reading.payload.report) {
+                renderNvsReport(reading.payload.report);
+                setStatus(
+                    "Analyse NVS de la carte chargée depuis la base " +
+                    `(lecture du ${formatDateTime(reading.recorded_at)}).`
+                );
+                return;
+            }
+
+            // Aucune donnée NVS en base pour cette carte → on analyse.
+            if (portSelect.value) {
+                container.innerHTML =
+                    '<div class="empty">Aucune analyse NVS en base pour cette ' +
+                    'carte — lecture de la carte en cours...</div>';
+                await triggerNvsAnalysis();
+            } else {
+                container.innerHTML =
+                    '<div class="empty">Aucune analyse NVS en base pour cette ' +
+                    'carte. Sélectionne un port (onglet Général) puis ' +
+                    '« Analyser la NVS de la carte ».</div>';
+            }
+            return;
+        }
+
+        // Aucune carte scannée : on affiche le dernier rapport disponible.
         const result = await apiGet("/api/nvs");
         renderNvsReport(result.report || {});
     } catch (error) {
-        // Rapport indisponible : on déclenche une analyse live si un port
-        // est sélectionné, sinon on l'indique.
         if (portSelect.value) {
             container.innerHTML =
                 '<div class="empty">Aucun rapport enregistré — analyse de ' +
@@ -34,8 +68,7 @@ async function loadNvsAnalysis() {
         } else {
             container.innerHTML =
                 `<div class="empty">${escapeHtml(error.message)} ` +
-                'Sélectionne un port (onglet Général) puis « Analyser la NVS ' +
-                'de la carte ».</div>';
+                'Scanne une carte (onglet Général) puis relance l\'analyse NVS.</div>';
         }
     } finally {
         button.disabled = false;

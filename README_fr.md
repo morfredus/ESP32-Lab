@@ -2,9 +2,9 @@
 
 [🇬🇧 English](README.md) | 🇫🇷 **Français**
 
-![Version](https://img.shields.io/badge/version-0.4.2-blue)
+![Version](https://img.shields.io/badge/version-0.4.3-blue)
 ![Python](https://img.shields.io/badge/python-3.10+-3776AB?logo=python&logoColor=white)
-![Tests](https://img.shields.io/badge/tests-35%20passing-brightgreen)
+![Tests](https://img.shields.io/badge/tests-36%20passing-brightgreen)
 ![Cibles](https://img.shields.io/badge/cibles-ESP32--S3%20%7C%20ESP32--C3-orange)
 ![Mode](https://img.shields.io/badge/mat%C3%A9riel-lecture%20seule-success)
 ![Statut](https://img.shields.io/badge/statut-en%20d%C3%A9veloppement-yellow)
@@ -105,6 +105,7 @@ Voir [`docs/architecture.md`](docs/architecture.md) pour le détail.
 | GET     | `/api/devices`              | Registre des cartes                      |
 | GET     | `/api/device?mac=…`         | Fiche d'une carte                        |
 | GET     | `/api/db/device?mac=…`      | Dossier complet d'une carte (base)       |
+| GET     | `/api/db/reading?mac=…&section=…` | Dernière lecture d'une section pour une carte |
 | GET     | `/api/db/compare?mac_a=…&mac_b=…` | Comparaison de deux cartes         |
 | GET     | `/api/nvs`                  | Dernier rapport d'analyse NVS            |
 | POST    | `/api/inventory/refresh?port=…` | Scanne la carte et met à jour        |

@@ -9,6 +9,25 @@ et le projet suit le [versionnage sémantique](https://semver.org/lang/fr/)
 Le projet est en développement actif (série `0.x`). La `1.0.0` sera publiée
 lorsqu'ESP32-Lab sera considéré comme abouti.
 
+## [0.4.3] - 2026-09-21
+
+Analyse NVS cohérente par carte (lecture depuis la base).
+
+### Modifié
+- **« Charger l'analyse NVS » lit désormais la base par carte** : il affiche la
+  dernière analyse NVS **de la carte scannée** (via sa MAC), au lieu du fichier
+  partagé `nvs_structure_analysis.json` qui ne gardait que la dernière carte
+  analysée toutes confondues. Fin de l'affichage incohérent d'une carte à
+  l'autre.
+- Si aucune analyse NVS n'existe en base pour la carte, l'analyse est déclenchée
+  automatiquement (port requis).
+- `VERSION` → 0.4.3.
+
+### Ajouté
+- Endpoint `GET /api/db/reading?mac=…&section=…` (dernière lecture d'une section
+  pour une carte).
+- Test `test_get_latest_reading`.
+
 ## [0.4.2] - 2026-09-21
 
 Scripts de lancement documentés et adaptés au Raspberry Pi sans écran.

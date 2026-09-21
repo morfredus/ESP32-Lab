@@ -72,9 +72,9 @@ La **NVS** est un petit espace mémoire où l'ESP32 range des réglages
 
 Deux boutons :
 
-- **Charger l'analyse NVS** — affiche le dernier rapport enregistré ; s'il
-  n'existe pas encore, l'analyse est **déclenchée automatiquement** en lisant
-  la carte.
+- **Charger l'analyse NVS** — affiche la dernière analyse NVS **de la carte
+  scannée** (récupérée en base par son adresse MAC) ; si aucune n'existe pour
+  cette carte, l'analyse est **déclenchée automatiquement** en lisant la carte.
 - **Analyser la NVS de la carte** — force une nouvelle lecture de la partition
   NVS (lecture seule) et régénère le rapport.
 

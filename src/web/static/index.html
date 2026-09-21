@@ -102,11 +102,12 @@
         <section class="tab-panel" data-panel="nvs">
             <h2 class="section-title">Analyse NVS</h2>
             <p class="note">
-                Analyse structurelle de la partition NVS. « Charger » affiche le
-                dernier rapport ; s'il n'existe pas, l'analyse est lancée
-                automatiquement depuis la carte. « Analyser la NVS de la carte »
-                force une nouvelle lecture (lecture seule). Port requis (onglet
-                Général).
+                Analyse structurelle de la partition NVS. « Charger » affiche la
+                dernière analyse NVS <strong>de la carte scannée</strong>,
+                enregistrée en base ; si aucune n'existe pour cette carte,
+                l'analyse est lancée automatiquement. « Analyser la NVS de la
+                carte » force une nouvelle lecture (lecture seule). Port requis
+                (onglet Général).
             </p>
 
             <button id="nvs-button" onclick="loadNvsAnalysis()">

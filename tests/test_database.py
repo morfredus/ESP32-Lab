@@ -162,6 +162,22 @@ def test_reset_and_no_remigration():
     assert len(database.get_devices()) == 0
 
 
+def test_get_latest_reading():
+    _fresh_db()
+    mac = "aa:bb:cc:dd:ee:40"
+    database.save_reading(mac, "nvs", {"status": "ok", "report": {"tag": "vieux"}},
+                          recorded_at="2026-01-01T00:00:00")
+    database.save_reading(mac, "nvs", {"status": "ok", "report": {"tag": "recent"}},
+                          recorded_at="2026-02-01T00:00:00")
+
+    latest = database.get_latest_reading(mac, "nvs")
+    assert latest is not None
+    assert latest["payload"]["report"]["tag"] == "recent"
+
+    # Section absente → None.
+    assert database.get_latest_reading(mac, "efuse") is None
+
+
 def test_verify_database():
     _fresh_db()
     database.set_meta("json_migrated", "1")
@@ -186,5 +202,6 @@ if __name__ == "__main__":
     test_export_import_roundtrip()
     test_import_rejects_bad_format()
     test_reset_and_no_remigration()
+    test_get_latest_reading()
     test_verify_database()
     print("Tous les tests de base de données sont réussis.")

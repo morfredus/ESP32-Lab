@@ -207,6 +207,24 @@ class ESP32LabHandler(BaseHTTPRequestHandler):
             })
             return
 
+        if path == "/api/db/reading":
+            mac = query.get("mac", [None])[0]
+            section = query.get("section", [None])[0]
+
+            if not mac or not section:
+                self.send_json({
+                    "status": "error",
+                    "message": "Les paramètres mac et section sont requis.",
+                }, status=400)
+                return
+
+            reading = database.get_latest_reading(mac, section)
+            self.send_json({
+                "status": "ok",
+                "reading": reading,
+            })
+            return
+
         if path == "/api/db/compare":
             mac_a = query.get("mac_a", [None])[0]
             mac_b = query.get("mac_b", [None])[0]
